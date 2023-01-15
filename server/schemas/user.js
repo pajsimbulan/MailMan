@@ -17,15 +17,25 @@ const userSchema = new mongoose.Schema(
         email: {
             type: String,
             required: true,
+            lowercase: true,
+            unique: true,
         },
         password: {
             type: String,
             required: true,
+        },
+        createdAt: {
+            type: Date,
+            immutable: true,
+            default: () => Date.now(),
+        },
+        updatedAt: {
+            type: Date,
+            default: () => Date.now(),
         }
     },
-    {timestamps: true}
 );
 
- const user = mongoose.model("User", userSchema);
+const user = mongoose.model("User", userSchema);
 
 module.exports = user;
