@@ -13,6 +13,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useNavigate} from 'react-router';
+import { useContext } from 'react';
+import { UserContext } from './App';
 
 function Copyright(props) {
   return (
@@ -31,13 +33,32 @@ const theme = createTheme();
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const user = useContext(UserContext);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
       email: data.get('email'),
       password: data.get('password'),
+      firstname: data.get('firstName'),
+      lastname: data.get('lastName'),
     });
+    fetch('http://localhost:4000/v0/register', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      'email': data.get('email'),
+      'password': data.get('password'),
+      'firstName': data.get('firstName'),
+      'lastName': data.get('lastName'),
+    }),
+    })
+    .then((res) => {
+      return res.json();})
+    .then((jsondata) => {
+    navigate('/'); 
+  }).catch((error) => {console.log(error.message)}); 
   };
 
   return (

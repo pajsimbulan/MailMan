@@ -12,11 +12,14 @@ import SendIcon from '@mui/icons-material/Send';
 import StarIcon from '@mui/icons-material/Star';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ReportIcon from '@mui/icons-material/Report';
+import { GlobalContext } from '../Mainpage';
+
+
 export default function SelectedListItem() {
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const globalVars = React.useContext(GlobalContext);
 
   const handleListItemClick = (event, index) => {
-    setSelectedIndex(index);
+    globalVars.setSelectedIndex(index);
   };
 
 
@@ -30,7 +33,7 @@ export default function SelectedListItem() {
         </ListItemButton>
         <Divider />
         <ListItemButton
-          selected={selectedIndex === 0}
+          selected={globalVars.selectedIndex === 0}
           onClick={(event) => handleListItemClick(event, 0)}
         >
           <ListItemIcon>
@@ -39,7 +42,7 @@ export default function SelectedListItem() {
           <ListItemText primary="Inbox" />
         </ListItemButton>
         <ListItemButton
-          selected={selectedIndex === 1}
+          selected={globalVars.selectedIndex === 1}
           onClick={(event) => handleListItemClick(event, 1)}
         >
           <ListItemIcon>
@@ -48,7 +51,7 @@ export default function SelectedListItem() {
           <ListItemText primary="Sent" />
         </ListItemButton>
         <ListItemButton
-          selected={selectedIndex === 2}
+          selected={globalVars.selectedIndex === 2}
           onClick={(event) => handleListItemClick(event, 2)}
         >
           <ListItemIcon>
@@ -57,7 +60,7 @@ export default function SelectedListItem() {
           <ListItemText primary="Starred" />
         </ListItemButton>
         <ListItemButton
-          selected={selectedIndex === 3}
+          selected={globalVars.selectedIndex === 3}
           onClick={(event) => handleListItemClick(event, 3)}
         >
           <ListItemIcon>
@@ -69,7 +72,7 @@ export default function SelectedListItem() {
       <Divider />
       <List component="nav" aria-label="secondary mailbox folder">
         <ListItemButton
-          selected={selectedIndex === 4}
+          selected={globalVars.selectedIndex === 4}
           onClick={(event) => handleListItemClick(event, 4)}
         >
             <ListItemIcon>
@@ -78,7 +81,7 @@ export default function SelectedListItem() {
           <ListItemText primary="Trash" />
         </ListItemButton>
         <ListItemButton
-          selected={selectedIndex === 5}
+          selected={globalVars.selectedIndex === 5}
           onClick={(event) => handleListItemClick(event, 5)}
         >
           <ListItemIcon>

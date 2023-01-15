@@ -7,26 +7,30 @@ import SelectedListItem from './components/NavBar';
 import AlignItemsList from './components/MailBody.jsx';
 import {useNavigate} from 'react-router';
 
+export const GlobalContext = React.createContext();
 function Mainpage() {
   const navigate = useNavigate();
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+
   return (
-    <Grid container spacing={2}>
-       <Grid item xs={12}>
-        <PrimarySearchAppBar />
-       </Grid>
-       <Grid item sm={2}>
-        <Paper elevation={8} square={false}>
-          <SelectedListItem />
-        </Paper>
-       </Grid>
-       <Divider orientation="vertical" flexItem />
-       <Grid item xs={12} sm={9}>
-        <Paper elevation={8}>
-          <AlignItemsList />
-        </Paper>
-        
+    <GlobalContext.Provider value={{selectedIndex, setSelectedIndex}}>
+      <Grid container spacing={4}>
+        <Grid item xs={12}>
+          <PrimarySearchAppBar />
+        </Grid>
+        <Grid item xs={12} sm={2}>
+          <Paper elevation={8} square={false}>
+            <SelectedListItem />
+          </Paper>
+        </Grid>
+        <Divider orientation="vertical" flexItem />
+        <Grid item xs={12} sm={9}>
+          <Paper elevation={8}>
+            <AlignItemsList />
+          </Paper>
+        </Grid>
       </Grid>
-    </Grid>
+    </GlobalContext.Provider>
   );
 }
 

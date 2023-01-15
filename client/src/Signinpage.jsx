@@ -13,6 +13,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useNavigate} from 'react-router';
+import { useContext } from 'react';
+import { UserContext } from './App';
 
 function Copyright(props) {
   return (
@@ -31,14 +33,25 @@ const theme = createTheme();
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const handleSubmit = (event) => {
+  const user = useContext(UserContext);
+  const sendCredentials = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-    navigate('/main')
+    fetch('http://localhost:4000/v0/login', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      "email" :   data.get('email'),
+      "password" : data.get('password'),
+    }),
+  })
+  .then((res) => {
+    return res.json();})
+  .then((jsondata) => {
+    user.accessToken = jsondata.accessToken;
+    user.userInfo = jsondata.email;
+    navigate('/main'); 
+  }).catch((error) => {console.log(error.message)}); 
   };
 
   return (
@@ -59,7 +72,7 @@ export default function SignIn() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={(event) => {sendCredentials(event)}} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
