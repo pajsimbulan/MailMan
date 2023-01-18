@@ -40,9 +40,6 @@ exports.login = async (req, res) => {
       res.status(401).send("Invalid Credential");
       return;
     }
-
-    console.log(await userdb.findOneAndUpdate({_id:'63b8cf8da961a30b64940a0c'}, {lastName: "Zahuri"}));
-
     
     const accessToken = jwt.sign({email,password}, jwtSecretKey, {
       expiresIn: '1h',
