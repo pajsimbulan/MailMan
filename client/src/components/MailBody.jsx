@@ -15,12 +15,10 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
 import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { IconButton, ListItemButton, Toolbar } from '@mui/material';
-import { makeStyles } from '@material-ui/core/styles';
+import { Experimental_CssVarsProvider, IconButton, ListItemButton, Toolbar } from '@mui/material';
 import {useNavigate} from 'react-router';
 import { useContext, useState, useEffect, useRef } from 'react';
 import { UserContext } from '../App';
-
 
 export default function AlignItemsList() {
   const [data, setData] = useState([]);
@@ -28,7 +26,9 @@ export default function AlignItemsList() {
   const user = useContext(UserContext);
   const emailRef = useRef([]);
   const [refresh, setRefresh] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
   const checkboxRefs = useRef([]);
+  const size = useRef(0);
  console.log(user.accessToken);
 
   
@@ -40,17 +40,18 @@ export default function AlignItemsList() {
           return res.json();
         }).then((jsondata) => {
           console.log(jsondata);
+          size.current = jsondata.length;
           setData(jsondata);
         }).catch((error) => {console.log(error.message)}); 
       
     },[refresh]);
 
-  console.log('rendering');
+  console.log('MailBody rendering');
   return (
     <List sx={{ width: "100%", maxWidth: "100%", bgcolor: "background.paper" }}>
       <ListItem >
         <Toolbar position="static">
-            <Checkbox edge="start" checked={true}/>
+            <Checkbox edge="start"  onChange={(event) => {setIsChecked(event.target.checked)}}/>
             <IconButton onClick={() => setRefresh(!refresh)}>
                 <RefreshIcon />
             </IconButton>
@@ -75,19 +76,16 @@ export default function AlignItemsList() {
         ref={(el) => {
           emailRef.current[index] = el;
         }}
-        onClick={() => {
-          //emailRef.current[index].style.display = 'none';
-          console.log(index);
-          
-        }}
         secondaryAction={
           <IconButton edge="start"  aria-label="Trash"  onClick={()=>{console.log('im icon');}}>
             <DeleteForeverIcon />
           </IconButton>
         } divider>
-          <ListItemButton onClick={()=>{console.log('im button');}}>
+          <ListItemButton inputRef={(ref) => { emailRef.current[index] = ref; }} onClick={() => {console.log(emailRef.current[index])}}>
             <IconButton>
-              <Checkbox ref={checkboxRefs.current[index]} edge="start" id={index} disableRipple={true} onClick={(event)=>{event.stopPropagation();console.log(`im checkbox [${checkboxRefs.current[index].checked}]`);}}/>
+              <Checkbox  checked={isChecked} inputRef={(ref) => { checkboxRefs.current[index] = ref; }} edge="start" id={index} disableRipple={true} onClick={(event) => {
+                checkboxRefs.current[index].checked = (!checkboxRefs.current[index].checked); console.log(!checkboxRefs.current[index].checked);
+                }}/>
             </IconButton>
             <ListItemAvatar>
               <Avatar alt={email.from.toString().toUpperCase()} src="/static/images/avatar/1.jpg" />
