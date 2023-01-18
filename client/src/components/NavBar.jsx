@@ -1,10 +1,8 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
-import Button from '@mui/material/Button';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+import { ListItem, ListItemIcon,  ListItemText} from '@mui/material';
 import Divider from '@mui/material/Divider';
 import InboxIcon from '@mui/icons-material/Inbox';
 import DraftsIcon from '@mui/icons-material/Drafts';
@@ -12,8 +10,8 @@ import SendIcon from '@mui/icons-material/Send';
 import StarIcon from '@mui/icons-material/Star';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ReportIcon from '@mui/icons-material/Report';
+import ComposeEmail from './ComposeEmail';
 import { GlobalContext } from '../Mainpage';
-
 
 export default function SelectedListItem() {
   const globalVars = React.useContext(GlobalContext);
@@ -26,11 +24,9 @@ export default function SelectedListItem() {
   return (
     <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
       <List spacing = {4} component="nav" aria-label="main mailbox folders">
-        <ListItemButton >
-            <Button variant="contained" sx = {{ width: '100%'}}>
-                Compose
-            </Button>
-        </ListItemButton>
+        <ListItem>
+           <ComposeEmail />
+        </ListItem>
         <Divider />
         <ListItemButton
           selected={globalVars.selectedIndex === 0}
