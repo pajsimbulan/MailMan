@@ -11,26 +11,26 @@ export const GlobalContext = React.createContext();
 function Mainpage() {
   const navigate = useNavigate();
   const [selectedIndex, setSelectedIndex] = React.useState(0);
-
+  let temp = "asd";
   console.log("Mainpage rendering");
   return (
-    <GlobalContext.Provider value={{selectedIndex, setSelectedIndex}}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <PrimarySearchAppBar />
         </Grid>
+        <GlobalContext.Provider value={{selectedIndex, setSelectedIndex}}>
         <Grid item xs={2} >
           <Paper elevation={8} square={false}>
             <SelectedListItem />
           </Paper>
         </Grid>
+        </GlobalContext.Provider>
         <Grid item xs={10} >
           <Paper elevation={8}>
-            <AlignItemsList />
+            <AlignItemsList value={{temp}}/>
           </Paper>
         </Grid>
       </Grid>
-    </GlobalContext.Provider>
 
   );
 }

@@ -15,7 +15,7 @@ import { GlobalContext } from '../Mainpage';
 
 export default function SelectedListItem() {
   const globalVars = React.useContext(GlobalContext);
-
+  console.log('nav bar render');
   const handleListItemClick = (event, index) => {
     globalVars.setSelectedIndex(index);
   };

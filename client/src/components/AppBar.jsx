@@ -64,7 +64,7 @@ export default function PrimarySearchAppBar() {
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
+  console.log('app bar render');
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };

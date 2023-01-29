@@ -20,39 +20,39 @@ import {useNavigate} from 'react-router';
 import { useContext, useState, useEffect, useRef } from 'react';
 import { UserContext } from '../App';
 
+
 export default function AlignItemsList() {
   const [data, setData] = useState([]);
-  const [authorized, setAuthorized] = useState(true);
   const user = useContext(UserContext);
   const emailRef = useRef([]);
-  const [refresh, setRefresh] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
-  const checkboxRefs = useRef([]);
   const size = useRef(0);
- console.log(user.accessToken);
-
-  
+  const [refresh, setRefresh] = useState(false);
+  const [checkboxArray, setCheckBoxArray] = useState([]);
+  console.log('rendering mailbody');
   useEffect(() => {
+    console.log('mailbody fetching data');
     fetch('http://localhost:4000/v0/email', {
             method: 'GET',
             headers: {'Content-Type': 'application/json ', 'Authorization': ('jwt ' + user.accessToken.toString())},      
         }).then((res) => {
           return res.json();
         }).then((jsondata) => {
-          console.log(jsondata);
+
           size.current = jsondata.length;
           setData(jsondata);
-        }).catch((error) => {console.log(error.message)}); 
+          setCheckBoxArray(new Array(size.current).fill(false));
+        }).catch((error) => {alert(error.message)}); 
       
     },[refresh]);
 
-  console.log('MailBody rendering');
   return (
     <List sx={{ width: "100%", maxWidth: "100%", bgcolor: "background.paper" }}>
+
+      
       <ListItem >
         <Toolbar position="static">
-            <Checkbox edge="start"  onChange={(event) => {setIsChecked(event.target.checked)}}/>
-            <IconButton onClick={() => setRefresh(!refresh)}>
+            <Checkbox edge="start"  onChange={(event) => {setCheckBoxArray(new Array(size.current).fill(event.target.checked));}}/>
+            <IconButton onClick={() => {}}>
                 <RefreshIcon />
             </IconButton>
             <IconButton>
@@ -70,6 +70,8 @@ export default function AlignItemsList() {
         </Toolbar>
       </ListItem>
       <Divider component="li" />
+
+
       {data.map((email, index) => (
         <ListItem 
         key = {email._id}
@@ -77,21 +79,22 @@ export default function AlignItemsList() {
           emailRef.current[index] = el;
         }}
         secondaryAction={
-          <IconButton edge="start"  aria-label="Trash"  onClick={()=>{console.log('im icon');}}>
+          <IconButton edge="start"  aria-label="Trash"  onClick={()=>{}}>
             <DeleteForeverIcon />
           </IconButton>
         } divider>
-          <ListItemButton inputRef={(ref) => { emailRef.current[index] = ref; }} onClick={() => {console.log(emailRef.current[index])}}>
+          <ListItemButton onClick={()=> {}}>
             <IconButton>
-              <Checkbox  checked={isChecked} inputRef={(ref) => { checkboxRefs.current[index] = ref; }} edge="start" id={index} disableRipple={true} onClick={(event) => {
-                checkboxRefs.current[index].checked = (!checkboxRefs.current[index].checked); console.log(!checkboxRefs.current[index].checked);
-                }}/>
+              <Checkbox  checked={checkboxArray[index]} edge="start" disableRipple={true} onClick={() => {setCheckBoxArray(prevArray => {
+                  const tempArray = [...prevArray];
+                  tempArray[index] = (!prevArray[index]);
+                  return tempArray;
+                })}}/>
             </IconButton>
             <ListItemAvatar>
               <Avatar alt={email.from.toString().toUpperCase()} src="/static/images/avatar/1.jpg" />
             </ListItemAvatar>
             <ListItemText
-              
               primary={email.subject}
               secondary={
                   stringTruncate(email.contents)}
