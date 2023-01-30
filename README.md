@@ -9,5 +9,5 @@
 #Backend <br/>
 1. Node Express
 2. MondoDB
-3. JTW (Authentication) <br/>
+3. JWT (Authentication) <br/>
 ****************
