@@ -4,7 +4,7 @@
 # Frontend <br/>
 - React <br/>
 - Javascript<br/>
-- CSS<br/>
+- MUI + CSS<br/>
 ***************
 # Backend <br/>
 - Node Express
