@@ -10,8 +10,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useNavigate} from 'react-router';
 import { useContext, useState } from 'react';
 import { UserContext } from './App';
-import { withWidth } from '@material-ui/core';
-import { width } from '@mui/system';
 
 const theme = createTheme({
   palette: {
@@ -52,8 +50,10 @@ export default function SignIn() {
     .then((res) => {
       return res.json();})
     .then((jsondata) => {
-    navigate('/'); 
-  }).catch((error) => {console.log(error.message)}); 
+      setRenderSignIn(true);
+      setRenderSignUp(false);
+      setRenderForgot(false); 
+  }).catch((error) => {alert(error)}); 
   };
 
 
@@ -83,7 +83,11 @@ export default function SignIn() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box component="form" onSubmit={(event) => {submitLogin(event);}} noValidate sx = {{width: "100%", height: '100vh',display: 'flex', flexDirection:'column', alignItems:'center'}}>
+      <Box component="form" onSubmit={(event) => {
+        if(renderSignIn) {submitLogin(event);}
+        if(renderSignUp) {submitSignUp(event);}
+        if(renderForgot) {;}
+        }} noValidate sx = {{width: "100%", height: '100vh',display: 'flex', flexDirection:'column', alignItems:'center'}}>
         <Box sx={{display: 'flex', flexDirection:'row',  alignItems:'center', marginY:8}}>
         <Typography sx={{fontWeight:'bold', fontSize:'30px', color:'colors.text'}}>MAIL</Typography>
         <Avatar src='postman.jpg' sx={{width:200, height:200, border:'solid', borderWidth:'2px', borderColor: 'colors.color2'}}/>
@@ -199,7 +203,7 @@ export default function SignIn() {
                 id="password"
                 autoComplete="current-password"
               />
-              <Button type="submit" sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%' }} onSubmit={(event) => {submitLogin(event);}}> Submit </Button>
+              <Button type="submit" sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%' }} onSubmit={(event) => {submitSignUp(event);}}> Submit </Button>
               </Box>:<Box/>}
               {/**End of Sign Up Block */}
               {/**Forgot Password Block */}
