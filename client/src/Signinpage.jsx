@@ -50,12 +50,35 @@ export default function SignIn() {
     .then((res) => {
       return res.json();})
     .then((jsondata) => {
+      alert(`${jsondata.email} has been succesfully created`);
       setRenderSignIn(true);
       setRenderSignUp(false);
       setRenderForgot(false); 
   }).catch((error) => {alert(error)}); 
   };
 
+  const submitForgot = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    console.log(data);
+    fetch('http://localhost:4000/v0/changepassword', {
+    method: 'PUT',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      "firstName" :   data.get('firstName'),
+      "email" : data.get('email'),
+      "newPassword" : data.get('password'),
+    }),
+  }).then((res) => {
+    return res.json();})
+  .then((jsondata) => {
+    alert(`password for the account ${jsondata.email} has been succesfully changed`);
+    setRenderSignIn(true);
+    setRenderSignUp(false);
+    setRenderForgot(false); 
+})
+  .catch((error) => {console.log('there is an error changing password');console.log(error.message)}); 
+  }
 
   const submitLogin = (event) => {
     console.log('got here');
@@ -76,21 +99,19 @@ export default function SignIn() {
     user.accessToken = jsondata.accessToken;
     user.userInfo = jsondata.email;
     navigate('/main'); 
-  }).catch((error) => {console.log(error.message)}); 
+  }).catch((error) => {console.log('error in signing up');console.log(error.message)}); 
   };
-
-
 
   return (
     <ThemeProvider theme={theme}>
       <Box component="form" onSubmit={(event) => {
         if(renderSignIn) {submitLogin(event);}
         if(renderSignUp) {submitSignUp(event);}
-        if(renderForgot) {;}
+        if(renderForgot) {submitForgot(event);}
         }} noValidate sx = {{width: "100%", height: '100vh',display: 'flex', flexDirection:'column', alignItems:'center'}}>
         <Box sx={{display: 'flex', flexDirection:'row',  alignItems:'center', marginY:8}}>
         <Typography sx={{fontWeight:'bold', fontSize:'30px', color:'colors.text'}}>MAIL</Typography>
-        <Avatar src='postman.jpg' sx={{width:200, height:200, border:'solid', borderWidth:'2px', borderColor: 'colors.color2'}}/>
+        <Avatar src='postman.jpg' sx={{width:200, height:200, border:'solid', borderWidth:'3px', borderColor: 'colors.color2'}}/>
         <Typography sx={{fontWeight:'bold', fontSize:'30px', color:'colors.text'}}>MAN</Typography>
         </Box>
         <Box sx={{
@@ -153,6 +174,7 @@ export default function SignIn() {
               <Button type="submit" sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%' }} onSubmit={(event) => {submitLogin(event);}}> Submit </Button>
               </Box>:<Box/>}
               {/**End of Sign In Block */}
+
               {/**Sign Up Block */}
               {renderSignUp?<Box sx={{marginX:5, mt:5}}>
               <Grid2 container sx={{justifyContent:'space-between', marginY:1}}>
@@ -162,27 +184,21 @@ export default function SignIn() {
                   margin="normal"
                   required
                   fullWidth
-                  id="email"
-                  name="email"
-                  autoComplete="email"
+                  id="firstName"
+                  name="firstName"
+                  type="text"
                   autoFocus
                 /> 
                 </Grid2>
                 <Grid2 item xs={5.5}>  <Typography sx={{fontWeight:'bold', color:'colors.text'}}>Last Name</Typography>
                  <TextField
                 margin="normal"
-                required
                 fullWidth
-                name="password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
+                name="lastName"
+                type="text"
+                id="lastName"
               /></Grid2>
               </Grid2>
-              
-              
-             
-              
               <Typography sx={{fontWeight:'bold', color:'colors.text'}}>Email Address*</Typography>
               <TextField
                 margin="normal"
@@ -203,10 +219,44 @@ export default function SignIn() {
                 id="password"
                 autoComplete="current-password"
               />
-              <Button type="submit" sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%' }} onSubmit={(event) => {submitSignUp(event);}}> Submit </Button>
+              <Button type="submit" sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'13%' }} onSubmit={(event) => {submitLogin(event);}}> Submit </Button>
+
               </Box>:<Box/>}
               {/**End of Sign Up Block */}
+
               {/**Forgot Password Block */}
+              {renderForgot?<Box sx={{marginX:5, mt:5}} >
+              <Typography sx={{fontWeight:'bold', color:'colors.text'}}>First Name*</Typography>
+              <TextField
+                  margin="normal"
+                  required
+                  id="firstName"
+                  name="firstName"
+                  type="text"
+                  autoFocus
+                /> 
+              <Typography sx={{fontWeight:'bold', color:'colors.text'}}>Email Address*</Typography>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                name="email"
+                autoComplete="email"
+                autoFocus
+              />
+              <Typography sx={{mt:2, fontWeight:'bold', color:'colors.text'}}>New Password*</Typography>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+              <Button type="submit" sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%' }} onSubmit={(event) => {submitForgot(event);}}> Submit </Button>
+              </Box>:<Box/>}
               {/**End of Forgot Password Block */}
           </Box>
       </Box>
