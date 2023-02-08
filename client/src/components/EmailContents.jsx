@@ -5,8 +5,6 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import CloseIcon from '@mui/icons-material/Close';
@@ -14,42 +12,51 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import SendIcon from '@mui/icons-material/Send';
 import { makeStyles } from '@material-ui/styles';
+import { Avatar } from '@mui/material';
+import { light } from '@mui/material/styles/createPalette';
 
 const ComposeEmailContext = React.createContext();
 
 const useStyles = makeStyles( theme => ({
     dialog: {
        width: '100%',
-       height: '100%',
+       height: '90%',
      },
  }));
 
-export default function ComposeEmail () {
-    const [open, setOpen] = React.useState(false);
+export default function EmailContentWindow ({ closeWindow, email}) {
+    const [open, setOpen] = React.useState(true);
     const classes = useStyles();
 
     const handleClose = () => {
         setOpen(false);
+        closeWindow();
     };  
     const handleOpen = () => {
         setOpen(true);
     }    
     return (     
-        <Box sx = {{ width: '100%'}}>
-            <Button variant="contained" sx = {{ width: '100%', backgroundColor: 'gray'}} onClick={handleOpen}>
-                <Typography variant="overline">
-                    Compose
-                </Typography>
-            </Button>    
-            <Box component="form">
-                <Dialog 
-                    open={open} onClose={handleClose}>
-                <AppBar sx={{ position: 'relative' }}>
-                    <Toolbar>
-                        <Typography variant="overline">
-                            New Message
+        <Box sx={{ p: 2, border: '1px dashed grey' }}>
+                <Dialog PaperProps={{ style: {
+                        minHeight: '50%',
+                        maxHeight: '50%',
+                        minWidth: '50%',
+                        maxWidth: '50%',
+                        borderRadius:10,
+
+                    }}}  open={open} onClose={handleClose}>
+                <AppBar elevation={0} sx={{ position: 'relative'}}>
+                    <Toolbar sx={{justifyContent:'space-evenly'}}>
+                        <Avatar sx={{marginRight: '4px'}}>
+                        </Avatar>
+                        <Typography variant="body2" sx={{fontSize: 15}}>
+                            {email.to}
                         </Typography>
-                        <Box sx={{ ml: 2, flex: 1 }}></Box>
+                        <Box flexGrow={1}></Box>
+                        <Typography sx={{fontWeight:"bold"}}>  
+                            {email.subject}
+                        </Typography>
+                        <Box sx={{ flex: 1 }}></Box>
                         
                         <IconButton
                         edge="start"
@@ -89,12 +96,7 @@ export default function ComposeEmail () {
                         variant="filled"
                     />
                     </DialogContent>
-                    <DialogActions>
-                    <Button variant="outlined" onClick={handleClose} endIcon={<SendIcon />}>Send</Button>
-                    </DialogActions>
                 </Dialog>
             </Box>
-        </Box>
-           
     );
 }

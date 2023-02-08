@@ -23,11 +23,10 @@ export default function SelectedListItem() {
 
   return (
     <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
-      <List spacing = {4} component="nav" aria-label="main mailbox folders">
+      <List spacing={4  } component="nav" aria-label="main mailbox folders">
         <ListItem>
            <ComposeEmail />
         </ListItem>
-        <Divider />
         <ListItemButton
           selected={globalVars.selectedIndex === 0}
           onClick={(event) => handleListItemClick(event, 0)}
@@ -64,9 +63,6 @@ export default function SelectedListItem() {
           </ListItemIcon>
           <ListItemText primary="Drafts" />
         </ListItemButton>
-      </List>
-      <Divider />
-      <List component="nav" aria-label="secondary mailbox folder">
         <ListItemButton
           selected={globalVars.selectedIndex === 4}
           onClick={(event) => handleListItemClick(event, 4)}

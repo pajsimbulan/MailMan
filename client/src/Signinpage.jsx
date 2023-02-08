@@ -1,36 +1,27 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
+import { Button } from '@mui/material';
+import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useNavigate} from 'react-router';
 import { useContext } from 'react';
 import { UserContext } from './App';
+import { border, borders } from '@mui/system';
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
-const theme = createTheme();
-
+const theme = createTheme({
+  palette: {
+    colors: {
+      bg_default:'#FFFFFF',
+      color2:'#F1F5F9',
+      text: '#334155',
+      button: '#0F172A'
+    }
+  },
+});
 export default function SignIn() {
   const navigate = useNavigate();
   const user = useContext(UserContext);
@@ -54,73 +45,75 @@ export default function SignIn() {
   }).catch((error) => {console.log(error.message)}); 
   };
 
+
+
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
+      <Box  sx = {{width: "100%", height: '100vh',display: 'flex', flexDirection:'column', alignItems:'center'}}>
+        <img src='postman.jpg'  width="500" height="500" loading="lazy"/>
+        
+        <Box sx={{
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar src= "../public/logo192.png" sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            width: '30%',
+            height: '40%',
+            boxShadow: '1',
+            borderRadius: 3,
+            border: 'solid',
+            borderWidth:'2px',
+            borderColor: 'whitesmoke',
+          }} component="form" onSubmit={(event) => {sendCredentials(event)}} noValidate>
+            <Grid2 container sx={{backgroundColor:'colors.color2',height:60,display:'flex start',borderRadius: 2}}>
+              <Grid2 item xs={2} sx={{marginLeft:2, marginY:'auto'}}>
+                <Button   
+                type="submit"
+                sx={{color:'colors.text', borderRadius:1, bgcolor:'white' ,textTransform: 'none', fontWeight:'bold'}}
+                >
+                Sign In
+              </Button> </Grid2>
+              <Grid2 item xs={2} sx={{marginY:'auto'}}><Button
+                type="submit"
+                sx={{color:'colors.text', borderRadius:1, textTransform: 'none', fontWeight:'bold'}}
+              >
+                Sign Up
+              </Button> </Grid2>
+              <Grid2 item xs={2} sx={{marginY:'auto'}}><Button
+                type="submit"
+                sx={{color:'colors.text', borderRadius:1, textTransform: 'none', fontWeight:'bold'}}
+              >
+                Forgot Password
+              </Button> </Grid2>
+            </Grid2>
+            <Box sx={{marginX:5, mt:5}}>
+              <Typography sx={{fontWeight:'bold', color:'colors.text'}}>Email Address</Typography>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                sx={{borderColor:'red'}}
+              />
+              <Typography sx={{mt:2, fontWeight:'bold', color:'colors.text'}}>Password</Typography>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+              <Button sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%' }}> Submit </Button>
+            </Box>
             
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <Box component="form" onSubmit={(event) => {sendCredentials(event)}} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign In
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="" variant="body2" onClick={ () => navigate('/signup')}>
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
-        </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
-      </Container>
+
+        
+          
+      </Box>
     </ThemeProvider>
   );
 }

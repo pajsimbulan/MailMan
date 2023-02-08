@@ -104,6 +104,12 @@ export default function PrimarySearchAppBar() {
         navigate('/'); }}>
           Sign Out
       </MenuItem>
+
+      <MenuItem onClick={() => {
+        handleMenuClose();
+        navigate('/'); }}>
+          Profile
+      </MenuItem>
     </Menu>
   );
 

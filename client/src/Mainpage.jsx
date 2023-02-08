@@ -27,7 +27,7 @@ function Mainpage() {
         </GlobalContext.Provider>
         <Grid item xs={10} >
           <Paper elevation={8}>
-            <AlignItemsList value={{temp}}/>
+            <AlignItemsList/>
           </Paper>
         </Grid>
       </Grid>
