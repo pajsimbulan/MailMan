@@ -15,20 +15,26 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
 import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { Experimental_CssVarsProvider, IconButton, ListItemButton, Toolbar } from '@mui/material';
+import { IconButton, ListItemButton, Toolbar } from '@mui/material';
 import {useNavigate} from 'react-router';
 import { useContext, useState, useEffect, useRef } from 'react';
 import { UserContext } from '../App';
+import EmailPopOvers from './EmailPopOver';
+import EmailContentWindow from './EmailContents';
 
 
 export default function AlignItemsList() {
+  
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
   const user = useContext(UserContext);
-  const emailRef = useRef([]);
+  const [email, setEmail] = useState();
   const size = useRef(0);
   const [refresh, setRefresh] = useState(false);
   const [checkboxArray, setCheckBoxArray] = useState([]);
+  const [openEmailWindow, setOpenEmailWindow] = useState();
   console.log('rendering mailbody');
+
   useEffect(() => {
     console.log('mailbody fetching data');
     fetch('http://localhost:4000/v0/email', {
@@ -41,32 +47,28 @@ export default function AlignItemsList() {
           size.current = jsondata.length;
           setData(jsondata);
           setCheckBoxArray(new Array(size.current).fill(false));
-        }).catch((error) => {alert(error.message)}); 
+        }).catch((error) => {alert(error);
+          navigate("/")}); 
       
     },[refresh]);
 
+  const renderOpenEmailWindow = (email) => {
+    console.log("here");
+    console.log(email.subject);
+    setOpenEmailWindow(true);
+    setEmail(email);
+  }
+
   return (
     <List sx={{ width: "100%", maxWidth: "100%", bgcolor: "background.paper" }}>
-
-      
+      <ListItem>{openEmailWindow? <EmailContentWindow closeWindow={() => {setOpenEmailWindow(false)}} email={email}/> :<Box/>}</ListItem>
       <ListItem >
         <Toolbar position="static">
             <Checkbox edge="start"  onChange={(event) => {setCheckBoxArray(new Array(size.current).fill(event.target.checked));}}/>
-            <IconButton onClick={() => {}}>
-                <RefreshIcon />
-            </IconButton>
-            <IconButton>
-                <DeleteForeverIcon />
-            </IconButton>
-            <IconButton>
-                <StarIcon/>
-            </IconButton>
-            <IconButton>
-                <ReportGmailerrorredIcon />
-            </IconButton> 
-            <IconButton>
-                <DriveFileMoveIcon />
-            </IconButton>
+            <EmailPopOvers item={()=> {return <RefreshIcon />}} name={"Refresh"}></EmailPopOvers>
+            <EmailPopOvers item={()=> {return <DeleteForeverIcon />}} name={"Delete"}></EmailPopOvers>
+            <EmailPopOvers item={()=> {return <StarIcon/>}} name={"Starred"}></EmailPopOvers>
+            <EmailPopOvers item={()=> {return <ReportGmailerrorredIcon />}} name={"Spam"}></EmailPopOvers>
         </Toolbar>
       </ListItem>
       <Divider component="li" />
@@ -75,17 +77,15 @@ export default function AlignItemsList() {
       {data.map((email, index) => (
         <ListItem 
         key = {email._id}
-        ref={(el) => {
-          emailRef.current[index] = el;
-        }}
         secondaryAction={
           <IconButton edge="start"  aria-label="Trash"  onClick={()=>{}}>
             <DeleteForeverIcon />
           </IconButton>
         } divider>
-          <ListItemButton onClick={()=> {}}>
+          <ListItemButton onClick={()=> {renderOpenEmailWindow(email);}}>
             <IconButton>
-              <Checkbox  checked={checkboxArray[index]} edge="start" disableRipple={true} onClick={() => {setCheckBoxArray(prevArray => {
+              <Checkbox  checked={checkboxArray[index]} edge="start" onClick={(event) => { event.stopPropagation();
+              setCheckBoxArray(prevArray => {
                   const tempArray = [...prevArray];
                   tempArray[index] = (!prevArray[index]);
                   return tempArray;
