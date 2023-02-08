@@ -10,6 +10,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useNavigate} from 'react-router';
 import { useContext, useState } from 'react';
 import { UserContext } from './App';
+import { withWidth } from '@material-ui/core';
+import { width } from '@mui/system';
 
 const theme = createTheme({
   palette: {
@@ -82,7 +84,7 @@ export default function SignIn() {
   return (
     <ThemeProvider theme={theme}>
       <Box component="form" onSubmit={(event) => {submitLogin(event);}} noValidate sx = {{width: "100%", height: '100vh',display: 'flex', flexDirection:'column', alignItems:'center'}}>
-        <Box sx={{display: 'flex', flexDirection:'row',  alignItems:'center', marginY:2}}>
+        <Box sx={{display: 'flex', flexDirection:'row',  alignItems:'center', marginY:8}}>
         <Typography sx={{fontWeight:'bold', fontSize:'30px', color:'colors.text'}}>MAIL</Typography>
         <Avatar src='postman.jpg' sx={{width:200, height:200, border:'solid', borderWidth:'2px', borderColor: 'colors.color2'}}/>
         <Typography sx={{fontWeight:'bold', fontSize:'30px', color:'colors.text'}}>MAN</Typography>
@@ -122,7 +124,8 @@ export default function SignIn() {
                 Forgot Password
               </Button> </Grid2>
             </Grid2>
-              <Box sx={{marginX:5, mt:5}} >
+            {/**Sign In Block */}
+            {renderSignIn?<Box sx={{marginX:5, mt:5}} >
               <Typography sx={{fontWeight:'bold', color:'colors.text'}}>Email Address</Typography>
               <TextField
                 margin="normal"
@@ -144,7 +147,63 @@ export default function SignIn() {
                 autoComplete="current-password"
               />
               <Button type="submit" sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%' }} onSubmit={(event) => {submitLogin(event);}}> Submit </Button>
-              </Box>
+              </Box>:<Box/>}
+              {/**End of Sign In Block */}
+              {/**Sign Up Block */}
+              {renderSignUp?<Box sx={{marginX:5, mt:5}}>
+              <Grid2 container sx={{justifyContent:'space-between', marginY:1}}>
+                <Grid2 item xs={5.5} >
+                  <Typography sx={{fontWeight:'bold', color:'colors.text'}}>First Name*</Typography>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                /> 
+                </Grid2>
+                <Grid2 item xs={5.5}>  <Typography sx={{fontWeight:'bold', color:'colors.text'}}>Last Name</Typography>
+                 <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              /></Grid2>
+              </Grid2>
+              
+              
+             
+              
+              <Typography sx={{fontWeight:'bold', color:'colors.text'}}>Email Address*</Typography>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                name="email"
+                autoComplete="email"
+                autoFocus
+              />
+              <Typography sx={{mt:2, fontWeight:'bold', color:'colors.text'}}>Password*</Typography>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+              <Button type="submit" sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%' }} onSubmit={(event) => {submitLogin(event);}}> Submit </Button>
+              </Box>:<Box/>}
+              {/**End of Sign Up Block */}
+              {/**Forgot Password Block */}
+              {/**End of Forgot Password Block */}
           </Box>
       </Box>
     </ThemeProvider>
