@@ -19,6 +19,7 @@ app.post('/v0/login',      auth.login);
 app.get('/v0/email',       auth.check, route.getAllEmails);
 app.get('/v0/email/:id',   auth.check, route.getEmail);
 app.post('/v0/email',      auth.check, route.sendEmail);
+app.put('/v0/changepassword', auth.changePassword);
 //app.put('/v0/email/:id',   auth.check, route.update); 
 
 mongoose.connect(DB_URL, { useNewUrlParser: true, useUnifiedTopology: true })

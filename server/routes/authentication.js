@@ -23,7 +23,7 @@ exports.register = async (req, res) => {
         let savedUser = await newUser.save();
         res.status(201).json(savedUser); 
     } catch(error) {
-        res.status(500).send(error.message);
+        res.status(400).send(error.message);
     }
     
 }
@@ -42,7 +42,7 @@ exports.login = async (req, res) => {
     }
     
     const accessToken = jwt.sign({email,password}, jwtSecretKey, {
-      expiresIn: '1h',
+      expiresIn: '24h',
       algorithm: 'HS256'
     });
     res.status(200).json({email, accessToken: accessToken});
@@ -82,3 +82,23 @@ exports.authorize = (req,res) => {
     res.sendStatus(403);
   }
 }
+
+exports.changePassword = async (req, res) => {
+  try {
+      const tempUser = await userdb.findOne({email: req.body.email});
+      if(tempUser == null) {
+        res.status(404).send("Account doesn't exist");
+        return;
+      }
+      if(tempUser.firstName.toLowerCase() != req.body.firstName.toLowerCase()) {
+          res.status(400).send("Invalid Credential");
+      }
+      const salt = await bcrypt.genSalt();
+      const hashedPassword = await bcrypt.hash(req.body.newPassword,salt);
+      tempUser.password = hashedPassword;
+      const newUser = await tempUser.save();
+      res.status(200).json(newUser);
+    } catch(error) {
+      res.status(500).send(error.message);
+    }
+};
