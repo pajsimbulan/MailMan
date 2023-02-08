@@ -5,12 +5,11 @@ import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
+
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useNavigate} from 'react-router';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { UserContext } from './App';
-import { border, borders } from '@mui/system';
 
 const theme = createTheme({
   palette: {
@@ -25,9 +24,42 @@ const theme = createTheme({
 export default function SignIn() {
   const navigate = useNavigate();
   const user = useContext(UserContext);
-  const sendCredentials = (event) => {
+  const [renderSignIn, setRenderSignIn] = useState(true);
+  const [renderSignUp, setRenderSignUp] = useState(false);
+  const [renderForgot, setRenderForgot] = useState(false);
+
+  const submitSignUp = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    console.log({
+      email: data.get('email'),
+      password: data.get('password'),
+      firstname: data.get('firstName'),
+      lastname: data.get('lastName'),
+    });
+    fetch('http://localhost:4000/v0/register', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      'email': data.get('email'),
+      'password': data.get('password'),
+      'firstName': data.get('firstName'),
+      'lastName': data.get('lastName'),
+    }),
+    })
+    .then((res) => {
+      return res.json();})
+    .then((jsondata) => {
+    navigate('/'); 
+  }).catch((error) => {console.log(error.message)}); 
+  };
+
+
+  const submitLogin = (event) => {
+    console.log('got here');
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    console.log(data);
     fetch('http://localhost:4000/v0/login', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -49,9 +81,12 @@ export default function SignIn() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box  sx = {{width: "100%", height: '100vh',display: 'flex', flexDirection:'column', alignItems:'center'}}>
-        <img src='postman.jpg'  width="500" height="500" loading="lazy"/>
-        
+      <Box component="form" onSubmit={(event) => {submitLogin(event);}} noValidate sx = {{width: "100%", height: '100vh',display: 'flex', flexDirection:'column', alignItems:'center'}}>
+        <Box sx={{display: 'flex', flexDirection:'row',  alignItems:'center', marginY:2}}>
+        <Typography sx={{fontWeight:'bold', fontSize:'30px', color:'colors.text'}}>MAIL</Typography>
+        <Avatar src='postman.jpg' sx={{width:200, height:200, border:'solid', borderWidth:'2px', borderColor: 'colors.color2'}}/>
+        <Typography sx={{fontWeight:'bold', fontSize:'30px', color:'colors.text'}}>MAN</Typography>
+        </Box>
         <Box sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -62,29 +97,32 @@ export default function SignIn() {
             border: 'solid',
             borderWidth:'2px',
             borderColor: 'whitesmoke',
-          }} component="form" onSubmit={(event) => {sendCredentials(event)}} noValidate>
+          }}>
             <Grid2 container sx={{backgroundColor:'colors.color2',height:60,display:'flex start',borderRadius: 2}}>
               <Grid2 item xs={2} sx={{marginLeft:2, marginY:'auto'}}>
-                <Button   
-                type="submit"
-                sx={{color:'colors.text', borderRadius:1, bgcolor:'white' ,textTransform: 'none', fontWeight:'bold'}}
+                <Button  
+                type="button"
+                onClick={() => {setRenderSignIn(true);setRenderSignUp(false);setRenderForgot(false);}} 
+                sx={{color:'colors.text', borderRadius:1, bgcolor:(renderSignIn?'white':'') ,textTransform: 'none', fontWeight:'bold'}}
                 >
                 Sign In
               </Button> </Grid2>
               <Grid2 item xs={2} sx={{marginY:'auto'}}><Button
-                type="submit"
-                sx={{color:'colors.text', borderRadius:1, textTransform: 'none', fontWeight:'bold'}}
+                type="button"
+                onClick={() => {setRenderSignIn(false);setRenderSignUp(true);setRenderForgot(false);}} 
+                sx={{color:'colors.text', borderRadius:1,bgcolor:(renderSignUp?'white':'') ,textTransform: 'none', fontWeight:'bold'}}
               >
                 Sign Up
               </Button> </Grid2>
               <Grid2 item xs={2} sx={{marginY:'auto'}}><Button
-                type="submit"
-                sx={{color:'colors.text', borderRadius:1, textTransform: 'none', fontWeight:'bold'}}
+                type="button"
+                onClick={() => {setRenderSignIn(false);setRenderSignUp(false);setRenderForgot(true);}} 
+                sx={{color:'colors.text', borderRadius:1,bgcolor:(renderForgot?'white':'') ,textTransform: 'none', fontWeight:'bold'}}
               >
                 Forgot Password
               </Button> </Grid2>
             </Grid2>
-            <Box sx={{marginX:5, mt:5}}>
+              <Box sx={{marginX:5, mt:5}} >
               <Typography sx={{fontWeight:'bold', color:'colors.text'}}>Email Address</Typography>
               <TextField
                 margin="normal"
@@ -94,7 +132,6 @@ export default function SignIn() {
                 name="email"
                 autoComplete="email"
                 autoFocus
-                sx={{borderColor:'red'}}
               />
               <Typography sx={{mt:2, fontWeight:'bold', color:'colors.text'}}>Password</Typography>
               <TextField
@@ -106,13 +143,9 @@ export default function SignIn() {
                 id="password"
                 autoComplete="current-password"
               />
-              <Button sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%' }}> Submit </Button>
-            </Box>
-            
+              <Button type="submit" sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%' }} onSubmit={(event) => {submitLogin(event);}}> Submit </Button>
+              </Box>
           </Box>
-
-        
-          
       </Box>
     </ThemeProvider>
   );
