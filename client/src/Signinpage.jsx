@@ -5,11 +5,12 @@ import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useNavigate} from 'react-router';
-import { useContext, useState } from 'react';
+import { useContext, useState, useRef } from 'react';
 import { UserContext } from './App';
+import SuccessActionAlert from './components/SuccessAlert';
+import ErrorActionAlert from './components/ErrorAlert';
 
 const theme = createTheme({
   palette: {
@@ -27,6 +28,22 @@ export default function SignIn() {
   const [renderSignIn, setRenderSignIn] = useState(true);
   const [renderSignUp, setRenderSignUp] = useState(false);
   const [renderForgot, setRenderForgot] = useState(false);
+  const openSuccessAlert = useRef(false);
+  const openErrorAlert = useRef(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  
+  function openSucess(message) {
+    openSuccessAlert.current = true;
+    openErrorAlert.current = false;
+    setAlertMessage(message);
+  }
+  function openError(message) {
+    openSuccessAlert.current = false;
+    openErrorAlert.current = true;
+    setAlertMessage(message);
+  }
+
+
 
   const submitSignUp = (event) => {
     event.preventDefault();
@@ -37,6 +54,7 @@ export default function SignIn() {
       firstname: data.get('firstName'),
       lastname: data.get('lastName'),
     });
+    let statusCode;
     fetch('http://localhost:4000/v0/register', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -48,19 +66,27 @@ export default function SignIn() {
     }),
     })
     .then((res) => {
+      statusCode = res.status;
       return res.json();})
     .then((jsondata) => {
-      alert(`${jsondata.email} has been succesfully created`);
       setRenderSignIn(true);
       setRenderSignUp(false);
       setRenderForgot(false); 
-  }).catch((error) => {alert(error)}); 
+      openSucess("Account Created");
+  }).catch((error) => {
+    if(statusCode === 403) {
+      openError("Error: Email already exists");
+    }
+    else {
+      openError("Error: Make sure to fill up the form correctly.  Forms with '  *  ' are required");
+    }
+  }); 
   };
 
   const submitForgot = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log(data);
+    let statusCode;
     fetch('http://localhost:4000/v0/changepassword', {
     method: 'PUT',
     headers: {'Content-Type': 'application/json'},
@@ -70,21 +96,31 @@ export default function SignIn() {
       "newPassword" : data.get('password'),
     }),
   }).then((res) => {
+    statusCode = res.status;
     return res.json();})
   .then((jsondata) => {
     alert(`password for the account ${jsondata.email} has been succesfully changed`);
     setRenderSignIn(true);
     setRenderSignUp(false);
-    setRenderForgot(false); 
+    setRenderForgot(false);
+    openSucess("Password Changed");
 })
-  .catch((error) => {console.log('there is an error changing password');console.log(error.message)}); 
+  .catch((error) => {
+    console.log(error);
+    if(statusCode === 404) {
+      openError("Error: Account doesn't exist");
+    }
+    else {
+      openError("Error: Invalid Input.  Make sure to fill up the form correctly.  Forms with '  *  ' are required");
+    }
+  }); 
   }
 
   const submitLogin = (event) => {
     console.log('got here');
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log(data);
+    let statusCode;
     fetch('http://localhost:4000/v0/login', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -94,16 +130,22 @@ export default function SignIn() {
     }),
   })
   .then((res) => {
+    statusCode = res.status;
     return res.json();})
   .then((jsondata) => {
     user.accessToken = jsondata.accessToken;
     user.userInfo = jsondata.email;
     navigate('/main'); 
-  }).catch((error) => {console.log('error in signing up');console.log(error.message)}); 
+  }).catch((error) => {
+    console.log(error);
+    openError("Error: Invalid Input");
+  }); 
   };
 
   return (
     <ThemeProvider theme={theme}>
+      <ErrorActionAlert openAlert={openErrorAlert.current} message={alertMessage} closeAlert={() => {openErrorAlert.current = (!openErrorAlert.current)}}/>
+        <SuccessActionAlert openAlert={openSuccessAlert.current} message={alertMessage} closeAlert={() => {openSuccessAlert.current = (!openSuccessAlert.current)}}/>
       <Box component="form" onSubmit={(event) => {
         if(renderSignIn) {submitLogin(event);}
         if(renderSignUp) {submitSignUp(event);}

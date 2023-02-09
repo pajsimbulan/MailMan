@@ -85,6 +85,10 @@ exports.authorize = (req,res) => {
 
 exports.changePassword = async (req, res) => {
   try {
+      if( (req.body.email.length <= 0) || (req.body.firstName.length <= 0) ) {
+        res.status(400).send("Invalid Credential");
+        return;
+      }
       const tempUser = await userdb.findOne({email: req.body.email});
       if(tempUser == null) {
         res.status(404).send("Account doesn't exist");
@@ -92,6 +96,7 @@ exports.changePassword = async (req, res) => {
       }
       if(tempUser.firstName.toLowerCase() != req.body.firstName.toLowerCase()) {
           res.status(400).send("Invalid Credential");
+          return;
       }
       const salt = await bcrypt.genSalt();
       const hashedPassword = await bcrypt.hash(req.body.newPassword,salt);
