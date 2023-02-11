@@ -2,6 +2,7 @@ import React from "react";
 import Mainpage from "./Mainpage"
 import SignIn from "./Signinpage";
 import Profilepage from "./Profilepage";
+import Birthdatepicker from "./components/BirthDatePicker";
 import {Route, Routes, BrowserRouter} from 'react-router-dom';
 import {createContext} from 'react';
 
