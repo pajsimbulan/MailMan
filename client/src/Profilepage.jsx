@@ -11,6 +11,7 @@ import { UserContext } from './App';
 import SuccessActionAlert from './components/SuccessAlert';
 import ErrorActionAlert from './components/ErrorAlert';
 import GenderRadioButtons from './components/GenderRadioButton';
+import Birthdatepicker from './components/BirthDatePicker';
 
 const theme = createTheme({
   palette: {
@@ -23,6 +24,7 @@ const theme = createTheme({
   },
 });
 function Profile() {
+  console.log('renderProfile');
   const navigate = useNavigate();
   const user = useContext(UserContext);
  
@@ -111,35 +113,35 @@ function Profile() {
                 </Box>
             </Grid2>
             <Grid2 lg={8} xs={12} item>
+
                 <Typography   Typography sx={{fontWeight:'bold', color:'colors.text', marginY:'auto'}}>First Name</Typography>
                 <Box sx={{width:'100%', display:'flex', justifyContent:'space-between'}}>
                     <Typography   Typography sx={{fontWeight:'light', color:'colors.text', marginY:'auto'}}>Paul</Typography>
                     <Button type="submit" sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }} > Edit </Button>
                 </Box>
                 <Divider sx={{marginTop:1}}/>
+
                 <Typography   Typography sx={{fontWeight:'bold', color:'colors.text', marginTop:5}}>Last Name</Typography>
                 <Box sx={{width:'100%', display:'flex', justifyContent:'space-between'}}>
                     <Typography   Typography sx={{fontWeight:'light', color:'colors.text', marginY:'auto'}}>Simbulan</Typography>
                     <Button type="submit" sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }} > Edit </Button>
                 </Box>
-                <Divider/>
+                <Divider sx={{marginTop:1}}/>
+                
                 <Typography   Typography sx={{fontWeight:'bold', color:'colors.text', marginTop:5}}>Password</Typography>
                 <Box sx={{width:'100%', display:'flex', justifyContent:'space-between'}}>
                     <Typography   Typography sx={{fontWeight:'light', color:'colors.text', marginY:'auto'}}>******</Typography>
                     <Button type="submit" sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }} > Edit </Button>
                 </Box>
-                <Divider/>
+                <Divider sx={{marginTop:1}}/>
                 
                 <Box sx={{width:'100%', display:'flex'}}>
                   <GenderRadioButtons gender={"Male"} />
                 </Box>
-                <Divider/>
+                <Divider sx={{marginTop:1}}/>
                 <Typography   Typography sx={{fontWeight:'bold', color:'colors.text', marginTop:5}}>Birthdate</Typography>
-                <Box sx={{width:'100%', display:'flex', justifyContent:'space-between'}}>
-                    <Typography   Typography sx={{fontWeight:'light', color:'colors.text', marginY:'auto'}}>Birthdate</Typography>
-                    <Button type="submit" sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }} > Edit </Button>
-                </Box>
-                <Divider/>
+                <BirthDateRow />
+                <Divider sx={{marginTop:1}}/>
             </Grid2>
               
               </Grid2>
@@ -147,6 +149,24 @@ function Profile() {
       </Box>
     </ThemeProvider>
   );
+}
+
+function BirthDateRow() {
+  const [edit,setEdit] = useState(false);
+  const [invalidBirthDate, setInvalidBirthDate] = useState(false);
+  return(
+  <Box sx={{width:'100%', display:'flex', justifyContent:'space-between', marginTop:1}}>
+    <Box sx={{display:'flex', justifyContent:'space-between', flexDirection:'column'}}>
+    <Birthdatepicker editProp={edit} valid={()=>{setInvalidBirthDate(false)}} invalid={()=>{setInvalidBirthDate(true)}}/>
+    {invalidBirthDate? <Typography sx={{fonweight:'light', fontSize:15, color:'red'}}>*Invalid Birthdate*</Typography>:<></>}
+    </Box>
+    <Button type="button" disabled={invalidBirthDate} 
+    sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }}
+    onClick={() => {setEdit(!edit)}}
+    >{edit?"Save Changes": "Edit"} </Button>
+    
+  </Box>
+)
 }
 
 export default Profile;
