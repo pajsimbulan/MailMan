@@ -80,22 +80,21 @@ function Profile() {
     <ThemeProvider theme={theme}>
       <ErrorActionAlert openAlert={openErrorAlert.current} message={alertMessage} closeAlert={() => {openErrorAlert.current = (!openErrorAlert.current)}}/>
     <SuccessActionAlert openAlert={openSuccessAlert.current} message={alertMessage} closeAlert={() => {openSuccessAlert.current = (!openSuccessAlert.current)}}/>
-      <Box noValidate sx = {{width: "100%", height: '100vh',display: 'flex', justifyContent:'center'}}>
+      <Box noValidate sx = {{width: "100%", height: '100vh',display: 'flex',flexDirection:'column', alignItems:'center'}}>
         <Box sx={{
-            marginTop:'5%',
+            marginTop:'10%',
             display: 'flex',
             flexDirection: 'column',
             width: '60%',
-            height: '80%',
             boxShadow: '3',
             borderRadius: 3,
-            border: 'solid',
+            border: 'solid',  
             borderWidth:'2px',
             borderColor: 'whitesmoke',
           }}>
             
             
-           <Grid2 container sx={{marginX:5, mt:5}} >
+           <Grid2 container sx={{marginX:5, mt:5, mb:'10%'}} >
             <Grid2 item xs={12} sx={{marginBottom:5}}> 
                 <Box sx={{display:'flex',direction:'column',justifyContent:'center',alignItems:'center', width:'100%'}}>
                     <Typography sx={{fontWeight:'bold', color:'colors.text', fontSize:30}}>Edit Profile</Typography> 
@@ -108,7 +107,7 @@ function Profile() {
                 <Box sx={{display:'flex', justifyContent:'center'}}> 
                 <Avatar sx={{height:200, width:200}}></Avatar>
                 </Box>
-                <Box sx={{display:'flex', justifyContent:'center', marginTop:2}}> 
+                <Box sx={{display:'flex', justifyContent:'center', marginTop:2, marginBottom:10}}> 
                 <Button sx={{color:'black', borderRadius:2, bgcolor: 'colors.color2',textTransform: 'none', fontWeight:'bold', fontSize:'65%'}}> Change Profile Picture</Button>
                 </Box>
             </Grid2>
@@ -117,27 +116,24 @@ function Profile() {
                 <Typography   Typography sx={{fontWeight:'bold', color:'colors.text', marginY:'auto'}}>First Name</Typography>
                 <Box sx={{width:'100%', display:'flex', justifyContent:'space-between'}}>
                     <Typography   Typography sx={{fontWeight:'light', color:'colors.text', marginY:'auto'}}>Paul</Typography>
-                    <Button type="submit" sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }} > Edit </Button>
+                    <Button type="button" sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }} > Edit </Button>
                 </Box>
                 <Divider sx={{marginTop:1}}/>
 
                 <Typography   Typography sx={{fontWeight:'bold', color:'colors.text', marginTop:5}}>Last Name</Typography>
                 <Box sx={{width:'100%', display:'flex', justifyContent:'space-between'}}>
                     <Typography   Typography sx={{fontWeight:'light', color:'colors.text', marginY:'auto'}}>Simbulan</Typography>
-                    <Button type="submit" sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }} > Edit </Button>
+                    <Button type="button" sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }} > Edit </Button>
                 </Box>
                 <Divider sx={{marginTop:1}}/>
                 
                 <Typography   Typography sx={{fontWeight:'bold', color:'colors.text', marginTop:5}}>Password</Typography>
                 <Box sx={{width:'100%', display:'flex', justifyContent:'space-between'}}>
                     <Typography   Typography sx={{fontWeight:'light', color:'colors.text', marginY:'auto'}}>******</Typography>
-                    <Button type="submit" sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }} > Edit </Button>
+                    <Button type="button" sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }} > Edit </Button>
                 </Box>
-                <Divider sx={{marginTop:1}}/>
-                
-                <Box sx={{width:'100%', display:'flex'}}>
-                  <GenderRadioButtons gender={"Male"} />
-                </Box>
+                <Divider sx={{marginTop:1}}/> 
+                <GenderRow />
                 <Divider sx={{marginTop:1}}/>
                 <Typography   Typography sx={{fontWeight:'bold', color:'colors.text', marginTop:5}}>Birthdate</Typography>
                 <BirthDateRow />
@@ -167,6 +163,16 @@ function BirthDateRow() {
     
   </Box>
 )
+}
+
+function GenderRow() {
+  const [edit,setEdit] = useState(false);
+
+  return (
+  <Box sx={{width:'100%', display:'flex', justifyContent:'space-between'}}>
+    <GenderRadioButtons gender={"Male"} editProp={edit}/>
+    <Button type="button" sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }} onClick={()=>{setEdit(!edit);}}> {edit?"Save":"Edit"} </Button>
+  </Box>);
 }
 
 export default Profile;

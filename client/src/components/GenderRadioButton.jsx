@@ -17,12 +17,14 @@ const theme = createTheme({
   },
 });
 
-export default function GenderRadioButtons({gender}) {
+export default function GenderRadioButtons({gender, editProp}) {
   const [value, setValue] = React.useState(gender);
-
+  const [edit, setEdit] = React.useState(editProp);
+  console.log(value);
   const handleChange = (event) => {
     setValue(event.target.value);
   };
+  React.useEffect(()=>{setEdit(editProp)},[editProp]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -34,9 +36,9 @@ export default function GenderRadioButtons({gender}) {
           value={value}
           onChange={handleChange}
         >
-          <FormControlLabel value="female" control={<Radio />} label="Female" />
-          <FormControlLabel value="male" control={<Radio />} label="Male" />
-          <FormControlLabel value="other" control={<Radio />} label="Other" />
+          <FormControlLabel disabled={edit?false:true} value="Female" control={<Radio />} label="Female" />
+          <FormControlLabel disabled={edit?false:true} value="Male" control={<Radio />} label="Male" />
+          <FormControlLabel disabled={edit?false:true} value="Other" control={<Radio />} label="Other" />
         </RadioGroup>
       </FormControl>
     </ThemeProvider>
