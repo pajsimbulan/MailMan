@@ -7,14 +7,14 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useNavigate} from 'react-router';
 import { useContext, useState, useRef } from 'react';
-import { UserContext } from './App';
-import SuccessActionAlert from './components/SuccessAlert';
-import ErrorActionAlert from './components/ErrorAlert';
-import GenderRadioButtons from './components/GenderRadioButton';
-import Birthdatepicker from './components/BirthDatePicker';
-import FirstNameModal from './components/EditFirstNameModal';
-import LastNameModal from './components/EditLastNameModal';
-import PasswordModal from './components/EditPasswordModal';
+import { UserContext } from '../App';
+import SuccessActionAlert from '../components/SuccessAlert';
+import ErrorActionAlert from '../components/ErrorAlert';
+import GenderRadioButtons from '../components/GenderRadioButton';
+import Birthdatepicker from '../components/BirthDatePicker';
+import FirstNameModal from '../components/EditFirstNameModal';
+import LastNameModal from '../components/EditLastNameModal';
+import PasswordModal from '../components/EditPasswordModal';
 
 const theme = createTheme({
   palette: {
@@ -115,11 +115,9 @@ function Profile() {
                 </Box>
             </Grid2>
             <Grid2 lg={8} xs={12} item>
-
                 <Typography   Typography sx={{fontWeight:'bold', color:'colors.text', marginY:'auto'}}>First Name</Typography>
                 <FirstNameRow />
                 <Divider sx={{marginTop:1}}/>
-
                 <Typography   Typography sx={{fontWeight:'bold', color:'colors.text', marginTop:5}}>Last Name</Typography>
                 <LastNameRow />
                 <Divider sx={{marginTop:1}}/>

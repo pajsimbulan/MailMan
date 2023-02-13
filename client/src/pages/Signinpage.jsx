@@ -8,9 +8,9 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useNavigate} from 'react-router';
 import { useContext, useState, useRef } from 'react';
-import { UserContext } from './App';
-import SuccessActionAlert from './components/SuccessAlert';
-import ErrorActionAlert from './components/ErrorAlert';
+import { UserContext } from '../App';
+import SuccessActionAlert from '../components/SuccessAlert';
+import ErrorActionAlert from '../components/ErrorAlert';
 
 const theme = createTheme({
   palette: {
