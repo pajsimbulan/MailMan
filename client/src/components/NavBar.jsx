@@ -3,7 +3,6 @@ import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import { ListItem, ListItemIcon,  ListItemText} from '@mui/material';
-import Divider from '@mui/material/Divider';
 import InboxIcon from '@mui/icons-material/Inbox';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import SendIcon from '@mui/icons-material/Send';
@@ -11,7 +10,7 @@ import StarIcon from '@mui/icons-material/Star';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ReportIcon from '@mui/icons-material/Report';
 import ComposeEmail from './ComposeEmail';
-import { GlobalContext } from '../Mainpage';
+import { GlobalContext } from '../pages/Mainpage';
 
 export default function SelectedListItem() {
   const globalVars = React.useContext(GlobalContext);
