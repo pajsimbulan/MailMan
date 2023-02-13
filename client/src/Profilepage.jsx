@@ -12,6 +12,7 @@ import SuccessActionAlert from './components/SuccessAlert';
 import ErrorActionAlert from './components/ErrorAlert';
 import GenderRadioButtons from './components/GenderRadioButton';
 import Birthdatepicker from './components/BirthDatePicker';
+import ProfileModal from './components/ProfilepageModal';
 
 const theme = createTheme({
   palette: {
@@ -96,10 +97,10 @@ function Profile() {
             
            <Grid2 container sx={{marginX:5, mt:5, mb:'10%'}} >
             <Grid2 item xs={12} sx={{marginBottom:5}}> 
-                <Box sx={{display:'flex',direction:'column',justifyContent:'center',alignItems:'center', width:'100%'}}>
+                <Box sx={{display:'flex',justifyContent:'center', width:'100%'}}>
                     <Typography sx={{fontWeight:'bold', color:'colors.text', fontSize:30}}>Edit Profile</Typography> 
                 </Box>
-                <Box sx={{display:'flex',direction:'column',justifyContent:'center',alignItems:'center', width:'100%'}}>
+                <Box sx={{display:'flex',justifyContent:'center', width:'100%'}}>
                     <Typography sx={{fontWeight:'light', color:'colors.text', fontSize:20}}>{'pajsimbulan@mailman.com'}</Typography> 
                 </Box>
             </Grid2>
@@ -114,10 +115,7 @@ function Profile() {
             <Grid2 lg={8} xs={12} item>
 
                 <Typography   Typography sx={{fontWeight:'bold', color:'colors.text', marginY:'auto'}}>First Name</Typography>
-                <Box sx={{width:'100%', display:'flex', justifyContent:'space-between'}}>
-                    <Typography   Typography sx={{fontWeight:'light', color:'colors.text', marginY:'auto'}}>Paul</Typography>
-                    <Button type="button" sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }} > Edit </Button>
-                </Box>
+                <FirstNameRow />
                 <Divider sx={{marginTop:1}}/>
 
                 <Typography   Typography sx={{fontWeight:'bold', color:'colors.text', marginTop:5}}>Last Name</Typography>
@@ -144,6 +142,22 @@ function Profile() {
           </Box>
       </Box>
     </ThemeProvider>
+  );
+}
+
+function FirstNameRow() {
+  const [edit,setEdit] = useState(false);
+  console.log('render firstname');
+  return (
+    <Box sx={{width:'100%', display:'flex', justifyContent:'space-between'}}>  
+      <Box sx={{marginY:'auto'}}> 
+      <ProfileModal  edit={edit} closeModal={() => {setEdit(false)} } oldValue={"Paul"}/>
+      <Typography sx={{fontWeight:'light', color:'colors.text'}}>Paul</Typography>
+      </Box>  
+      <Button type="button" 
+      sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }} 
+      onClick={()=> {setEdit(true);}}> Edit </Button>
+    </Box>
   );
 }
 

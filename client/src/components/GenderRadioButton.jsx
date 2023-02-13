@@ -20,7 +20,6 @@ const theme = createTheme({
 export default function GenderRadioButtons({gender, editProp}) {
   const [value, setValue] = React.useState(gender);
   const [edit, setEdit] = React.useState(editProp);
-  console.log(value);
   const handleChange = (event) => {
     setValue(event.target.value);
   };
