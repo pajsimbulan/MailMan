@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema(
             required: false,
             min: 3,
             max: 100,
+            default: '',
         },
         email: {
             type: String,
@@ -20,9 +21,19 @@ const userSchema = new mongoose.Schema(
             lowercase: true,
             unique: true,
         },
-        password: {
+        gender: {
+            type: String,
+            required: false,
+            default: '',
+        },
+        password: { 
             type: String,
             required: true,
+        },
+        birthDate: {
+            type: Date,
+            required: false,
+            default: () => new Date(1900,0,1),
         },
         createdAt: {
             type: Date,

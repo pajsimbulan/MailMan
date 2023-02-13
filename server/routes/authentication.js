@@ -101,6 +101,7 @@ exports.changePassword = async (req, res) => {
       const salt = await bcrypt.genSalt();
       const hashedPassword = await bcrypt.hash(req.body.newPassword,salt);
       tempUser.password = hashedPassword;
+      tempUser.updatedAt = Date.now();
       const newUser = await tempUser.save();
       res.status(200).json(newUser);
     } catch(error) {
