@@ -12,7 +12,8 @@ import SuccessActionAlert from './components/SuccessAlert';
 import ErrorActionAlert from './components/ErrorAlert';
 import GenderRadioButtons from './components/GenderRadioButton';
 import Birthdatepicker from './components/BirthDatePicker';
-import ProfileModal from './components/ProfilepageModal';
+import FirstNameModal from './components/EditFirstNameModal';
+import LastNameModal from './components/EditLastNameModal';
 
 const theme = createTheme({
   palette: {
@@ -119,10 +120,7 @@ function Profile() {
                 <Divider sx={{marginTop:1}}/>
 
                 <Typography   Typography sx={{fontWeight:'bold', color:'colors.text', marginTop:5}}>Last Name</Typography>
-                <Box sx={{width:'100%', display:'flex', justifyContent:'space-between'}}>
-                    <Typography   Typography sx={{fontWeight:'light', color:'colors.text', marginY:'auto'}}>Simbulan</Typography>
-                    <Button type="button" sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }} > Edit </Button>
-                </Box>
+                <LastNameRow />
                 <Divider sx={{marginTop:1}}/>
                 
                 <Typography   Typography sx={{fontWeight:'bold', color:'colors.text', marginTop:5}}>Password</Typography>
@@ -147,12 +145,26 @@ function Profile() {
 
 function FirstNameRow() {
   const [edit,setEdit] = useState(false);
-  console.log('render firstname');
   return (
     <Box sx={{width:'100%', display:'flex', justifyContent:'space-between'}}>  
       <Box sx={{marginY:'auto'}}> 
-      <ProfileModal  edit={edit} closeModal={() => {setEdit(false)} } oldValue={"Paul"}/>
+      <FirstNameModal  edit={edit} closeModal={() => {setEdit(false)} } oldValue={"Paul"}/>
       <Typography sx={{fontWeight:'light', color:'colors.text'}}>Paul</Typography>
+      </Box>  
+      <Button type="button" 
+      sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }} 
+      onClick={()=> {setEdit(true);}}> Edit </Button>
+    </Box>
+  );
+}
+
+function LastNameRow() {
+  const [edit,setEdit] = useState(false);
+  return (
+    <Box sx={{width:'100%', display:'flex', justifyContent:'space-between'}}>  
+      <Box sx={{marginY:'auto'}}> 
+      <LastNameModal  edit={edit} closeModal={() => {setEdit(false)} } oldValue={""}/>
+      <Typography sx={{fontWeight:'light', color:'colors.text'}}>{""}</Typography>
       </Box>  
       <Button type="button" 
       sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }} 
