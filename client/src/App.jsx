@@ -14,7 +14,7 @@ export default function App() {
             <UserContext.Provider value={{accessToken, userInfo}}>
                 <BrowserRouter>
                     <Routes>
-                        <Route exact="true" path="/" element={<Profilepage />}/>
+                        <Route exact="true" path="/" element={<SignIn />}/>
                         <Route path="/main" element={<Mainpage />}/>
                         <Route path="/profile" element={<Profilepage />}/>
                     </Routes>

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import PrimarySearchAppBar from '../components/AppBar';
-import SelectedListItem from '../components/NavBar';
-import AlignItemsList from '../components/MailBody';
+import EmailAppBar from '../components/MailAppBar';
+import EmailNavBar from '../components/MailNavBar';
+import EmailBody from '../components/MailBody';
 
 
 export const GlobalContext = React.createContext();
@@ -15,14 +15,14 @@ function Mainpage() {
         <GlobalContext.Provider value={{selectedIndex, setSelectedIndex}}>
         <Grid item xs={2} >
           <Paper elevation={8} square={false}>
-            <SelectedListItem sx={{height:"full"}} />
+            <EmailNavBar sx={{height:"full"}} />
           </Paper>
         </Grid>
         </GlobalContext.Provider>
         <Grid item xs={10}>
-          <PrimarySearchAppBar />
+          <EmailAppBar />
           <Paper elevation={8}>
-            <AlignItemsList/>
+            <EmailBody/>
           </Paper>
         </Grid>
       </Grid>
