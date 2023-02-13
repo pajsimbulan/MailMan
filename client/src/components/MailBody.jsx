@@ -19,7 +19,7 @@ import EmailPopOvers from './EmailPopOver';
 import EmailContentWindow from './EmailContents';
 
 
-export default function AlignItemsList() {
+export default function EmailBody() {
   
   const navigate = useNavigate();
   const [data, setData] = useState([]);

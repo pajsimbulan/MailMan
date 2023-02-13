@@ -12,7 +12,7 @@ import ReportIcon from '@mui/icons-material/Report';
 import ComposeEmail from './ComposeEmail';
 import { GlobalContext } from '../pages/Mainpage';
 
-export default function SelectedListItem() {
+export default function EmailNavBar() {
   const globalVars = React.useContext(GlobalContext);
   console.log('nav bar render');
   const handleListItemClick = (event, index) => {
