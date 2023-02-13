@@ -18,22 +18,13 @@ const theme = createTheme({
   },
 });
 
-export default function FirstNameModal({edit, closeModal, oldValue}) {
-  const [value, setValue]= React.useState(oldValue);
-  console.log(`value=${value}`);
+export default function PasswordModal({edit, closeModal}) {
 
-  React.useEffect(() => {setValue(oldValue)},[oldValue]);
   const handleClose = () => { 
-    setValue(oldValue);
     closeModal();};
   
   const submitHandler = () => {
-    if(value.length >= 3) {
-      alert(`input = ${value}`);
-    }
-    else {
-      alert('Input at least 3 characters');
-    }
+  
   }
   return (
     <ThemeProvider theme={theme}>
@@ -55,26 +46,32 @@ export default function FirstNameModal({edit, closeModal, oldValue}) {
             boxShadow: 24,
             p: 4,
         }}>
-          <Box sx={{display:'flex',justifyContent:'center', width:'100%'}}>
+        <Box sx={{display:'flex',justifyContent:'center', width:'100%'}}>
             <Typography sx={{fontWeight:'bold', color:'colors.text', fontSize:25}}>
-              Edit First Name
+              Change Password
             </Typography>
           </Box>
           <Box sx={{display:'flex',justifyContent:'center', width:'100%', marginY:2}}>
             <Typography sx={{fontWeight:'light', color:'colors.text', fontSize:15}}>
-              Enter first name and submit
+              Enter a new password
             </Typography>
           </Box>
-          <Typography sx={{mt:2, mb:2, fontWeight:'bold', color:'colors.text'}}>New First Name</Typography>
-          <TextField defaultValue={value}  onChange={(event) => {setValue(event.target.value);}} type="text" name="firstName" id="firstName"/>
-          <Box sx={{display:'flex', flexDirection:'row', flexGrow:1, justifyContent:'end', marginTop:5}}>
+              <Typography sx={{mt:2, fontWeight:'bold', color:'colors.text'}}>New Password</Typography>
+              <TextField
+                margin="normal"
+                name="password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+             <Box sx={{display:'flex', flexDirection:'row', flexGrow:1, justifyContent:'end', marginTop:5}}>
             <Button type="button" 
               sx={{marginTop:3, bgcolor:'grey', color:'black', borderRadius:1, bgcolor:'whitesmoke', textTransform: 'none', width:'20%', height:'20%',marginY:'auto',marginRight:4 }} 
-              onClick={()=> {handleClose();}}> Cancel
+              onClick={()=>{closeModal()}}> Cancel
             </Button>
               <Button type="button"
               sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }} 
-              onClick={()=> {submitHandler();}}> Submit 
+              onClick={()=> {}}> Submit 
               </Button>
           </Box>
         </Box>

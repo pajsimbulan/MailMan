@@ -49,7 +49,6 @@ export default function LastNameModal({edit, closeModal, oldValue}) {
             left: '50%',
             transform: 'translate(-50%, -50%)',
             width: '30%',
-            
             borderRadius:3,
             bgcolor: 'background.paper',
             border: '2px solid #000',
@@ -58,15 +57,16 @@ export default function LastNameModal({edit, closeModal, oldValue}) {
         }}>
           <Box sx={{display:'flex',justifyContent:'center', width:'100%'}}>
             <Typography sx={{fontWeight:'bold', color:'colors.text', fontSize:25}}>
-              Change Last Name
+              Edit Last Name
             </Typography>
           </Box>
           <Box sx={{display:'flex',justifyContent:'center', width:'100%', marginY:2}}>
             <Typography sx={{fontWeight:'light', color:'colors.text', fontSize:15}}>
-              Enter a new Last Name and submit
+              Enter last name and submit
             </Typography>
           </Box>
-          <TextField defaultValue={value}  onChange={(event) => {setValue(event.target.value);}} type="text" name="firstName" id="firstName"/>
+          <Typography sx={{mt:2, mb:2, fontWeight:'bold', color:'colors.text'}}>New First Name</Typography>
+          <TextField defaultValue={value}  onChange={(event) => {setValue(event.target.value);}} type="text" name="lastName" id="lastName"/>
           <Box sx={{display:'flex', flexDirection:'row', flexGrow:1, justifyContent:'end', marginTop:5}}>
             <Button type="button" 
               sx={{marginTop:3, bgcolor:'grey', color:'black', borderRadius:1, bgcolor:'whitesmoke', textTransform: 'none', width:'20%', height:'20%',marginY:'auto',marginRight:4 }} 

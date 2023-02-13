@@ -14,6 +14,7 @@ import GenderRadioButtons from './components/GenderRadioButton';
 import Birthdatepicker from './components/BirthDatePicker';
 import FirstNameModal from './components/EditFirstNameModal';
 import LastNameModal from './components/EditLastNameModal';
+import PasswordModal from './components/EditPasswordModal';
 
 const theme = createTheme({
   palette: {
@@ -122,12 +123,8 @@ function Profile() {
                 <Typography   Typography sx={{fontWeight:'bold', color:'colors.text', marginTop:5}}>Last Name</Typography>
                 <LastNameRow />
                 <Divider sx={{marginTop:1}}/>
-                
                 <Typography   Typography sx={{fontWeight:'bold', color:'colors.text', marginTop:5}}>Password</Typography>
-                <Box sx={{width:'100%', display:'flex', justifyContent:'space-between'}}>
-                    <Typography   Typography sx={{fontWeight:'light', color:'colors.text', marginY:'auto'}}>******</Typography>
-                    <Button type="button" sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }} > Edit </Button>
-                </Box>
+                <PasswordRow />
                 <Divider sx={{marginTop:1}}/> 
                 <GenderRow />
                 <Divider sx={{marginTop:1}}/>
@@ -171,6 +168,23 @@ function LastNameRow() {
       onClick={()=> {setEdit(true);}}> Edit </Button>
     </Box>
   );
+}
+
+function PasswordRow() {
+  const [edit,setEdit] = useState(false);
+  return (
+    <Box sx={{width:'100%', display:'flex', justifyContent:'space-between'}}>
+        <Box sx={{marginY:'auto'}}> 
+        <PasswordModal  edit={edit} closeModal={() => {setEdit(false)} }/>
+        <Typography   Typography sx={{fontWeight:'light', color:'colors.text', marginY:'auto'}}>*********</Typography>
+        </Box> 
+        <Button type="button" 
+          sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }} 
+          onClick={()=> {setEdit(true);}}> Edit 
+        </Button>
+    </Box>
+  );
+
 }
 
 function BirthDateRow() {
