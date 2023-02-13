@@ -18,7 +18,7 @@ const theme = createTheme({
   },
 });
 
-export default function FirstNameModal({edit, closeModal, oldValue}) {
+export default function LastNameModal({edit, closeModal, oldValue}) {
   const [value, setValue]= React.useState(oldValue);
   console.log(`value=${value}`);
 
@@ -58,12 +58,12 @@ export default function FirstNameModal({edit, closeModal, oldValue}) {
         }}>
           <Box sx={{display:'flex',justifyContent:'center', width:'100%'}}>
             <Typography sx={{fontWeight:'bold', color:'colors.text', fontSize:25}}>
-              Change First Name
+              Change Last Name
             </Typography>
           </Box>
           <Box sx={{display:'flex',justifyContent:'center', width:'100%', marginY:2}}>
             <Typography sx={{fontWeight:'light', color:'colors.text', fontSize:15}}>
-              Enter a new First Name and submit
+              Enter a new Last Name and submit
             </Typography>
           </Box>
           <TextField defaultValue={value}  onChange={(event) => {setValue(event.target.value);}} type="text" name="firstName" id="firstName"/>
