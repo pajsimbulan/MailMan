@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 const userdb = require('../schemas/user');
 const emaildb = require('../schemas/email');
 const bcrypt = require('bcrypt');
-const { use } = require('../server');
 const jwtSecretKey = 's3Cr3Tk3Y';
 
 exports.register = async (req, res) => {
@@ -45,7 +44,13 @@ exports.login = async (req, res) => {
       expiresIn: '24h',
       algorithm: 'HS256'
     });
-    res.status(200).json({email, accessToken: accessToken});
+    res.status(200).json({firstName: tempUser.firstName,
+      email: tempUser.email,
+      createdAt: tempUser.createdAt,
+      lastName: tempUser.lastName,
+      gender: tempUser.gender,
+      birthDate: tempUser.birthDate,
+      accessToken: accessToken});
   } catch(error) {
     res.status(500).send(error.message);
   }
