@@ -19,10 +19,10 @@ import PasswordModal from '../components/EditPasswordModal';
 const theme = createTheme({
   palette: {
     colors: {
-      bg_default:'#FFFFFF',
+      bg:'#FFFFFF',
       color2:'#F1F5F9',
       text: '#334155',
-      button: '#0F172A'
+      button: '#0F172A',
     }
   },
 });
@@ -45,6 +45,7 @@ function Profile() {
     openErrorAlert.current = true;
     setAlertMessage(message);
   }
+
 
   const submitForgot = (event) => {
     event.preventDefault();
