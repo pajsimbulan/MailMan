@@ -35,6 +35,11 @@ const userSchema = new mongoose.Schema(
             required: false,
             default: () => new Date(1900,0,1),
         },
+        avatarUrl: {
+            type: String,
+            required: false,
+            default: '',
+        },
         createdAt: {
             type: Date,
             immutable: true,
