@@ -167,12 +167,13 @@ export default function Signinpage() {
               width: '45%',
               height: 'auto',
               boxShadow: '1',
-              borderRadius: 3,
+              borderRadius: 10,
               border: 'solid',
               borderWidth:'4px',
               borderColor: 'colors.color2',
+              bgcolor:'white'
             }}>
-              <Grid2 container sx={{backgroundColor:'colors.button',height:'auto',display:'flex start',borderRadius: 1,borderColor:'colors.color2', borderWidth:'4px'}}>
+              <Grid2 container sx={{backgroundColor:'colors.button',height:'auto',display:'flex start',borderRadius: 10,borderColor:'colors.color2', borderWidth:'4'}}>
                 <Grid2 item xs={12} md={3.5} sx={{marginLeft:1,marginY:1, display:'flex'}}>
                   <Button  
                   type="button"
