@@ -102,7 +102,7 @@ export default function EmailAppBar() {
 
       <MenuItem onClick={() => {
         handleMenuClose();
-        navigate('/'); }}>
+        navigate('/profile'); }}>
           Profile
       </MenuItem>
     </Menu>

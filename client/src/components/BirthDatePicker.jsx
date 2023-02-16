@@ -5,8 +5,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-export default function Birthdatepicker({editProp, valid, invalid}) {
-  const [value, setValue] = React.useState(new Date('02/11/2022'));
+export default function Birthdatepicker({editProp, valid, invalid, oldValue}) {
+  const [value, setValue] = React.useState(new Date(oldValue));
   const [edit, setEdit] = React.useState(editProp);
   React.useEffect(()=>{setEdit(editProp)},[editProp]);
   
