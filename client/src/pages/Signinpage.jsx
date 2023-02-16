@@ -169,10 +169,10 @@ export default function Signinpage() {
               boxShadow: '1',
               borderRadius: 3,
               border: 'solid',
-              borderWidth:'2px',
-              borderColor: 'whitesmoke',
+              borderWidth:'4px',
+              borderColor: 'colors.color2',
             }}>
-              <Grid2 container sx={{backgroundColor:'colors.button',height:'auto',display:'flex start',borderRadius: 1}}>
+              <Grid2 container sx={{backgroundColor:'colors.button',height:'auto',display:'flex start',borderRadius: 1,borderColor:'colors.color2', borderWidth:'4px'}}>
                 <Grid2 item xs={12} md={3.5} sx={{marginLeft:1,marginY:1, display:'flex'}}>
                   <Button  
                   type="button"
@@ -217,13 +217,15 @@ export default function Signinpage() {
                   id="password"
                   autoComplete="current-password"
                 />
-                <Button type="submit" sx={{marginY:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:90, height:55}} onSubmit={(event) => {submitForgot(event);}}> Submit </Button>
+                <Box sx={{display:'flex', justifyContent:'flex-end', marginY:'auto'}}>
+                    <Button type="submit" sx={{marginY:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:90, height:55}} onSubmit={(event) => {submitForgot(event);}}> Submit </Button>
+                </Box>
                 </Box>:<Box/>}
                 {/**End of Sign In Block */}
 
                 {/**Sign Up Block */}
                 {renderSignUp?<Box sx={{marginX:5, mt:5}}>
-                <Grid2 container sx={{justifyContent:'space-between', marginY:1}}>
+                <Grid2 container sx={{justifyContent:'space-between'}}>
                   <Grid2 item xs={5.5} >
                     <Typography sx={{fontWeight:'bold', color:'colors.text'}}>First Name*</Typography>
                   <TextField
@@ -263,8 +265,9 @@ export default function Signinpage() {
                   id="password"
                   autoComplete="current-password"
                 />
-                <Button type="submit" sx={{marginY:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:90, height:55}} onSubmit={(event) => {submitForgot(event);}}> Submit </Button>
-
+                <Box sx={{display:'flex', justifyContent:'flex-end', marginY:'auto'}}>
+                    <Button type="submit" sx={{marginY:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:90, height:55}} onSubmit={(event) => {submitForgot(event);}}> Submit </Button>
+                </Box>
                 </Box>:<Box/>}
                 {/**End of Sign Up Block */}
 
@@ -297,7 +300,9 @@ export default function Signinpage() {
                   id="password"
                   autoComplete="current-password"
                 />
-                <Button type="submit" sx={{marginY:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:90, height:55}} onSubmit={(event) => {submitForgot(event);}}> Submit </Button>
+                <Box sx={{display:'flex', justifyContent:'flex-end', marginY:'auto'}}>
+                    <Button type="submit" sx={{marginY:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:90, height:55}} onSubmit={(event) => {submitForgot(event);}}> Submit </Button>
+                </Box>
                 </Box>:<Box/>}
                 {/**End of Forgot Password Block */}
             </Box>

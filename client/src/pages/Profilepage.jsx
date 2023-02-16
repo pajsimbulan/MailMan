@@ -93,8 +93,8 @@ function Profile() {
             boxShadow: '3',
             borderRadius: 3,
             border: 'solid',  
-            borderWidth:'2px',
-            borderColor: 'whitesmoke',
+            borderWidth:'6px',
+            borderColor: 'colors.color2',
           }}>
             
             
