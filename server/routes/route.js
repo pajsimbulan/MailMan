@@ -70,5 +70,23 @@ exports.getUserInfo = async (req, res) => {
   }
 };
 
-//idk yet
-//app.put('/v0/email/:id', auth.check, route.move); 
+
+exports.updateUserInfo = async (req, res) => {
+    try {
+        const {email, firstName, lastName, gender, birthDate} = req.body;
+        const tempUser = await userdb.findOne({email: email});
+        if(tempUser == null) {
+          res.status(404).send("Account doesn't exist");
+          return;
+        }
+        tempUser.firstName = firstName;
+        tempUser.lastName = lastName;
+        tempUser.gender = gender;
+        tempUser.birthDate = birthDate;
+        tempUser.updatedAt = Date.now();
+        const newUser = await tempUser.save();
+        res.status(200).json(newUser);
+      } catch(error) {
+        res.status(500).send(error.message);
+      }
+}
