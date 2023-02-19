@@ -20,6 +20,7 @@ exports.register = async (req, res) => {
             email,
         });
         let savedUser = await newUser.save();
+        delete savedUser.password;
         res.status(201).json(savedUser); 
     } catch(error) {
         res.status(400).send(error.message);
@@ -30,12 +31,12 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const {email, password} = req.body;
-    const tempUser = await userdb.findOne({email: email});
-    if(tempUser == null) {
+    const user = await userdb.findOne({email: email});
+    if(user == null) {
       res.status(404).send("Account doesn't exist");
       return;
     }
-    if(! (await bcrypt.compare(password, tempUser.password))) {
+    if(! (await bcrypt.compare(password, user.password))) {
       res.status(400).send("Invalid Credential");
       return;
     }
@@ -44,12 +45,9 @@ exports.login = async (req, res) => {
       expiresIn: '24h',
       algorithm: 'HS256'
     });
-    res.status(200).json({firstName: tempUser.firstName,
-      email: tempUser.email,
-      createdAt: tempUser.createdAt,
-      lastName: tempUser.lastName,
-      gender: tempUser.gender,
-      birthDate: tempUser.birthDate,
+
+    delete user.password
+    res.status(200).json({user,
       accessToken: accessToken});
   } catch(error) {
     res.status(500).send(error.message);
@@ -108,6 +106,7 @@ exports.changePassword = async (req, res) => {
       tempUser.password = hashedPassword;
       tempUser.updatedAt = Date.now();
       const newUser = await tempUser.save();
+      delete newUser.password
       res.status(200).json(newUser);
     } catch(error) {
       res.status(500).send(error.message);

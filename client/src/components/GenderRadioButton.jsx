@@ -17,12 +17,15 @@ const theme = createTheme({
   },
 });
 
-export default function GenderRadioButtons({gender, editProp}) {
-  const [value, setValue] = React.useState(gender);
+export default function GenderRadioButtons({oldValue, editProp, setGender}) {
+  const [value, setValue] = React.useState(oldValue);
   const [edit, setEdit] = React.useState(editProp);
+
   const handleChange = (event) => {
     setValue(event.target.value);
+    setGender(event.target.value);
   };
+
   React.useEffect(()=>{setEdit(editProp)},[editProp]);
 
   return (

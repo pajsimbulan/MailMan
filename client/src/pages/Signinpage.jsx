@@ -132,13 +132,8 @@ export default function Signinpage() {
     statusCode = res.status;
     return res.json();})
   .then((jsondata) => {
+    user.userInfo = jsondata.user;
     user.accessToken = jsondata.accessToken;
-    user.userInfo.email = jsondata.email;
-    user.userInfo.firstName = jsondata.firstName;
-    user.userInfo.lastName = jsondata.lastName;
-    user.userInfo.gender = jsondata.gender;
-    user.userInfo.birthDate = jsondata.birthDate;
-    user.userInfo.createdAt = jsondata.createdAt;
     navigate('/main'); 
   }).catch((error) => {
     console.log(error);

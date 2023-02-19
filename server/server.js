@@ -15,7 +15,8 @@ app.use(cors());
 app.get('/v0/authorize',   auth.authorize);
 app.get('/v0/email',       auth.check, route.getAllEmails);
 app.get('/v0/email/:id',   auth.check, route.getEmail);
-app.get('v0/user',         auth.check, route.getUserInfo);
+
+app.post('/v0/user',         auth.check, route.getUserInfo);
 app.post('/v0/register',   auth.register);
 app.post('/v0/login',      auth.login);
 app.post('/v0/email',      auth.check, route.sendEmail);
