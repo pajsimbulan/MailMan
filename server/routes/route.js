@@ -49,14 +49,10 @@ exports.sendEmail = async(req, res) => {
 
 exports.getUserInfo = async (req, res) => {
     try{
-        const {email, password} = req.body;
+        const {email} = req.body;
         const tempUser = await userdb.findOne({email: email});
         if(tempUser == null) {
         res.status(404).send("Account doesn't exist");
-        return;
-        }
-        if(! (await bcrypt.compare(password, tempUser.password))) {
-        res.status(400).send("Invalid Credential");
         return;
         }
         res.status(200).json({firstName: tempUser.firstName,

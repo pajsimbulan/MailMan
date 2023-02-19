@@ -18,30 +18,34 @@ const theme = createTheme({
   },
 });
 
-export default function LastNameModal({edit, closeModal, oldValue}) {
+export default function LastNameModal({edit, closeModal, oldValue, setLastName}) {
   const [value, setValue]= React.useState(oldValue);
-  console.log(`value=${value}`);
 
   React.useEffect(() => {setValue(oldValue)},[oldValue]);
+  
   const handleClose = () => { 
     setValue(oldValue);
     closeModal();};
   
-  const submitHandler = () => {
-    if(value.length >= 3) {
-      alert(`input = ${value}`);
+    const submitHandler = () => {
+      if(value.length >= 3) {
+        setLastName(value);
+        closeModal();
+      }
+      else {
+        alert('Input at least 3 characters');
+      }
     }
-    else {
-      alert('Input at least 3 characters');
-    }
-  }
   return (
     <ThemeProvider theme={theme}>
       <Modal
         open={edit}
         onClose={handleClose}
       >
-        <Box sx={{
+        <Box 
+          component="form"
+          onSubmit={()=> {submitHandler();}}
+          sx={{
             display:'flex',
             flexDirection:'column',
             position: 'absolute',
@@ -66,7 +70,7 @@ export default function LastNameModal({edit, closeModal, oldValue}) {
               Enter last name and submit
             </Typography>
           </Box>
-          <Typography sx={{mt:2, mb:2, fontWeight:'bold', color:'colors.text'}}>New First Name</Typography>
+          <Typography sx={{mt:2, mb:2, fontWeight:'bold', color:'colors.text'}}>New Last Name</Typography>
           <TextField defaultValue={value}  onChange={(event) => {setValue(event.target.value);}} type="text" name="lastName" id="lastName"/>
           <Box sx={{display:'flex', flexDirection:'row', flexGrow:1, justifyContent:'end', marginTop:5}}>
             <Button type="button" 
@@ -75,7 +79,7 @@ export default function LastNameModal({edit, closeModal, oldValue}) {
             </Button>
               <Button type="button"
               sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }} 
-              onClick={()=> {submitHandler();}}> Submit 
+              onSubmit={()=> {submitHandler();}}> Submit 
               </Button>
           </Box>
         </Box>

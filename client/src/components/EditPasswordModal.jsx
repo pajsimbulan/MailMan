@@ -18,13 +18,15 @@ const theme = createTheme({
   },
 });
 
-export default function PasswordModal({edit, closeModal}) {
+export default function PasswordModal({edit, closeModal, updatePassword}) {
+  const [value, setValue]= React.useState("");
 
   const handleClose = () => { 
     closeModal();};
   
   const submitHandler = () => {
-  
+    updatePassword(value);
+    closeModal();
   }
   return (
     <ThemeProvider theme={theme}>
@@ -32,7 +34,10 @@ export default function PasswordModal({edit, closeModal}) {
         open={edit}
         onClose={handleClose}
       >
-        <Box sx={{
+        <Box 
+          component="form"
+          onSubmit={()=> {submitHandler();}}
+          sx={{
             display:'flex',
             flexDirection:'column',
             position: 'absolute',
@@ -47,7 +52,7 @@ export default function PasswordModal({edit, closeModal}) {
             borderColor: 'colors.color2',
             p: 4,
         }}>
-        <Box sx={{display:'flex',justifyContent:'center', width:'100%'}}>
+        <Box component="form" sx={{display:'flex',justifyContent:'center', width:'100%'}}>
             <Typography sx={{fontWeight:'bold', color:'colors.text', fontSize:25}}>
               Change Password
             </Typography>
@@ -63,16 +68,16 @@ export default function PasswordModal({edit, closeModal}) {
                 name="password"
                 type="password"
                 id="password"
-                autoComplete="current-password"
+                onChange={(event) => {setValue(event.target.value);}}
               />
              <Box sx={{display:'flex', flexDirection:'row', flexGrow:1, justifyContent:'end', marginTop:5}}>
             <Button type="button" 
               sx={{marginTop:3, bgcolor:'grey', color:'black', borderRadius:1, bgcolor:'whitesmoke', textTransform: 'none', width:'20%', height:'20%',marginY:'auto',marginRight:4 }} 
-              onClick={()=>{closeModal()}}> Cancel
+              onClick={handleClose}> Cancel
             </Button>
-              <Button type="button"
+              <Button type="submit"
               sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }} 
-              onClick={()=> {}}> Submit 
+              onSubmit={()=> {submitHandler();}}> Submit 
               </Button>
           </Box>
         </Box>
