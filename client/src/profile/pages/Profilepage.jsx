@@ -7,17 +7,16 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useNavigate} from 'react-router';
 import { useContext, useState, useRef, useEffect } from 'react';
-import { UserContext } from '../App';
-import SuccessActionAlert from '../components/SuccessAlert';
-import ErrorActionAlert from '../components/ErrorAlert';
+import { UserContext } from '../../App';
+import SuccessActionAlert from '../../components/SuccessAlert';
+import ErrorActionAlert from '../../components/ErrorAlert';
 import GenderRadioButtons from '../components/GenderRadioButton';
 import Birthdatepicker from '../components/BirthDatePicker';
 import FirstNameModal from '../components/EditFirstNameModal';
 import LastNameModal from '../components/EditLastNameModal';
 import PasswordModal from '../components/EditPasswordModal';
-import UpdateUserUser from '../hooks/useUpdateUser';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import useUpdateUser from '../hooks/useUpdateUser';
+import useUpdateUser from '../../hooks/useUpdateUser';
 
 const theme = createTheme({
   palette: {
@@ -158,7 +157,6 @@ function Profile() {
 function FirstNameRow({firstName, update}) {
   const [edit,setEdit] = useState(false);
   const [value, setValue] = useState(firstName);
-  console.log('firstnamerow render');
 
   const updateFirstName = (newFirstName) => {
     if(newFirstName !== value) {
@@ -170,7 +168,7 @@ function FirstNameRow({firstName, update}) {
   return (
     <Box sx={{width:'100%', display:'flex', justifyContent:'space-between'}}>  
       <Box sx={{marginY:'auto'}}> 
-      <FirstNameModal  edit={edit} closeModal={() => {setEdit(false); console.log('closing modal')} } oldValue={firstName} setFirstName={(newFirstName) =>{updateFirstName(newFirstName)} }/>
+      <FirstNameModal  edit={edit} closeModal={() => {setEdit(false);} } oldValue={firstName} setFirstName={(newFirstName) =>{updateFirstName(newFirstName)} }/>
       <Typography sx={{fontWeight:'light', color:'colors.text'}}>{value}</Typography>
       </Box>  
       <Button type="button" 
@@ -229,7 +227,6 @@ function GenderRow({gender, update}) {
   const updateGender = () => {
     setEdit(!edit)
     if( (gender !== value) && (edit) ) {
-      console.log('gender updating');
       update(value);
     }
   };

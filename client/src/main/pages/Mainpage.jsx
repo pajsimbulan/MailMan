@@ -15,7 +15,7 @@ function Mainpage() {
         <GlobalContext.Provider value={{selectedIndex, setSelectedIndex}}>
         <Grid item xs={2} >
           <Paper elevation={8} square={false}>
-            <EmailNavBar sx={{height:"full"}} />
+            <EmailNavBar sx={{mb:5}} />
           </Paper>
         </Grid>
         </GlobalContext.Provider>
