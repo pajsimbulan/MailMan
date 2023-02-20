@@ -6,18 +6,18 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useNavigate} from 'react-router';
-import { useContext, useState, useRef, useEffect } from 'react';
+import { useContext, useState, useRef } from 'react';
 import { UserContext } from '../../App';
 import SuccessActionAlert from '../../components/SuccessAlert';
 import ErrorActionAlert from '../../components/ErrorAlert';
-import GenderRadioButtons from '../components/GenderRadioButton';
-import Birthdatepicker from '../components/BirthDatePicker';
-import FirstNameModal from '../components/EditFirstNameModal';
-import LastNameModal from '../components/EditLastNameModal';
-import PasswordModal from '../components/EditPasswordModal';
+import FirstNameRow from '../blocks/FirstNameRow';
+import LastNameRow from '../blocks/LastNameRow';
+import GenderRow from '../blocks/GenderRow';
+import PasswordRow from '../blocks/PasswordRow';
+import BirthDateRow from '../blocks/BirthDateRow';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import useUpdateUser from '../../hooks/useUpdateUser';
-
+ 
 const theme = createTheme({
   palette: {
     colors: {
@@ -154,121 +154,4 @@ function Profile() {
   );
 }
 
-function FirstNameRow({firstName, update}) {
-  const [edit,setEdit] = useState(false);
-  const [value, setValue] = useState(firstName);
-
-  const updateFirstName = (newFirstName) => {
-    if(newFirstName !== value) {
-      setValue(newFirstName);
-      update(newFirstName);
-    }
-  };
-  
-  return (
-    <Box sx={{width:'100%', display:'flex', justifyContent:'space-between'}}>  
-      <Box sx={{marginY:'auto'}}> 
-      <FirstNameModal  edit={edit} closeModal={() => {setEdit(false);} } oldValue={firstName} setFirstName={(newFirstName) =>{updateFirstName(newFirstName)} }/>
-      <Typography sx={{fontWeight:'light', color:'colors.text'}}>{value}</Typography>
-      </Box>  
-      <Button type="button" 
-      sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }} 
-      onClick={()=> {setEdit(true);}}> Edit </Button>
-    </Box>
-  );
-}
-
-function LastNameRow({lastName, update}) {
-  const [edit,setEdit] = useState(false);
-  const [value, setValue] = useState(lastName);
-
-  const updateLastName = (newLastName) => {
-    if(newLastName !== value) {
-      setValue(newLastName);
-      update(newLastName);
-    }
-  };
-
-  return (
-    <Box sx={{width:'100%', display:'flex', justifyContent:'space-between'}}>  
-      <Box sx={{marginY:'auto'}}> 
-      <LastNameModal  edit={edit} closeModal={() => {setEdit(false)} } oldValue={lastName} setLastName={(newLastName) =>{updateLastName(newLastName)} }/>
-      <Typography sx={{fontWeight:'light', color:'colors.text'}}>{value}</Typography>
-      </Box>  
-      <Button type="button" 
-      sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }} 
-      onClick={()=> {setEdit(true);}}> Edit </Button>
-    </Box>
-  );
-}
-
-function PasswordRow({update}) {
-  const [edit,setEdit] = useState(false);
-
-  return (
-    <Box sx={{width:'100%', display:'flex', justifyContent:'space-between'}}>
-        <Box sx={{marginY:'auto'}}> 
-        <PasswordModal  edit={edit} closeModal={() => {setEdit(false)}} updatePassword={(newPassword) => {update(newPassword);} }/>
-        <Typography   Typography sx={{fontWeight:'light', color:'colors.text', marginY:'auto'}}>*********</Typography>
-        </Box> 
-        <Button type="button" 
-          sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }} 
-          onClick={()=> {setEdit(true);}}> Edit 
-        </Button>
-    </Box>
-  );
-
-}
-
-function GenderRow({gender, update}) {
-  const [edit,setEdit] = useState(false);
-  const [value, setValue] = useState(gender);
-
-  const updateGender = () => {
-    setEdit(!edit)
-    if( (gender !== value) && (edit) ) {
-      update(value);
-    }
-  };
-
-  return (
-  <Box sx={{width:'100%', display:'flex', justifyContent:'space-between'}}>
-    <GenderRadioButtons oldValue={gender} editProp={edit} setGender={(newValue) => {setValue(newValue)}} />
-    <Button type="button" sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }} onClick={()=>{updateGender();}}> {edit?"Save":"Edit"} </Button>
-  </Box>);
-}
-
-function BirthDateRow({birthDate, update}) {
-  const [edit,setEdit] = useState(false);
-  const [invalidBirthDate, setInvalidBirthDate] = useState(false);
-  const [value, setValue] = useState(birthDate);
-
-  const updateBirthDate = () => {
-    setEdit(!edit)
-    if( (birthDate !== value) && 
-        (!invalidBirthDate) &&
-        (edit)) {
-      update(value);
-    }
-  };
-
-  return(
-  <Box sx={{width:'100%', display:'flex', justifyContent:'space-between', marginTop:1}}>
-    <Box sx={{display:'flex', justifyContent:'space-between', flexDirection:'column'}}>
-    <Birthdatepicker 
-      editProp={edit} 
-      valid={()=>{setInvalidBirthDate(false)}} 
-      invalid={()=>{setInvalidBirthDate(true)}}
-      oldValue={birthDate}
-      setBirthDate={(newValue) => {setValue(newValue)}}
-      />
-    {invalidBirthDate? <Typography sx={{fonweight:'light', fontSize:15, color:'red'}}>*Invalid Birthdate*</Typography>:<></>}
-    </Box>
-    <Button type="button" disabled={invalidBirthDate} 
-    sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }}
-    onClick={() => {updateBirthDate()}}
-    >{edit?"Save Changes": "Edit"} </Button>
-  </Box>
-)
-}
 export default Profile;
