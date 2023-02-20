@@ -8,17 +8,19 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useNavigate} from 'react-router';
 import { useContext, useState, useRef } from 'react';
-import { UserContext } from '../App';
-import SuccessActionAlert from '../components/SuccessAlert';
-import ErrorActionAlert from '../components/ErrorAlert';
+import { UserContext } from '../../App';
+import SuccessActionAlert from '../../components/SuccessAlert';
+import ErrorActionAlert from '../../components/ErrorAlert';
 
 const theme = createTheme({
   palette: {
     colors: {
       bg_default:'#FFFFFF',
+      bg_2:'#CFCCCC',
       color2:'#F1F5F9',
       text: '#334155',
-      button: '#0F172A'
+      button: '#0F172A',
+      bc:'#E9E9E9',
     }
   },
 });
@@ -145,23 +147,23 @@ export default function Signinpage() {
     <ThemeProvider theme={theme}>
       <ErrorActionAlert openAlert={openErrorAlert.current} message={alertMessage} closeAlert={() => {openErrorAlert.current = (!openErrorAlert.current)}}/>
       <SuccessActionAlert openAlert={openSuccessAlert.current} message={alertMessage} closeAlert={() => {openSuccessAlert.current = (!openSuccessAlert.current)}}/>
-      <Box sx = {{width: "100%", height: '100vh',display: 'flex',flexDirection:'column', alignItems:'center'}}>
+      <Box sx = {{width: "100%", height: '100vh',display: 'flex',flexDirection:'column', alignItems:'center', }}>
         <Box component="form" onSubmit={(event) => {
           if(renderSignIn) {submitLogin(event);}
           if(renderSignUp) {submitSignUp(event);}
           if(renderForgot) {submitForgot(event);}
           }} noValidate sx = {{width: "100%", height: '100vh',display: 'flex', flexDirection:'column', alignItems:'center'}}>
-          <Box sx={{display: 'flex', flexDirection:'row',  alignItems:'center', marginY:8}}>
+          <Box sx={{display: 'flex', flexDirection:'row',  alignItems:'center', marginY:8, }}>
           <Typography sx={{fontWeight:'bold', fontSize:'30px', color:'colors.text'}}>MAIL</Typography>
-          <Avatar src='postman.jpg' sx={{width:200, height:200, border:'solid', borderWidth:'3px', borderColor: 'colors.color2'}}/>
+          <Avatar src='postman.jpg' sx={{width:200, height:200, border:'solid', borderWidth:'3px', borderColor: 'colors.bc',}}/>
           <Typography sx={{fontWeight:'bold', fontSize:'30px', color:'colors.text'}}>MAN</Typography>
           </Box>
           <Box sx={{
-              display: 'flex',
+              display: 'flex',  
               flexDirection: 'column',
               width: '45%',
               height: 'auto',
-              boxShadow: '1',
+              boxShadow: '24',
               borderRadius: 10,
               border: 'solid',
               borderWidth:'4px',
@@ -169,7 +171,7 @@ export default function Signinpage() {
               bgcolor:'white'
             }}>
               <Grid2 container sx={{backgroundColor:'colors.button',height:'auto',display:'flex start',borderRadius: 10,borderColor:'colors.color2', borderWidth:'4'}}>
-                <Grid2 item xs={12} md={3.5} sx={{marginLeft:1,marginY:1, display:'flex'}}>
+                <Grid2 item xs={12} md={3.5} sx={{marginLeft:1,marginY:1, display:'flex',}}>
                   <Button  
                   type="button"
                   onClick={() => {setRenderSignIn(true);setRenderSignUp(false);setRenderForgot(false);}} 

@@ -1,7 +1,7 @@
 import React from "react";
-import Mainpage from "./pages/Mainpage"
-import Signinpage from "./pages/Signinpage";
-import Profilepage from "./pages/Profilepage";
+import Mainpage from "./main/pages/Mainpage"
+import Signinpage from "./signin/pages/Signinpage";
+import Profilepage from "./profile/pages/Profilepage";
 import {Route, Routes, BrowserRouter} from 'react-router-dom';
 import {createContext} from 'react';
 

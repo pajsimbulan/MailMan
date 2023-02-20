@@ -14,7 +14,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import { IconButton, ListItemButton, Toolbar } from '@mui/material';
 import {useNavigate} from 'react-router';
 import { useContext, useState, useEffect, useRef } from 'react';
-import { UserContext } from '../App';
+import { UserContext } from '../../App';
 import EmailPopOvers from './EmailPopOver';
 import EmailContentWindow from './EmailContents';
 
@@ -71,7 +71,8 @@ export default function EmailBody() {
 
 
       {data.map((email, index) => (
-        <ListItem 
+        <ListItem
+        sx={{width:'99%', borderRadius:5, margin:1, boxShadow:2}} 
         key = {email._id}
         secondaryAction={
           <IconButton edge="start"  aria-label="Trash"  onClick={()=>{}}>
