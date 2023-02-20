@@ -23,12 +23,13 @@ export default function EmailNavBar() {
   return (
     <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
       <List spacing={4  } component="nav" aria-label="main mailbox folders">
-        <ListItem>
+        <ListItem sx={{marginY:2}}>
            <ComposeEmail />
         </ListItem>
         <ListItemButton
           selected={globalVars.selectedIndex === 0}
           onClick={(event) => handleListItemClick(event, 0)}
+          sx={{m:3}}
         >
           <ListItemIcon>
             <InboxIcon />
@@ -38,6 +39,7 @@ export default function EmailNavBar() {
         <ListItemButton
           selected={globalVars.selectedIndex === 1}
           onClick={(event) => handleListItemClick(event, 1)}
+          sx={{m:3}}
         >
           <ListItemIcon>
             <SendIcon />
@@ -47,6 +49,7 @@ export default function EmailNavBar() {
         <ListItemButton
           selected={globalVars.selectedIndex === 2}
           onClick={(event) => handleListItemClick(event, 2)}
+          sx={{m:3}}
         >
           <ListItemIcon>
             <StarIcon />
@@ -56,6 +59,7 @@ export default function EmailNavBar() {
         <ListItemButton
           selected={globalVars.selectedIndex === 3}
           onClick={(event) => handleListItemClick(event, 3)}
+          sx={{m:3}}
         >
           <ListItemIcon>
             <DraftsIcon />
@@ -65,6 +69,7 @@ export default function EmailNavBar() {
         <ListItemButton
           selected={globalVars.selectedIndex === 4}
           onClick={(event) => handleListItemClick(event, 4)}
+          sx={{m:3}}
         >
             <ListItemIcon>
                 <DeleteIcon />
@@ -74,6 +79,7 @@ export default function EmailNavBar() {
         <ListItemButton
           selected={globalVars.selectedIndex === 5}
           onClick={(event) => handleListItemClick(event, 5)}
+          sx={{m:3}}
         >
           <ListItemIcon>
                 <ReportIcon />

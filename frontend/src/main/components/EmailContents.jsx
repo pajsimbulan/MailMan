@@ -36,7 +36,7 @@ export default function EmailContentWindow ({ closeWindow, email}) {
         setOpen(true);
     }    
     return (     
-        <Box sx={{ p: 2, border: '1px dashed grey' }}>
+        <Box>
                 <Dialog PaperProps={{ style: {
                         minHeight: '50%',
                         maxHeight: '50%',

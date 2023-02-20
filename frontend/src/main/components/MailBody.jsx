@@ -57,7 +57,7 @@ export default function EmailBody() {
 
   return (
     <List sx={{ width: "100%", maxWidth: "100%", bgcolor: "background.paper" }}>
-      <ListItem>{openEmailWindow? <EmailContentWindow closeWindow={() => {setOpenEmailWindow(false)}} email={email}/> :<Box/>}</ListItem>
+      <ListItem sx={{display: 'hidden'}}>{openEmailWindow? <EmailContentWindow closeWindow={() => {setOpenEmailWindow(false)}} email={email}/> :<Box/>}</ListItem>
       <ListItem >
         <Toolbar position="static">
             <Checkbox edge="start"  onChange={(event) => {setCheckBoxArray(new Array(size.current).fill(event.target.checked));}}/>
