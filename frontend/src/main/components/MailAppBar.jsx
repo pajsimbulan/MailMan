@@ -142,17 +142,9 @@ export default function EmailAppBar() {
   );
 
   return (
-    <Box sx={{ flexGrow: 1 , marginBottom:2, borderRadius:5}}>
-      <AppBar position="static" sx={{borderRadius:5 }}>
-        <Toolbar>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
-          >
-            MailMan
-          </Typography>
+    <Box sx={{ border:'solid'}}>
+      <AppBar position="static" sx={{ boxShadow:'0'}}>
+        <Toolbar >
           <Search>
             <SearchIconWrapper>
               <SearchIcon />

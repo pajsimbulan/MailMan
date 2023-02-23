@@ -36,7 +36,7 @@ export default function ComposeEmail () {
     }    
     return (     
         <Box sx = {{ width: '100%'}}>
-            <Button variant="contained" sx = {{ width: '100%', backgroundColor: 'gray'}} onClick={handleOpen}>
+            <Button variant="contained" sx = {{ width: '100%', backgroundColor: 'black'}} onClick={handleOpen}>
                 <Typography variant="overline">
                     Compose
                 </Typography>

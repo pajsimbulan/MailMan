@@ -44,7 +44,8 @@ export default function EmailBody() {
           setData(jsondata);
           setCheckBoxArray(new Array(size.current).fill(false));
         }).catch((error) => {alert(error);
-          navigate("/")}); 
+         // navigate("/");
+        }); 
       
     },[refresh]);
 
@@ -56,7 +57,9 @@ export default function EmailBody() {
   }
 
   return (
-    <List sx={{ width: "100%", maxWidth: "100%", bgcolor: "background.paper" }}>
+    <Box sx = {{width: "100%", height: '100%', bgcolor:'colors.bg', display:'flex', margin:0, boxShadow:10, borderRadius:10}} >
+
+    <List sx={{ width: "100%", maxWidth: "100%", bgcolor: "white", borderRadius:10 }}>
       <ListItem sx={{display: 'hidden'}}>{openEmailWindow? <EmailContentWindow closeWindow={() => {setOpenEmailWindow(false)}} email={email}/> :<Box/>}</ListItem>
       <ListItem >
         <Toolbar position="static">
@@ -72,7 +75,7 @@ export default function EmailBody() {
 
       {data.map((email, index) => (
         <ListItem
-        sx={{width:'99%', borderRadius:5, margin:1, boxShadow:2}} 
+        sx={{width:'99%', borderRadius:2, margin:1, boxShadow:2}} 
         key = {email._id}
         secondaryAction={
           <IconButton edge="start"  aria-label="Trash"  onClick={()=>{}}>
@@ -100,6 +103,7 @@ export default function EmailBody() {
          </ListItem >))
       }
     </List>
+    </Box>
   );
 }
 
