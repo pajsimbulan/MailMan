@@ -21,13 +21,14 @@ import useUpdateUser from '../../hooks/useUpdateUser';
 const theme = createTheme({
   palette: {
     colors: {
-      bg:'#FFFFFF',
+      bg:'#ECEDF0',
       color2:'#F1F5F9',
       text: '#334155',
       button: '#0F172A',
     }
   },
 });
+
 function Profile() {
   
   const navigate = useNavigate();
@@ -78,16 +79,16 @@ function Profile() {
     <ThemeProvider theme={theme}>
       <ErrorActionAlert openAlert={openErrorAlert.current} message={alertMessage} closeAlert={() => {openErrorAlert.current = (!openErrorAlert.current)}}/>
       <SuccessActionAlert openAlert={openSuccessAlert.current} message={alertMessage} closeAlert={() => {openSuccessAlert.current = (!openSuccessAlert.current)}}/>
-      <Box noValidate sx = {{width: "100%", height: '100vh',display: 'flex',flexDirection:'column', alignItems:'center',  margin:-1}}>
+      <Box noValidate sx={{width: "100%", height: '100vh',display: 'flex',flexDirection:'column', alignItems:'center',  margin:-1, background:'repeating-radial-gradient(#EBF5FF,#FCFDFE)'}}>
         <Box sx={{
             marginTop:'10%',
             display: 'flex',
             flexDirection: 'column',
             width: '60%',
-            boxShadow: '10',
+            boxShadow: '2',
             borderRadius: 3,
             border: 'solid',  
-            borderWidth:'6px',
+            borderWidth:'1px',
             borderColor: 'colors.color2',
             bgcolor:'white',
           }}>

@@ -24,7 +24,7 @@ const theme = createTheme({
     }
   },
 });
-export default function Signinpage() {
+function Signinpage() {
   const navigate = useNavigate();
   const user = useContext(UserContext);
   const [renderSignIn, setRenderSignIn] = useState(true);
@@ -147,7 +147,7 @@ export default function Signinpage() {
     <ThemeProvider theme={theme}>
       <ErrorActionAlert openAlert={openErrorAlert.current} message={alertMessage} closeAlert={() => {openErrorAlert.current = (!openErrorAlert.current)}}/>
       <SuccessActionAlert openAlert={openSuccessAlert.current} message={alertMessage} closeAlert={() => {openSuccessAlert.current = (!openSuccessAlert.current)}}/>
-      <Box sx = {{width: "100%", height: '100vh',display: 'flex',flexDirection:'column', alignItems:'center', }}>
+      <Box sx = {{width: "100%", height: '100vh',display: 'flex',flexDirection:'column', alignItems:'center', background:'repeating-radial-gradient(#EBF5FF,#FCFDFE)'}}>
         <Box component="form" onSubmit={(event) => {
           if(renderSignIn) {submitLogin(event);}
           if(renderSignUp) {submitSignUp(event);}
@@ -155,7 +155,7 @@ export default function Signinpage() {
           }} noValidate sx = {{width: "100%", height: '100vh',display: 'flex', flexDirection:'column', alignItems:'center'}}>
           <Box sx={{display: 'flex', flexDirection:'row',  alignItems:'center', marginY:8, }}>
           <Typography sx={{fontWeight:'bold', fontSize:'30px', color:'colors.text'}}>MAIL</Typography>
-          <Avatar src='postman.jpg' sx={{width:200, height:200, border:'solid', borderWidth:'3px', borderColor: 'colors.bc',}}/>
+          <Avatar src='postman.jpg' sx={{width:200, height:200, border:'solid', borderWidth:'3px', borderColor: 'colors.bc',background:'transparent'}}/>
           <Typography sx={{fontWeight:'bold', fontSize:'30px', color:'colors.text'}}>MAN</Typography>
           </Box>
           <Box sx={{
@@ -163,7 +163,7 @@ export default function Signinpage() {
               flexDirection: 'column',
               width: '45%',
               height: 'auto',
-              boxShadow: '24',
+              
               borderRadius: 10,
               border: 'solid',
               borderWidth:'4px',
@@ -309,3 +309,5 @@ export default function Signinpage() {
     </ThemeProvider>
   );
 }
+
+export default Signinpage;

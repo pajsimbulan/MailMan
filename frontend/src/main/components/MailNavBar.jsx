@@ -11,6 +11,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ReportIcon from '@mui/icons-material/Report';
 import ComposeEmail from './ComposeEmail';
 import { GlobalContext } from '../pages/Mainpage';
+import { Typography } from '@material-ui/core';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
 
 export default function EmailNavBar() {
   const globalVars = React.useContext(GlobalContext);
@@ -21,8 +24,16 @@ export default function EmailNavBar() {
 
 
   return (
-    <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
-      <List spacing={4  } component="nav" aria-label="main mailbox folders">
+    <Box sx={{ width: '100%', height:'100%', bgcolor:'white', boxShadow:'0',  display:'flex', flexDirection:'column', }}>
+      <Box sx={{display:'flex', direction:'flex-row', justifyContent:'center'}}>
+        <Avatar src='postman.jpg' sx={{width:50, height:50, }}/>
+        <Box sx={{marginY:'auto', }}>
+          <Typography>
+            Mail Man
+          </Typography>
+        </Box>
+      </Box>
+      <List component="nav" aria-label="main mailbox folders">
         <ListItem sx={{marginY:2}}>
            <ComposeEmail />
         </ListItem>
@@ -87,6 +98,7 @@ export default function EmailNavBar() {
           <ListItemText primary="Spam" />
         </ListItemButton>
       </List>
+      <Box sx={{flexGrow:1,border:'solid', flexDirection:'column', height:'100%'}}/>
     </Box>
   );
 }
