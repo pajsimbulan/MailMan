@@ -57,9 +57,10 @@ export default function EmailBody() {
   }
 
   return (
-    <Box sx = {{width: "100%", height: '100%', bgcolor:'colors.bg', display:'flex', margin:0, boxShadow:10, borderRadius:10}} >
+    <Box sx = {{width: "100%", display:'flex', margin:0, borderRadius:10, alignItems:'center', justifyContent:'center'}} >
+      
 
-    <List sx={{ width: "100%", maxWidth: "100%", bgcolor: "white", borderRadius:10 }}>
+    <List sx={{ width:'100%', maxWidth: "95%", borderRadius:10 }}>
       <ListItem sx={{display: 'hidden'}}>{openEmailWindow? <EmailContentWindow closeWindow={() => {setOpenEmailWindow(false)}} email={email}/> :<Box/>}</ListItem>
       <ListItem >
         <Toolbar position="static">
@@ -69,13 +70,11 @@ export default function EmailBody() {
             <EmailPopOvers item={()=> {return <StarIcon/>}} name={"Starred"}></EmailPopOvers>
             <EmailPopOvers item={()=> {return <ReportGmailerrorredIcon />}} name={"Spam"}></EmailPopOvers>
         </Toolbar>
-      </ListItem>
-      <Divider component="li" />
-
+      </ListItem> 
 
       {data.map((email, index) => (
         <ListItem
-        sx={{width:'99%', borderRadius:2, margin:1, boxShadow:2}} 
+        sx={{width:'99%',borderRadius:5, margin:1, bgcolor:'white', marginBottom:3}} 
         key = {email._id}
         secondaryAction={
           <IconButton edge="start"  aria-label="Trash"  onClick={()=>{}}>

@@ -24,11 +24,11 @@ export default function EmailNavBar() {
 
 
   return (
-    <Box sx={{ width: '100%', height:'100%', bgcolor:'white', boxShadow:'0',  display:'flex', flexDirection:'column', }}>
-      <Box sx={{display:'flex', direction:'flex-row', justifyContent:'center'}}>
+    <Box sx={{ width: '100%', minHeight:'100vh', boxShadow:'0',  display:'flex', flexDirection:'column',borderRight: 'solid', borderWidth:'1px', borderColor:'#C6CED6', bgcolor:'white'}}>
+      <Box sx={{display:'flex', direction:'flex-row', px:'2em'}}>
         <Avatar src='postman.jpg' sx={{width:50, height:50, }}/>
-        <Box sx={{marginY:'auto', }}>
-          <Typography>
+        <Box sx={{marginY:'auto',  fontWeight: 'bold', fontFamily:'sans-serif', marginX:4}}>
+          <Typography variant="h6">
             Mail Man
           </Typography>
         </Box>
@@ -98,7 +98,6 @@ export default function EmailNavBar() {
           <ListItemText primary="Spam" />
         </ListItemButton>
       </List>
-      <Box sx={{flexGrow:1,border:'solid', flexDirection:'column', height:'100%'}}/>
     </Box>
   );
 }
