@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
-import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -142,8 +141,7 @@ export default function EmailAppBar() {
   );
 
   return (
-    <Box sx={{ border:'solid'}}>
-      <AppBar position="static" sx={{ boxShadow:'0'}}>
+    <Box sx={{ bgcolor:'white', borderBottom: 'solid', borderWidth:'1px', borderColor:'#C6CED6'}}>
         <Toolbar >
           <Search>
             <SearchIconWrapper>
@@ -155,7 +153,7 @@ export default function EmailAppBar() {
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'flex', md: 'flex' } }}>
+          <Box sx={{ display: { xs: 'flex', md: 'flex' }}}>
             <IconButton
               size="large"
               edge="end"
@@ -170,7 +168,6 @@ export default function EmailAppBar() {
           </Box>
           
         </Toolbar>
-      </AppBar>
       {renderMobileMenu}
       {renderMenu}
     </Box>

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
+import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { Box } from '@mui/system';
 import EmailAppBar from '../components/MailAppBar';
 import EmailNavBar from '../components/MailNavBar';
@@ -24,23 +24,20 @@ export const GlobalContext = React.createContext();
 function Mainpage() {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   console.log("Mainpage rendering");
-  return (
-   
-      <Box sx = {{width: "100%", minHeight: '100vh', background:'repeating-radial-gradient(#EBF5FF,#FCFDFE)'}}>
-      <Grid container >
+  return ( 
+    <Box sx = {{width: "100%", minHeight: '100vh', background:'repeating-radial-gradient(#EBF5FF,#FCFDFE)'}}>
+      <Grid2 container>
         <GlobalContext.Provider value={{selectedIndex, setSelectedIndex}}>
-        <Grid item  xs={2} >
+        <Grid2  xs={2} >
             <EmailNavBar />
-        </Grid>
+        </Grid2>
         </GlobalContext.Provider>
-        <Grid item xs={10} sx={{width:'100%', height:'100%'}}>
+        <Grid2 xs={10} >
           <EmailAppBar />
           <EmailBody/>
-        </Grid>
-      </Grid>
-      </Box>
-    
-
+        </Grid2>
+      </Grid2>
+    </Box>
   );
 }
 
