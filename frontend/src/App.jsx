@@ -1,6 +1,8 @@
 import React from "react";
-import Mainpage from "./main/pages/Mainpage"
 import Signinpage from "./signin/pages/Signinpage";
+import Forgotpage from "./signin/pages/Forgotpage";
+import Signuppage from "./signin/pages/Signuppage";
+import Mainpage from "./main/pages/Mainpage"
 import Profilepage from "./profile/pages/Profilepage";
 import {Route, Routes, BrowserRouter} from 'react-router-dom';
 import {createContext} from 'react';
@@ -22,6 +24,8 @@ export default function App() {
                 <BrowserRouter>
                     <Routes>
                         <Route exact="true" path="/" element={<Signinpage />}/>
+                        <Route exact="true" path="/forgot" element={<Forgotpage />}/>
+                        <Route exact="true" path="/signup" element={<Signuppage />}/>
                         <Route path="/main" element={<Mainpage />}/>
                         <Route path="/profile" element={<Profilepage />}/>
                     </Routes>
