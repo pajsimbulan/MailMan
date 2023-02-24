@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
-import { Button, Divider } from '@mui/material';
+import { Button, Divider, OutlinedInput } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -8,9 +8,12 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useNavigate} from 'react-router';
 import { useContext, useState, useRef } from 'react';
 import { UserContext } from '../../App';
-import SuccessActionAlert from '../../components/SuccessAlert';
 import ErrorActionAlert from '../../components/ErrorAlert';
 import Link from '@mui/material/Link';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
 
 const theme = createTheme({
   palette: {
@@ -27,18 +30,11 @@ const theme = createTheme({
 function Signinpage() {
   const navigate = useNavigate();
   const user = useContext(UserContext);
-  const [renderSignIn, setRenderSignIn] = useState(true);
-  const openSuccessAlert = useRef(false);
   const openErrorAlert = useRef(false);
   const [alertMessage, setAlertMessage] = useState("");
-  
-  function openSucess(message) {
-    openSuccessAlert.current = true;
-    openErrorAlert.current = false;
-    setAlertMessage(message);
-  }
+  const [showPassword, setShowPassword] = useState(false);
+
   function openError(message) {
-    openSuccessAlert.current = false;
     openErrorAlert.current = true;
     setAlertMessage(message);
   }
@@ -71,8 +67,6 @@ function Signinpage() {
 
   return (
     <ThemeProvider theme={theme}>
-      <ErrorActionAlert openAlert={openErrorAlert.current} message={alertMessage} closeAlert={() => {openErrorAlert.current = (!openErrorAlert.current)}}/>
-      <SuccessActionAlert openAlert={openSuccessAlert.current} message={alertMessage} closeAlert={() => {openSuccessAlert.current = (!openSuccessAlert.current)}}/>
       <Box sx = {{width: "100%", height: '100vh',display: 'flex',flexDirection:'column', alignItems:'center', background:'repeating-radial-gradient(#EBF5FF,#FCFDFE)'}}>
         <Box component="form" onSubmit={(event) => {submitLogin(event);}} 
           noValidate sx = {{width: "100%", height: '100vh',display: 'flex', flexDirection:'column', alignItems:'center'}}>
@@ -84,7 +78,6 @@ function Signinpage() {
           <Box sx={{
               width: '25%',
               height: 'auto',
-            
               borderRadius: 3,
               bgcolor:'white',
               border:'solid',
@@ -97,8 +90,7 @@ function Signinpage() {
                 <Divider sx={{marginY:3}}/>
                 <Typography sx={{color:'colors.text'}}>Email Address</Typography>
                 <TextField
-                  sx={{bgcolor:'white'}}
-                 
+                  sx={{bgcolor:'white'}}     
                   required
                   fullWidth
                   id="email"
@@ -106,15 +98,24 @@ function Signinpage() {
                   autoComplete="email"
                 />
                 <Typography sx={{mt:2, color:'colors.text'}}>Password</Typography>
-                <TextField
+                <OutlinedInput
                   sx={{bgcolor:'white'}}
-                 
                   required
                   fullWidth
                   name="password"
-                  type="password"
                   id="password"
                   autoComplete="current-password"
+                  type={showPassword ? 'text' : 'password'}
+                  endAdornment={
+                    <InputAdornment position="end">
+                        <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={() => setShowPassword((show) => !show)}
+                        >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                    </InputAdornment>
+                  }
                 />
                 <Button type="submit" sx={{marginY:3, marginTop:6, color:'white', borderRadius:1, bgcolor:'#338FEB', textTransform: 'none', width:'100%', height:55,fontWeight:'bold'}} onSubmit={(event) => {submitLogin(event);}}> Submit </Button>
                 <Box sx={{display:'flex', flexDirection:'row', width:'100%', justifyContent:'end'}}>
@@ -122,13 +123,14 @@ function Signinpage() {
                 </Box>
                 <Divider sx={{marginY:4}}/>
                 <Box sx={{display:'flex', flexDirection:'column', width:'100%', marginTop:2, marginBottom:10, justifyContent:'center'}}>
-                  <Typography sx={{marginY:'auto',color:'colors.text', fontWeight: 'light', mb:1}}> New to Mail Man? </Typography>
-                  <Button type="button" variant="outlined" sx={{borderRadius:1, textTransform: 'none', width:"100%", height:55, fontWeight:'bold'}} onClick={() => {navigate('/signup')}}>Sign Up</Button>
+                  <Typography sx={{marginY:'auto',color:'grey', fontWeight: 'light', mb:1}}> New to Mailman? </Typography>
+                  <Button type="button" variant="outlined" sx={{borderRadius:1, textTransform: 'none', width:"100%", height:55, fontWeight:'bold'}} onClick={() => {navigate('/signup')}}>Create Account</Button>
                 </Box>
               </Box>
             </Box>
         </Box>
       </Box>
+      <ErrorActionAlert openAlert={openErrorAlert.current} message={alertMessage} closeAlert={() => {openErrorAlert.current = (!openErrorAlert.current)}}/>
     </ThemeProvider>
   );
 }
