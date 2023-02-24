@@ -29,18 +29,19 @@ const theme = createTheme({
 });
 function Signuppage() {
   const navigate = useNavigate();
-  const openSuccessAlert = useRef(false);
-  const openErrorAlert = useRef(false);
+  const [openSuccessAlert, setOpenSuccessAlert] = useState(false);
+  const [openErrorAlert, setOpenErrorAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
   function openSucess(message) {
-    openSuccessAlert.current = true;
-    openErrorAlert.current = false;
+    setOpenSuccessAlert(true);
+    setOpenErrorAlert(false);
     setAlertMessage(message);
   }
   function openError(message) {
-    openSuccessAlert.current = false;
-    openErrorAlert.current = true;
+    setOpenSuccessAlert(false);
+    setOpenErrorAlert(true);
     setAlertMessage(message);
   }
 
@@ -63,11 +64,9 @@ function Signuppage() {
     }),
   }).then((res) => {
     statusCode = res.status;
-    return res.json();})
-  .then((jsondata) => {
-    alert(`password for the account ${jsondata.email} has been succesfully changed`);
     openSucess("Password Changed");
-})
+    navigate('/');
+    })
   .catch((error) => {
     console.log(error);
     if(statusCode === 404) {
@@ -82,8 +81,8 @@ function Signuppage() {
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{width: "100%", minHeight: '100vh',background:'repeating-radial-gradient(#B3BDC9,#FCFDFE)'}}>
-      <ErrorActionAlert openAlert={openErrorAlert.current} message={alertMessage} closeAlert={() => {openErrorAlert.current = (!openErrorAlert.current)}}/>
-      <SuccessActionAlert openAlert={openSuccessAlert.current} message={alertMessage} closeAlert={() => {openSuccessAlert.current = (!openSuccessAlert.current)}}/>
+        <ErrorActionAlert openAlert={openErrorAlert} message={alertMessage} closeAlert={() => {setOpenErrorAlert(!openErrorAlert)}}/>
+        <SuccessActionAlert openAlert={openSuccessAlert} message={alertMessage} closeAlert={() => {setOpenSuccessAlert(!openSuccessAlert);}}/>
         <Box sx={{display: 'flex', flexDirection:'row',  alignItems:'center', mt:1,ml:3}}>
             <Avatar onClick={() => {navigate('/')}} src='postman.jpg' sx={{width:70, height:70, border:'solid', borderWidth:'3px', borderColor: 'colors.bc',background:'transparent'}}/>
             <Typography onClick={() => {navigate('/')}} sx={{fontWeight:'bold', fontSize:'25px', color:'colors.text', mx:2}}>MAILMAN</Typography>
@@ -171,7 +170,13 @@ function Signuppage() {
                     onSubmit={(event) => {submitForgot(event);}}> 
                     Submit
                 </Button>
-
+                <Button 
+                  type="button" 
+                  variant="outlined" 
+                  sx={{borderRadius:1, textTransform: 'none', width:"100%", height:55, fontWeight:'bold', mb:5}} 
+                  onClick={() => {navigate('/')}}>
+                    Back to Sign In
+                  </Button>
                 </Box>
             </Box>
         </Box>

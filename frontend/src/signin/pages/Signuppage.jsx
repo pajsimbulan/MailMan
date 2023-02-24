@@ -31,30 +31,25 @@ const theme = createTheme({
 });
 function Signuppage() {
   const navigate = useNavigate();
-  const openSuccessAlert = useRef(false);
-  const openErrorAlert = useRef(false);
+  const [openSuccessAlert, setOpenSuccessAlert] = useState(false);
+  const [openErrorAlert , setOpenErrorAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
   function openSucess(message) {
-    openSuccessAlert.current = true;
-    openErrorAlert.current = false;
+    setOpenSuccessAlert(true);
+    setOpenErrorAlert(false);
     setAlertMessage(message);
   }
   function openError(message) {
-    openSuccessAlert.current = false;
-    openErrorAlert.current = true;
+    setOpenSuccessAlert(false);
+    setOpenErrorAlert(true);
     setAlertMessage(message);
   }
 
   const submitSignUp = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-      firstname: data.get('firstName'),
-      lastname: data.get('lastName'),
-    });
     let statusCode;
     fetch('http://localhost:4000/v0/register', {
     method: 'POST',
@@ -68,12 +63,17 @@ function Signuppage() {
     })
     .then((res) => {
       statusCode = res.status;
+      if( (statusCode == 403) || (statusCode==404)) {
+        throw new Error(statusCode);
+      }
       openSucess("Account Created");
+      alert(`account created ${statusCode}`)
       navigate('/');
-      return res.json();
-  }).catch((error) => {
+      })
+    .catch((error) => {
     if(statusCode === 403) {
-      openError("Error: Email already exists");
+      console.log(error);
+      openError("Error: Account already exists");
     }
     else {
       openError("Error: Make sure to fill up the form correctly.  Forms with '  *  ' are required");
@@ -84,6 +84,8 @@ function Signuppage() {
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{width: "100%", minHeight: '100vh',background:'repeating-radial-gradient(#B3BDC9,#FCFDFE)'}}>
+        <ErrorActionAlert openAlert={openErrorAlert} message={alertMessage} closeAlert={() => {setOpenErrorAlert(!openErrorAlert)}}/>
+        <SuccessActionAlert openAlert={openSuccessAlert} message={alertMessage} closeAlert={() => {setOpenSuccessAlert(!openSuccessAlert);}}/>
         <Box sx={{display: 'flex', flexDirection:'row',  alignItems:'center', mt:1,ml:3}}>
             <Avatar onClick={() => {navigate('/')}} src='postman.jpg' sx={{width:70, height:70, border:'solid', borderWidth:'3px', borderColor: 'colors.bc',background:'transparent'}}/>
             <Typography onClick={() => {navigate('/')}} sx={{fontWeight:'bold', fontSize:'25px', color:'colors.text', mx:2}}>MAILMAN</Typography>
@@ -171,8 +173,6 @@ function Signuppage() {
             </Box>
         </Box>
       </Box>
-      <ErrorActionAlert openAlert={openErrorAlert.current} message={alertMessage} closeAlert={() => {openErrorAlert.current = (!openErrorAlert.current)}}/>
-      <SuccessActionAlert openAlert={openSuccessAlert.current} message={alertMessage} closeAlert={() => {openSuccessAlert.current = (!openSuccessAlert.current)}}/>
     </ThemeProvider>
   );
 }
