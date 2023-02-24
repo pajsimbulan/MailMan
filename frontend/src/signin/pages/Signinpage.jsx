@@ -30,12 +30,12 @@ const theme = createTheme({
 function Signinpage() {
   const navigate = useNavigate();
   const user = useContext(UserContext);
-  const openErrorAlert = useRef(false);
+  const [openErrorAlert , setOpenErrorAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   function openError(message) {
-    openErrorAlert.current = true;
+    setOpenErrorAlert(true);
     setAlertMessage(message);
   }
 
@@ -61,17 +61,26 @@ function Signinpage() {
     navigate('/main'); 
   }).catch((error) => {
     console.log(error);
-    openError("Error: Invalid Input");
+    if(statusCode === 404) {
+      openError("Error: Account doesn't exist");
+    }
+    else if (statusCode === 400) {
+      openError("Error: Invalid Input");
+    } else {
+      openError("Error: Make sure to fill all the required forms");
+    }
+    
   }); 
   };
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx = {{width: "100%", height: '100vh',display: 'flex',flexDirection:'column', alignItems:'center', background:'repeating-radial-gradient(#EBF5FF,#FCFDFE)'}}>
+      <Box sx = {{width: "100%", height: '100vh', background:'repeating-radial-gradient(#EBF5FF,#FCFDFE)'}}>
+      <ErrorActionAlert openAlert={openErrorAlert} message={alertMessage} closeAlert={() => {setOpenErrorAlert(!openErrorAlert)}}/>
         <Box component="form" onSubmit={(event) => {submitLogin(event);}} 
           noValidate sx = {{width: "100%", height: '100vh',display: 'flex', flexDirection:'column', alignItems:'center'}}>
           <Box sx={{display: 'flex', flexDirection:'row',  alignItems:'center', marginY:8, }}>
-          <Typography sx={{fontWeight:'bold', fontSize:'30px', color:'colors.text'}}>MAIL</Typography>
+          <Typography sx={{fontWeight:'bold', fontSize:'30px', color:'colors.text'}}>MAIL</Typography>  
           <Avatar src='postman.jpg' sx={{width:200, height:200, border:'solid', borderWidth:'3px', borderColor: 'colors.bc',background:'transparent'}}/>
           <Typography sx={{fontWeight:'bold', fontSize:'30px', color:'colors.text'}}>MAN</Typography>
           </Box>
@@ -130,7 +139,6 @@ function Signinpage() {
             </Box>
         </Box>
       </Box>
-      <ErrorActionAlert openAlert={openErrorAlert.current} message={alertMessage} closeAlert={() => {openErrorAlert.current = (!openErrorAlert.current)}}/>
     </ThemeProvider>
   );
 }
