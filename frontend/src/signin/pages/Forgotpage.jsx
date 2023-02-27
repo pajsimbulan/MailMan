@@ -80,18 +80,19 @@ function Signuppage() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{width: "100%", minHeight: '100vh',background:'repeating-radial-gradient(#B3BDC9,#FCFDFE)'}}>
+      <Box sx={{width: "100%", minHeight: '100vh',background:'repeating-radial-gradient(#B3BDC9,#FCFDFE)', m:-1}}>
         <ErrorActionAlert openAlert={openErrorAlert} message={alertMessage} closeAlert={() => {setOpenErrorAlert(!openErrorAlert)}}/>
         <SuccessActionAlert openAlert={openSuccessAlert} message={alertMessage} closeAlert={() => {setOpenSuccessAlert(!openSuccessAlert);}}/>
         <Box sx={{display: 'flex', flexDirection:'row',  alignItems:'center', mt:1,ml:3}}>
-            <Avatar onClick={() => {navigate('/')}} src='postman.jpg' sx={{width:70, height:70, border:'solid', borderWidth:'3px', borderColor: 'colors.bc',background:'transparent'}}/>
-            <Typography onClick={() => {navigate('/')}} sx={{fontWeight:'bold', fontSize:'25px', color:'colors.text', mx:2}}>MAILMAN</Typography>
+              <Avatar onClick={() => {navigate('/main')}} src='postman.jpg' sx={{width:50, height:50, background:'transparent'}}/>
+              <Typography onClick={() => {navigate('/main')}} sx={{fontWeight:'bold', fontSize:'15px', color:'colors.text', mx:2}}>Mailman</Typography>
         </Box>
         <Box sx = {{width: "100%", height: '100vh',display: 'flex', flexDirection:'column', alignItems:'center'}}>
             <Box 
             component="form"
             onSubmit={(event) => {submitForgot(event);}}
             sx={{
+                marginTop:'1%',
                 width: '25%',
                 height: 'auto',
                 borderRadius: 3,

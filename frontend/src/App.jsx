@@ -24,8 +24,8 @@ export default function App() {
                 <BrowserRouter>
                     <Routes>
                         <Route exact="true" path="/" element={<Signinpage />}/>
-                        <Route exact="true" path="/forgot" element={<Forgotpage />}/>
-                        <Route exact="true" path="/signup" element={<Signuppage />}/>
+                        <Route path="/forgot" element={<Forgotpage />}/>
+                        <Route path="/signup" element={<Signuppage />}/>
                         <Route path="/main" element={<Mainpage />}/>
                         <Route path="/profile" element={<Profilepage />}/>
                     </Routes>
