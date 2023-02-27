@@ -75,7 +75,7 @@ function Signinpage() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx = {{width: "100%", height: '100vh', background:'repeating-radial-gradient(#EBF5FF,#FCFDFE)'}}>
+      <Box sx = {{width: "100%", height: '100vh', background:'repeating-radial-gradient(#EBF5FF,#FCFDFE)', m:-1}}>
       <ErrorActionAlert openAlert={openErrorAlert} message={alertMessage} closeAlert={() => {setOpenErrorAlert(!openErrorAlert)}}/>
         <Box component="form" onSubmit={(event) => {submitLogin(event);}} 
           noValidate sx = {{width: "100%", height: '100vh',display: 'flex', flexDirection:'column', alignItems:'center'}}>
