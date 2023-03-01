@@ -80,20 +80,20 @@ function Signuppage() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{width: "100%", minHeight: '100vh',background:'repeating-radial-gradient(#B3BDC9,#FCFDFE)', m:-1}}>
+      <Box sx={{width: "100%",minHeight:'100vh',background:'repeating-radial-gradient(#B3BDC9,#FCFDFE)', m:-1}}>
         <ErrorActionAlert openAlert={openErrorAlert} message={alertMessage} closeAlert={() => {setOpenErrorAlert(!openErrorAlert)}}/>
         <SuccessActionAlert openAlert={openSuccessAlert} message={alertMessage} closeAlert={() => {setOpenSuccessAlert(!openSuccessAlert);}}/>
         <Box sx={{display: 'flex', flexDirection:'row',  alignItems:'center', mt:1,ml:3}}>
-              <Avatar onClick={() => {navigate('/main')}} src='postman.jpg' sx={{width:50, height:50, background:'transparent'}}/>
-              <Typography onClick={() => {navigate('/main')}} sx={{fontWeight:'bold', fontSize:'15px', color:'colors.text', mx:2}}>Mailman</Typography>
+              <Avatar onClick={() => {navigate('/')}} src='postman.jpg' sx={{width:50, height:50, background:'transparent'}}/>
+              <Typography onClick={() => {navigate('/')}} sx={{fontWeight:'bold', fontSize:'15px', color:'colors.text', mx:2}}>Mailman</Typography>
         </Box>
-        <Box sx = {{width: "100%", height: '100vh',display: 'flex', flexDirection:'column', alignItems:'center'}}>
+        <Box sx = {{width: "100%",display: 'flex', flexDirection:'column', alignItems:'center'}}>
             <Box 
             component="form"
             onSubmit={(event) => {submitForgot(event);}}
             sx={{
-                marginTop:'1%',
-                width: '25%',
+                marginTop:'3%',
+                width: 'auto',
                 height: 'auto',
                 borderRadius: 3,
                 bgcolor:'white',
@@ -101,25 +101,19 @@ function Signuppage() {
                 borderWidth:1,
                 borderColor:'colors.bc',
                 }}>
-                <Box sx={{marginX:10, mt:5, }} >
+                <Box sx={{marginX:10, mt:5, mb:10, }} >
                 <Typography sx={{fontSize:30}}>Forgot Password</Typography>
                 <Divider sx={{marginY:3}}/>
-                <Box sx={{display:'flex', flexDirection:'row', justifyContent:'space-between', marginBottom:2}}>
-                    <Box sx={{marginY:'auto'}}>
-                        <Box>
-                            <Typography sx={{color:'colors.text'}}>First Name*</Typography>
-                            <TextField
-                                sx={{width:180}}
-                                required
-                                id="firstName"
-                                name="firstName"
-                                type="text"
-                            /> 
-                        </Box>
-                    </Box>
-                   
-                </Box>      
-                <Typography sx={{color:'colors.text'}}>Email Address*</Typography>
+                <Typography sx={{color:'colors.text'}}>First Name*</Typography>
+                <TextField
+                    sx={{width:180}}
+                    
+                    required
+                    id="firstName"
+                    name="firstName"
+                    type="text"
+                /> 
+                <Typography sx={{mt:2, color:'colors.text'}}>Email Address*</Typography>
                 <TextField
                   required
                   fullWidth
@@ -174,7 +168,7 @@ function Signuppage() {
                 <Button 
                   type="button" 
                   variant="outlined" 
-                  sx={{borderRadius:1, textTransform: 'none', width:"100%", height:55, fontWeight:'bold', mb:5}} 
+                  sx={{borderRadius:1, textTransform: 'none', width:"100%", height:55, fontWeight:'bold', width:'100%'}} 
                   onClick={() => {navigate('/')}}>
                     Back to Sign In
                   </Button>
