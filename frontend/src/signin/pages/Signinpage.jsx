@@ -75,26 +75,27 @@ function Signinpage() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx = {{width: "100%", height: '100vh', background:'repeating-radial-gradient(#EBF5FF,#FCFDFE)', m:-1}}>
+      <Box sx = {{width: "100%",minHeight:'100vh', background:'repeating-radial-gradient(#EBF5FF,#FCFDFE)', m:-1, display: 'flex', flexDirection:'column'}}>
       <ErrorActionAlert openAlert={openErrorAlert} message={alertMessage} closeAlert={() => {setOpenErrorAlert(!openErrorAlert)}}/>
         <Box component="form" onSubmit={(event) => {submitLogin(event);}} 
           noValidate sx = {{width: "100%", height: '100vh',display: 'flex', flexDirection:'column', alignItems:'center'}}>
           <Box sx={{display: 'flex', flexDirection:'row',  alignItems:'center', marginY:8, }}>
-          <Typography sx={{fontWeight:'bold', fontSize:'30px', color:'colors.text'}}>MAIL</Typography>  
-          <Avatar src='postman.jpg' sx={{width:200, height:200, border:'solid', borderWidth:'3px', borderColor: 'colors.bc',background:'transparent'}}/>
-          <Typography sx={{fontWeight:'bold', fontSize:'30px', color:'colors.text'}}>MAN</Typography>
+          <Typography sx={{fontWeight:'bold', fontSize:'25px', color:'colors.text'}}>MAIL</Typography>  
+          <Avatar src='postman.jpg' sx={{width:150, height:150, border:'solid', borderWidth:'3px', borderColor: 'colors.bc',background:'transparent'}}/>
+          <Typography sx={{fontWeight:'bold', fontSize:'25px', color:'colors.text'}}>MAN</Typography>
           </Box>
           <Box sx={{
-              width: '25%',
+              width: 'auto',
               height: 'auto',
               borderRadius: 3,
               bgcolor:'white',
               border:'solid',
               borderWidth:1,
               borderColor:'colors.bc',
+              mb:4,
               
             }}>
-            <Box sx={{marginX:10, mt:5, }} >
+            <Box sx={{marginX:10, mt:5, mb:10}} >
               <Typography sx={{fontSize:30}}>Sign In</Typography>
                 <Divider sx={{marginY:3}}/>
                 <Typography sx={{color:'colors.text'}}>Email Address</Typography>
@@ -131,7 +132,7 @@ function Signinpage() {
                   <Link sx={{color:'colors.text'}} onClick={() => {navigate('/forgot')}}>Forgot Password?</Link>
                 </Box>
                 <Divider sx={{marginY:4}}/>
-                <Box sx={{display:'flex', flexDirection:'column', width:'100%', marginTop:2, marginBottom:10, justifyContent:'center'}}>
+                <Box sx={{display:'flex', flexDirection:'column', width:'100%', marginTop:2, justifyContent:'center'}}>
                   <Typography sx={{marginY:'auto',color:'grey', fontWeight: 'light', mb:1}}> New to Mailman? </Typography>
                   <Button type="button" variant="outlined" sx={{borderRadius:1, textTransform: 'none', width:"100%", height:55, fontWeight:'bold'}} onClick={() => {navigate('/signup')}}>Create Account</Button>
                 </Box>

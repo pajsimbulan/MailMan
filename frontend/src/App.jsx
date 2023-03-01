@@ -28,7 +28,7 @@ export default function App() {
                         <Route path="/signup" element={<Signuppage />}/>
                         <Route path="/main" element={<Mainpage />}/>
                         <Route path="/profile" element={<Profilepage />}/>
-                    </Routes>
+                    </Routes>   
                 </BrowserRouter>
             </UserContext.Provider>
         </div>
