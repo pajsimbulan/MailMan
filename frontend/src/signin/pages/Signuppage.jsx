@@ -7,15 +7,15 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useNavigate} from 'react-router';
-import { useState, useRef } from 'react';
-
-import SuccessActionAlert from '../../components/SuccessAlert';
+import { useState } from 'react';
 import ErrorActionAlert from '../../components/ErrorAlert';
 import Link from '@mui/material/Link';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
+import AccountCreationSuccessful from '../components/AccountCreationSuccessful';
+import {emailRegex} from '../../utils/MailRegex';
 
 const theme = createTheme({
   palette: {
@@ -29,20 +29,15 @@ const theme = createTheme({
     }
   },
 });
+
 function Signuppage() {
   const navigate = useNavigate();
-  const [openSuccessAlert, setOpenSuccessAlert] = useState(false);
   const [openErrorAlert , setOpenErrorAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [successful, setSuccessful] = useState(false);
 
-  function openSucess(message) {
-    setOpenSuccessAlert(true);
-    setOpenErrorAlert(false);
-    setAlertMessage(message);
-  }
   function openError(message) {
-    setOpenSuccessAlert(false);
     setOpenErrorAlert(true);
     setAlertMessage(message);
   }
@@ -50,6 +45,10 @@ function Signuppage() {
   const submitSignUp = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    if(!emailRegex.test(data.get('password'))) {
+      openError("Error: Invalid Email Address.  Make sure the email consists of at least 1 alphabet and ends with *@mailman.com*");
+      return;
+    }
     let statusCode;
     fetch('http://localhost:4000/v0/register', {
     method: 'POST',
@@ -66,9 +65,7 @@ function Signuppage() {
       if( (statusCode == 403) || (statusCode==404)) {
         throw new Error(statusCode);
       }
-      openSucess("Account Created");
-      alert(`account created ${statusCode}`)
-      navigate('/');
+      setSuccessful(true);
       })
     .catch((error) => {
     if(statusCode === 403) {
@@ -85,7 +82,6 @@ function Signuppage() {
     <ThemeProvider theme={theme}>
       <Box sx={{width: "100%", minHeight: '100vh',background:'repeating-radial-gradient(#B3BDC9,#FCFDFE)', m:-1}}>
         <ErrorActionAlert openAlert={openErrorAlert} message={alertMessage} closeAlert={() => {setOpenErrorAlert(!openErrorAlert)}}/>
-        <SuccessActionAlert openAlert={openSuccessAlert} message={alertMessage} closeAlert={() => {setOpenSuccessAlert(!openSuccessAlert);}}/>
         <Box sx={{display: 'flex', flexDirection:'row',  alignItems:'center', mt:1,ml:3}}>
               <Avatar onClick={() => {navigate('/')}} src='postman.jpg' sx={{width:50, height:50, background:'transparent'}}/>
               <Typography onClick={() => {navigate('/')}} sx={{fontWeight:'bold', fontSize:'15px', color:'colors.text', mx:2}}>Mailman</Typography>
@@ -105,6 +101,7 @@ function Signuppage() {
                 borderColor:'colors.bc',
                 mx:4,
                 }}>
+                {successful? <AccountCreationSuccessful onButtonPress={() => {navigate('/')}} /> : 
                 <Box sx={{marginX:7, mt:5 }} >
                 <Typography sx={{fontSize:30}}>Create Account</Typography>
                 <Divider sx={{marginY:3}}/>
@@ -171,7 +168,7 @@ function Signuppage() {
                   <Typography sx={{marginY:'auto',color:'grey', fontWeight: 'light', mb:1}}> Already have an Account? </Typography>
                   <Link sx={{color:'colors.text', fontSize:18, ml:1}} onClick={() => {navigate('/')}}> Sign In</Link>
                 </Box>
-                </Box>
+                </Box> }
             </Box>
         </Box>
       </Box>

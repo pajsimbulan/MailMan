@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useNavigate} from 'react-router';
-import { useContext, useState, useRef } from 'react';
+import { useContext, useState } from 'react';
 import { UserContext } from '../../App';
 import ErrorActionAlert from '../../components/ErrorAlert';
 import Link from '@mui/material/Link';
@@ -14,6 +14,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
+import { emailRegex } from '../../utils/MailRegex';
 
 const theme = createTheme({
   palette: {
@@ -40,9 +41,12 @@ function Signinpage() {
   }
 
   const submitLogin = (event) => {
-    console.log('got here');
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    if(!emailRegex.test(data.get('password'))) {
+      openError("Error: Invalid Email Address.  Make sure the email consists of at least 1 alphabet and ends with *@mailman.com*");
+      return;
+    }
     let statusCode;
     fetch('http://localhost:4000/v0/login', {
     method: 'POST',
