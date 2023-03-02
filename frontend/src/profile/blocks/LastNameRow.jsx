@@ -17,7 +17,7 @@ function LastNameRow({lastName, update}) {
     };
   
     return (
-      <Box sx={{width:'100%', display:'flex', justifyContent:'space-between'}}>  
+      <Box sx={{width:'100%', display:'flex', justifyContent:'space-between', flexWrap:'wrap'}}>  
         <Box sx={{marginY:'auto'}}> 
         <LastNameModal  edit={edit} closeModal={() => {setEdit(false)} } oldValue={lastName} setLastName={(newLastName) =>{updateLastName(newLastName)} }/>
         <Typography sx={{fontWeight:'light', color:'colors.text'}}>{value}</Typography>

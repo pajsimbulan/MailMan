@@ -23,7 +23,7 @@ function BirthDateRow({birthDate, update}) {
     };
   
     return(
-    <Box sx={{width:'100%', display:'flex', justifyContent:'space-between', marginTop:1}}>
+    <Box sx={{width:'100%', display:'flex', justifyContent:'space-between', marginTop:1, flexWrap:'wrap'}}>
       <Box sx={{display:'flex', justifyContent:'space-between', flexDirection:'column'}}>
       <Birthdatepicker 
         editProp={edit} 
