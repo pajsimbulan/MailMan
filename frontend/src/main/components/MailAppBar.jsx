@@ -45,6 +45,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     width: '100%',
+    backgroundColor:'white',
     [theme.breakpoints.up('md')]: {
       width: '20ch',
     },
@@ -141,7 +142,7 @@ export default function EmailAppBar() {
   );
 
   return (
-    <Box sx={{ bgcolor:'white', borderBottom: 'solid', borderWidth:'1px', borderColor:'#C6CED6'}}>
+    <Box sx={{  borderBottom: 'solid', borderWidth:'1px', borderColor:'#C6CED6', borderBottomLeftRadius:40, borderWidth:5, bgcolor:'white'}}>
         <Toolbar >
           <Search>
             <SearchIconWrapper>

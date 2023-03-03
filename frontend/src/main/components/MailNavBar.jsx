@@ -2,18 +2,22 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
-import { ListItem, ListItemIcon,  ListItemText} from '@mui/material';
-import InboxIcon from '@mui/icons-material/Inbox';
-import DraftsIcon from '@mui/icons-material/Drafts';
-import SendIcon from '@mui/icons-material/Send';
-import StarIcon from '@mui/icons-material/Star';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ReportIcon from '@mui/icons-material/Report';
+import { ListItem, ListItemIcon} from '@mui/material';
+import AllInboxRoundedIcon from '@mui/icons-material/AllInboxRounded';
+import InboxRoundedIcon from '@mui/icons-material/InboxRounded';
+import DraftsRoundedIcon from '@mui/icons-material/DraftsRounded';
+import SendRoundedIcon from '@mui/icons-material/SendRounded';
+import StarRoundedIcon from '@mui/icons-material/StarRounded';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import ReportRoundedIcon from '@mui/icons-material/ReportRounded';
 import ComposeEmail from './ComposeEmail';
 import { GlobalContext } from '../pages/Mainpage';
-import { Typography } from '@material-ui/core';
+import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
+
+//bgcolor:'#002159
+const ListItemStyling = {m:3, mr:4, borderRadius:3, p:3, overflow:'hidden'};
+const TypographyStyling = {color:'#002159', fontWeight:'bold'};
 
 export default function EmailNavBar() {
   const globalVars = React.useContext(GlobalContext);
@@ -22,81 +26,89 @@ export default function EmailNavBar() {
     globalVars.setSelectedIndex(index);
   };
 
-
   return (
-    <Box sx={{ width: '100%', minHeight:'100vh', boxShadow:'0',  display:'flex', flexDirection:'column',borderRight: 'solid', borderWidth:'1px', borderColor:'#C6CED6', bgcolor:'white'}}>
-      <Box sx={{display:'flex', direction:'flex-row', px:'2em'}}>
-        <Avatar src='postman.jpg' sx={{width:50, height:50, }}/>
-        <Box sx={{marginY:'auto',  fontWeight: 'bold', fontFamily:'sans-serif', marginX:4}}>
-          <Typography variant="h6">
-            Mail Man
-          </Typography>
+    <Box sx={{ width: '90%', minHeight:'100vh', display:'flex', flexDirection:'column',borderRight: 'solid',borderWidth:5, borderColor:'#C6CED6', borderRadius:15, bgcolor:'white'}}>
+      <Box sx={{display: 'flex', flexDirection:'row', flexWrap:'wrap', alignItems:'center', mt:2,  mx:3,  borderBottomColor:'#C6CED6', pb:2,}}>
+              <Avatar src='postman.jpg' sx={{width:50, height:50, background:'transparent', my:'auto', mx:2, mb:2}}/>
+              <Typography  sx={{fontWeight:'bold', fontSize:'20px', color:'#2E3D54', letterSpacing:8, my:'auto'}}>MAILMAN</Typography>
         </Box>
-      </Box>
-      <List component="nav" aria-label="main mailbox folders">
+      <List component="nav" aria-label="main mailbox folders" >
         <ListItem sx={{marginY:2}}>
            <ComposeEmail />
         </ListItem>
         <ListItemButton
           selected={globalVars.selectedIndex === 0}
           onClick={(event) => handleListItemClick(event, 0)}
-          sx={{m:3}}
+          sx={ListItemStyling}
         >
           <ListItemIcon>
-            <InboxIcon />
+            <InboxRoundedIcon sx={{color:'#002159'}} />
           </ListItemIcon>
-          <ListItemText primary="Inbox" />
+          <Typography sx={TypographyStyling}>Inbox</Typography>
         </ListItemButton>
         <ListItemButton
           selected={globalVars.selectedIndex === 1}
           onClick={(event) => handleListItemClick(event, 1)}
-          sx={{m:3}}
+          sx={ListItemStyling}
         >
           <ListItemIcon>
-            <SendIcon />
+            <SendRoundedIcon sx={{color:'#002159'}}/>
           </ListItemIcon>
-          <ListItemText primary="Sent" />
+          <Typography sx={TypographyStyling}>Sent</Typography>
         </ListItemButton>
         <ListItemButton
           selected={globalVars.selectedIndex === 2}
           onClick={(event) => handleListItemClick(event, 2)}
-          sx={{m:3}}
+          sx={ListItemStyling}
         >
           <ListItemIcon>
-            <StarIcon />
+            <StarRoundedIcon sx={{color:'#002159'}}/>
           </ListItemIcon>
-          <ListItemText primary="Starred" />
+          <Typography sx={TypographyStyling}>Starred</Typography>
         </ListItemButton>
         <ListItemButton
           selected={globalVars.selectedIndex === 3}
           onClick={(event) => handleListItemClick(event, 3)}
-          sx={{m:3}}
+          sx={ListItemStyling}
         >
           <ListItemIcon>
-            <DraftsIcon />
+            <DraftsRoundedIcon sx={{color:'#002159'}}/>
           </ListItemIcon>
-          <ListItemText primary="Drafts" />
+          <Typography sx={TypographyStyling}>Drafts</Typography>
         </ListItemButton>
+        <ListItem>
+          <Box sx={{width:'100%', borderBottom:'solid', borderBottomWidth:2, borderBottomColor:'#C6CED6', mx:3}}/>
+        </ListItem>
         <ListItemButton
           selected={globalVars.selectedIndex === 4}
           onClick={(event) => handleListItemClick(event, 4)}
-          sx={{m:3}}
+          sx={ListItemStyling}
         >
             <ListItemIcon>
-                <DeleteIcon />
+                <AllInboxRoundedIcon sx={{color:'#002159'}}/>
             </ListItemIcon>
-          <ListItemText primary="Trash" />
+          <Typography sx={TypographyStyling}>All Emails</Typography>
         </ListItemButton>
         <ListItemButton
           selected={globalVars.selectedIndex === 5}
           onClick={(event) => handleListItemClick(event, 5)}
-          sx={{m:3}}
+          sx={ListItemStyling}
+        >
+            <ListItemIcon>
+                <DeleteRoundedIcon sx={{color:'#002159'}}/>
+            </ListItemIcon>
+          <Typography sx={TypographyStyling}>Trash</Typography>
+        </ListItemButton>
+        <ListItemButton
+          selected={globalVars.selectedIndex === 6}
+          onClick={(event) => handleListItemClick(event, 6)}
+          sx={ListItemStyling}
         >
           <ListItemIcon>
-                <ReportIcon />
+                <ReportRoundedIcon sx={{color:'#002159'}}/>
           </ListItemIcon>
-          <ListItemText primary="Spam" />
-        </ListItemButton>
+          <Typography sx={TypographyStyling}>Spam</Typography>
+        </  ListItemButton>
       </List>
     </Box>
   );

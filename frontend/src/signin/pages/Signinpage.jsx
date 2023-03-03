@@ -43,7 +43,7 @@ function Signinpage() {
   const submitLogin = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    if(!emailRegex.test(data.get('password'))) {
+    if(emailRegex.test(data.get('password'))) {
       openError("Error: Invalid Email Address.  Make sure the email consists of at least 1 alphabet and ends with *@mailman.com*");
       return;
     }
