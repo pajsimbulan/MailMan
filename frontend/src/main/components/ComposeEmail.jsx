@@ -5,8 +5,6 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import CloseIcon from '@mui/icons-material/Close';
@@ -35,8 +33,8 @@ export default function ComposeEmail () {
         setOpen(true);
     }    
     return (     
-        <Box sx = {{ width: '100%'}}>
-            <Button variant="contained" sx = {{ width: '100%', backgroundColor: 'black'}} onClick={handleOpen}>
+        <Box sx = {{ width: '100%', mx:1}}>
+            <Button variant="outlined" sx = {{ width: '100%', backgroundColor: '#338FEB', color:'white', borderRadius:3}} onClick={handleOpen}>
                 <Typography variant="overline">
                     Compose
                 </Typography>

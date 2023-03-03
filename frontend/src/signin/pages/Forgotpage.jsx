@@ -82,7 +82,7 @@ function Signuppage() {
         <ErrorActionAlert openAlert={openErrorAlert} message={alertMessage} closeAlert={() => {setOpenErrorAlert(!openErrorAlert)}}/>
         <Box sx={{display: 'flex', flexDirection:'row',  alignItems:'center', mt:1,ml:3}}>
               <Avatar onClick={() => {navigate('/')}} src='postman.jpg' sx={{width:50, height:50, background:'transparent'}}/>
-              <Typography onClick={() => {navigate('/')}} sx={{fontWeight:'bold', fontSize:'15px', color:'colors.text', mx:2}}>Mailman</Typography>
+              <Typography onClick={() => {navigate('/')}} sx={{fontWeight:'bold', fontSize:'15px', color:'#2E3D54', mx:2}}>Mailman</Typography>
         </Box>
         <Box sx = {{width: "100%",display: 'flex', flexDirection:'column', alignItems:'center'}}>
             <Box 
