@@ -1,61 +1,26 @@
 import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
+import { styled, alpha, useTheme  } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import MenuItem from '@mui/material/MenuItem';
+import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
 import Menu from '@mui/material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import {useNavigate} from 'react-router';
-
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
-    width: 'auto',
-  },
-}));
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    backgroundColor:'white',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
-  },
-}));
+import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
+import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 
 export default function EmailAppBar() {
+  const theme = useTheme();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [darkMode, setDarkMode] = React.useState(false);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -71,10 +36,6 @@ export default function EmailAppBar() {
   const handleMenuClose = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
-  };
-
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
   };
 
   const menuId = 'primary-search-account-menu';
@@ -144,17 +105,28 @@ export default function EmailAppBar() {
   return (
     <Box sx={{  borderBottom: 'solid', borderWidth:'1px', borderColor:'#C6CED6', borderBottomLeftRadius:40, borderWidth:5, bgcolor:'white'}}>
         <Toolbar >
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
+          <Box sx={{flexGrow: 1}}>
+            <TextField
+            sx={{ my: 1.5, ml:5,width: '80ch', borderRadius:3, bgcolor:'#EBF5FF', fieldset:{borderWidth:0, m:0}, input: { color: '#002159'},  "& .MuiOutlinedInput-root.Mui-focused": {
+      "& > fieldset": {
+          borderRadius:3, borderColor:'#338FEB'
+      }
+    }  }}
+            InputProps={{
+              startAdornment: <InputAdornment position="start"> <SearchIcon sx={{color:'#002159'}}/> </InputAdornment>,
+            }}
             />
-          </Search>
-          <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'flex', md: 'flex' }}}>
+          </Box>
+          <Box sx={{ display: { xs: 'flex', md: 'flex' }, gap:2}}>
+          <IconButton
+          size="large"
+          aria-label="set light mode or dark mode"
+          aria-haspopup="true"
+          color="inherit"
+          onClick={() => {setDarkMode(!darkMode); console.log(theme.palette.mode)}}
+        >
+          {darkMode?<LightModeOutlinedIcon sx={{color:'#002159'}}/> : <DarkModeOutlinedIcon sx={{color:'#002159'}}/>}
+        </IconButton>
             <IconButton
               size="large"
               edge="end"
@@ -164,7 +136,7 @@ export default function EmailAppBar() {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
+              <AccountCircle sx={{color:'#002159'}}/>
             </IconButton>
           </Box>
           

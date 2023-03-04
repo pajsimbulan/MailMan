@@ -16,7 +16,7 @@ import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 
 //bgcolor:'#002159
-const ListItemStyling = {m:3, mr:4, borderRadius:3, p:3, overflow:'hidden'};
+const ListItemStyling = {m:2, mr:4, borderRadius:3, p:3, overflow:'hidden'};
 const TypographyStyling = {color:'#002159', fontWeight:'bold'};
 
 export default function EmailNavBar() {
@@ -27,10 +27,10 @@ export default function EmailNavBar() {
   };
 
   return (
-    <Box sx={{ width: '90%', minHeight:'100vh', display:'flex', flexDirection:'column',borderRight: 'solid',borderWidth:5, borderColor:'#C6CED6', borderRadius:15, bgcolor:'white'}}>
+    <Box sx={{ width: '90%', minHeight:'100vh', display:'flex', flexDirection:'column',borderRight: 'solid',borderWidth:5, borderColor:'#C6CED6', borderTopRightRadius:75, borderBottomRightRadius:75, bgcolor:'white'}}>
       <Box sx={{display: 'flex', flexDirection:'row', flexWrap:'wrap', alignItems:'center', mt:2,  mx:3,  borderBottomColor:'#C6CED6', pb:2,}}>
               <Avatar src='postman.jpg' sx={{width:50, height:50, background:'transparent', my:'auto', mx:2, mb:2}}/>
-              <Typography  sx={{fontWeight:'bold', fontSize:'20px', color:'#2E3D54', letterSpacing:8, my:'auto'}}>MAILMAN</Typography>
+              <Typography  sx={{fontWeight:'bold', fontSize:'20px', color:'#2E3D54', letterSpacing:8, my:'auto', overflow:'hidden'}}>MAILMAN</Typography>
         </Box>
       <List component="nav" aria-label="main mailbox folders" >
         <ListItem sx={{marginY:2}}>
