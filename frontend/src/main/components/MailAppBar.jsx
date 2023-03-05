@@ -3,8 +3,6 @@ import { styled, alpha, useTheme  } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import InputBase from '@mui/material/InputBase';
 import MenuItem from '@mui/material/MenuItem';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
@@ -14,8 +12,11 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import {useNavigate} from 'react-router';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
+import { Avatar } from '@mui/material';
+import { UserContext } from '../../App';
 
 export default function EmailAppBar() {
+  const user = React.useContext(UserContext);
   const theme = useTheme();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -123,7 +124,8 @@ export default function EmailAppBar() {
           aria-label="set light mode or dark mode"
           aria-haspopup="true"
           color="inherit"
-          onClick={() => {setDarkMode(!darkMode); console.log(theme.palette.mode)}}
+          onClick={() => {setDarkMode(!darkMode);}}
+          sx={{border:'solid', borderWidth:2, borderColor:'#EBF5FF', height:50, width:50, my:'auto'}}
         >
           {darkMode?<LightModeOutlinedIcon sx={{color:'#002159'}}/> : <DarkModeOutlinedIcon sx={{color:'#002159'}}/>}
         </IconButton>
@@ -135,8 +137,9 @@ export default function EmailAppBar() {
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
               color="inherit"
+              sx={{height:50, width:50, border:'solid', borderWidth:2, borderColor:'#EBF5FF',}}
             >
-              <AccountCircle sx={{color:'#002159'}}/>
+              <Avatar src=""/>
             </IconButton>
           </Box>
           
