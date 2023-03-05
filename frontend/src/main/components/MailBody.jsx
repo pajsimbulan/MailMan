@@ -17,6 +17,7 @@ import { useContext, useState, useEffect, useRef } from 'react';
 import { UserContext } from '../../App';
 import EmailPopOvers from './EmailPopOver';
 import EmailContentWindow from './EmailContents';
+import EmailDateFilterToggleButton from './EmailToggle';
 
 
 export default function EmailBody() {
@@ -58,18 +59,18 @@ export default function EmailBody() {
 
   return (
     <Box sx = {{width: "100%", display:'flex', margin:0, borderRadius:10, alignItems:'center', justifyContent:'center'}} >
-      
+      {openEmailWindow? <EmailContentWindow closeWindow={() => {setOpenEmailWindow(false)}} email={email}/> :<Box/>}
 
     <List sx={{ width:'100%', maxWidth: "95%", borderRadius:10 }}>
-      <ListItem sx={{display: 'hidden'}}>{openEmailWindow? <EmailContentWindow closeWindow={() => {setOpenEmailWindow(false)}} email={email}/> :<Box/>}</ListItem>
-      <ListItem >
-        <Toolbar position="static">
+      <ListItem sx={{display:'flex', justifyContent:'space-between'}}>
+        <Toolbar position="static" sx={{bgcolor:'white', borderRadius:5, my:'auto'}}>
             <Checkbox edge="start"  onChange={(event) => {setCheckBoxArray(new Array(size.current).fill(event.target.checked));}}/>
             <EmailPopOvers item={()=> {return <RefreshIcon />}} name={"Refresh"}></EmailPopOvers>
             <EmailPopOvers item={()=> {return <DeleteForeverIcon />}} name={"Delete"}></EmailPopOvers>
             <EmailPopOvers item={()=> {return <StarIcon/>}} name={"Starred"}></EmailPopOvers>
             <EmailPopOvers item={()=> {return <ReportGmailerrorredIcon />}} name={"Spam"}></EmailPopOvers>
         </Toolbar>
+        <EmailDateFilterToggleButton />
       </ListItem> 
 
       {data.map((email, index) => (
