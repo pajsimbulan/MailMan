@@ -8,6 +8,6 @@
 ***************
 # Backend <br/>
 - Node Express
-- MondoDB
-- JWT (Authentication) <br/>
+- MongoDB
+- JWT + bcrypt (Authentication) <br/>
 ****************
