@@ -2,7 +2,9 @@ import * as React from "react";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
-export default function EmailDateFilterToggleButton() {
+const toggleButtonStyling= {border:'solid', borderWidth:0, color:'grey', fontWeight:'bold', width:75, fontSize:12,};
+
+function EmailDateFilterToggleButton() {
   const [emailDateFilter, setEmailDateFilter] = React.useState("today");
 
   const handleChange = (event, newEmailDateFilter) => {
@@ -11,18 +13,19 @@ export default function EmailDateFilterToggleButton() {
 
   return (
     <ToggleButtonGroup
-      size="small"
+      size="medium"
       color="primary"
       value={emailDateFilter}
       exclusive
       onChange={handleChange}
-      sx={{ color: "black" }}
     >
-      <ToggleButton value="today">Today</ToggleButton>
-      <ToggleButton value="3d">3D</ToggleButton>
-      <ToggleButton value="1w">1W</ToggleButton>
-      <ToggleButton value="1m">1M</ToggleButton>
-      <ToggleButton value="all">All</ToggleButton>
+      <ToggleButton value="today"  sx={toggleButtonStyling}>Today</ToggleButton>
+      <ToggleButton value="3d" sx={toggleButtonStyling}>3D</ToggleButton>
+      <ToggleButton value="1w" sx={toggleButtonStyling}>1W</ToggleButton>
+      <ToggleButton value="1m" sx={toggleButtonStyling}>1M</ToggleButton>
+      <ToggleButton value="all" sx={toggleButtonStyling}>All</ToggleButton>
     </ToggleButtonGroup>
   );
 }
+
+export default EmailDateFilterToggleButton;
