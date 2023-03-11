@@ -4,8 +4,6 @@ import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
 import Checkbox from '@mui/material/Checkbox';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import StarIcon from '@mui/icons-material/Star';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -19,25 +17,26 @@ import EmailPopOvers from './EmailPopOver';
 import EmailContentWindow from './EmailContents';
 import EmailDateFilterToggleButton from './EmailToggle';
 import MailPagination from './MailPagination';
+import EmailBlock from './MailBodyEmailBlock';
 
 const data1={"_id":"63ba4964742a1ea687c54c43",
 "from":"zaheer@avatar.com",
 "to":"aang@avatar.com",
 "subject":"I'm the real avatar!",
-"contents":"Dear Aang, Im the real avatar and\n you arent.",
-"createdAt":{"$date":{"$numberLong":"1673152868635"}},
+"contents":"Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.",
+"createdAt":'2023-01-08T04:41:08.635+00:00',
 "__v":{"$numberInt":"0"}};
 const data2={"_id":"63ba603e72a3c87194d8550f",
 "from":"zaheer@avatar.com",
 "to":"aang@avatar.com",
 "subject":"I'm the real avatar!",
 "contents":"Dear Aang, Im the real avatar and\n you arent.",
-"createdAt":{"$date":{"$numberLong":"1673152868635"}},
+"createdAt":'2023-01-08T04:41:08.635+00:00',
 "__v":{"$numberInt":"0"}};
 const tempDatas= [data1,data2];
 
 
-export default function EmailBody() {  
+function EmailBody() {  
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const user = useContext(UserContext);
@@ -90,27 +89,10 @@ export default function EmailBody() {
 
       {tempDatas.map((email, index) => (
         <ListItem
-        sx={{width:'99%',borderRadius:5, margin:1, bgcolor:'white', marginBottom:3}} 
+        sx={{width:'100%'}} 
         key = {email._id}
-         >
-          <ListItemButton onClick={()=> {renderOpenEmailWindow(email);}}>
-            <IconButton>
-              <Checkbox  checked={checkboxArray[index]} edge="start" onClick={(event) => { event.stopPropagation();
-              setCheckBoxArray(prevArray => {
-                  const tempArray = [...prevArray];
-                  tempArray[index] = (!prevArray[index]);
-                  return tempArray;
-                })}}/>
-            </IconButton>
-            <ListItemAvatar>
-              <Avatar alt={email.from.toString().toUpperCase()} src="/static/images/avatar/1.jpg" />
-            </ListItemAvatar>
-            <ListItemText
-              primary={email.subject}
-              secondary={
-                  stringTruncate(email.contents)}
-            />
-          </ListItemButton>
+         >  
+          <EmailBlock email={email} />
          </ListItem >))
       }
     </List>
@@ -118,12 +100,4 @@ export default function EmailBody() {
   );
 }
 
-
-function stringTruncate(input) {
-  let maxChar = 160;
-  if(input.length > maxChar) {
-    return (input.substring(0,(maxChar-3)) + '...');
-  } else {
-    return input;
-  }
-}
+export default EmailBody;
