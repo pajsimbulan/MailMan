@@ -14,17 +14,16 @@ import {useNavigate} from 'react-router';
 import { useContext, useState, useEffect, useRef } from 'react';
 import { UserContext } from '../../App';
 import EmailPopOvers from './EmailPopOver';
-import EmailContentWindow from './EmailContents';
 import EmailDateFilterToggleButton from './EmailToggle';
 import MailPagination from './MailPagination';
 import EmailBlock from './MailBodyEmailBlock';
+import EmailContentWindow from './EmailContents';
 
 const data1={"_id":"63ba4964742a1ea687c54c43",
 "from":"zaheer@avatar.com",
 "to":"aang@avatar.com",
 "subject":"I'm the real avatar!",
-"contents":"Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.Dear Aang, Im the real avatar and\n you arent.",
-"createdAt":'2023-01-08T04:41:08.635+00:00',
+"contents":"Dear Aang, Im the real avatar and\n ","createdAt":'2023-01-08T04:41:08.635+00:00',
 "__v":{"$numberInt":"0"}};
 const data2={"_id":"63ba603e72a3c87194d8550f",
 "from":"zaheer@avatar.com",
@@ -33,19 +32,32 @@ const data2={"_id":"63ba603e72a3c87194d8550f",
 "contents":"Dear Aang, Im the real avatar and\n you arent.",
 "createdAt":'2023-01-08T04:41:08.635+00:00',
 "__v":{"$numberInt":"0"}};
-const tempDatas= [data1,data2];
+const tempDatas= [data1,data2,data1,data2,data1,data2,data1,data2,data1,data2,data1,data2,data1,data2];
 
 
 function EmailBody() {  
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const user = useContext(UserContext);
-  const [email, setEmail] = useState();
   const size = useRef(0);
   const [refresh, setRefresh] = useState(false);
   const [checkboxArray, setCheckBoxArray] = useState([]);
-  const [openEmailWindow, setOpenEmailWindow] = useState();
-  console.log('rendering mailbody');
+  const [openEmail, setOpenEmail] = React.useState(false);
+  const [openedEmail, setOpenedEmail] = React.useState(undefined);
+
+  const renderEmails = React.useMemo(() => {
+    return (tempDatas.map((email) => (
+      <ListItem
+      sx={{width:'100%'}} 
+      key = {email._id}
+       >  
+        <EmailBlock email={email} selected={(email) => {
+          setOpenEmail(true);
+          setOpenedEmail(email);
+          }}/>
+       </ListItem >)))
+  },[data])
+
 
   useEffect(() => {
     console.log('mailbody fetching data');
@@ -64,16 +76,9 @@ function EmailBody() {
       
     },[refresh]);
 
-  const renderOpenEmailWindow = (email) => {
-    console.log(email.subject);
-    setOpenEmailWindow(true);
-    setEmail(email);
-  }
-
   return (
-    <Box sx = {{width: "100%", display:'flex', margin:0, borderRadius:10, alignItems:'center', justifyContent:'center'}} >
-      {openEmailWindow? <EmailContentWindow closeWindow={() => {setOpenEmailWindow(false)}} email={email}/> :<Box/>}
-
+    <Box sx = {{width: "100%", maxHeight:'100%', display:'flex', margin:0, borderRadius:10, alignItems:'center', justifyContent:'center', overflow:'scroll'}} >
+       {openEmail? <EmailContentWindow closeEmail={() => {setOpenEmail(false)}} email={openedEmail}/> : null}
     <List sx={{ width:'100%', maxWidth: "95%", borderRadius:10, bgcolor:'#edf4fb', mt:2, px:2}}>
       <ListItem sx={{display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'space-between',gap:2}}>
         <Toolbar position="static" sx={{ my:'auto',bgcolor:'#dceaf7', borderRadius:5}}>
@@ -86,15 +91,7 @@ function EmailBody() {
         <MailPagination range={50} totalCount={11}/>
         <EmailDateFilterToggleButton />
       </ListItem> 
-
-      {tempDatas.map((email, index) => (
-        <ListItem
-        sx={{width:'100%'}} 
-        key = {email._id}
-         >  
-          <EmailBlock email={email} />
-         </ListItem >))
-      }
+      {renderEmails}
     </List>
     </Box>
   );

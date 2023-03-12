@@ -37,8 +37,8 @@ exports.getAllEmails = async(req, res) => {
 
 exports.sendEmail = async(req, res) => {
     try {
-        const {to, from, subject, contents} = req.body;
-        let email = new emaildb({from: req.user.email, to, subject, contents});
+        const {to, subject, contents} = req.body;
+        let email = new emaildb({from: req.user.email, fromName: req.user.fromFirstName, to, subject, contents});
         let savedEmail = await email.save();
         res.status(200).send(savedEmail);
     } catch (error) {

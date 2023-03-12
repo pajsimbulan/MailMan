@@ -10,64 +10,62 @@ import Toolbar from '@mui/material/Toolbar';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import SendIcon from '@mui/icons-material/Send';
-import { makeStyles } from '@material-ui/styles';
 import { Avatar } from '@mui/material';
-import { light } from '@mui/material/styles/createPalette';
 
-const ComposeEmailContext = React.createContext();
 
-const useStyles = makeStyles( theme => ({
-    dialog: {
-       width: '100%',
-       height: '90%',
-     },
- }));
-
-export default function EmailContentWindow ({ closeWindow, email}) {
+export default function EmailContentWindow ({ closeEmail, email}) {
     const [open, setOpen] = React.useState(true);
-    const classes = useStyles();
 
     const handleClose = () => {
+        console.log('handleClose called');
         setOpen(false);
-        closeWindow();
+        closeEmail();
     };  
-    const handleOpen = () => {
-        setOpen(true);
-    }    
     return (     
         <Box>
-                <Dialog PaperProps={{ style: {
-                        minHeight: '50%',
-                        maxHeight: '50%',
-                        minWidth: '50%',
-                        maxWidth: '50%',
+            <Dialog 
+                PaperProps={{ style: {
+                        minHeight: '90%',
+                        maxHeight: '90%',
+                        minWidth: '90%',
+                        maxWidth: '90%',
                         borderRadius:10,
-
-                    }}}  open={open} onClose={handleClose}>
-                <AppBar elevation={0} sx={{ position: 'relative'}}>
-                    <Toolbar sx={{justifyContent:'space-evenly'}}>
-                        <Avatar sx={{marginRight: '4px'}}>
-                        </Avatar>
-                        <Typography variant="body2" sx={{fontSize: 15}}>
-                            {email.to}
+                    }}}  open={open} onClose={() => {
+                        console.log('Modal closed');
+                        handleClose();
+                      }}>
+                <Box sx={{display:'flex', flexDirection:'row', flexWrap:'wrap', p:2}}>
+                    <Box sx={{width:'33.33%', display:'flex', flexDirection:'row',}}>   
+                        <Avatar sx={{mr:2, height:60, width:60}} />
+                    <Box sx={{display:'flex', flexDirection:'column', my:'auto'}}>
+                        <Typography variant="body2" sx={{fontSize: 15, fontWeight:'bold'}}>
+                            {'Zaheer'}
                         </Typography>
-                        <Box flexGrow={1}></Box>
-                        <Typography sx={{fontWeight:"bold"}}>  
-                            {email.subject}
+                        <Typography variant="body2" sx={{fontSize: 12}}>
+                            {'<'+ email.from + '>'}
                         </Typography>
-                        <Box sx={{ flex: 1 }}></Box>
-                        
+                    </Box>
+                    </Box>
+                    <Box sx={{width:'33.33%', display:'flex', justifyContent:'center'}}>
+                        <Typography sx={{fontWeight:"bold", my:'auto'}}>  
+                            {email.subject} 
+                        </Typography>
+                    </Box>    
+                    <Box sx={{width:'33.33%', display:'flex', justifyContent:'end'}}>
                         <IconButton
                         edge="start"
                         color="inherit"
-                        onClick={handleClose}
+                        onClick={() => {
+                            console.log('Close button clicked');
+                            handleClose();
+                          }}
                         aria-label="close"
+                        sx={{mr:1}}
                         >
                         <CloseIcon />
-                        </IconButton>
-                    </Toolbar>
-                </AppBar>
+                        </IconButton>   
+                    </Box>    
+                </Box>
                     <DialogContent>
                     <TextField
                         autoFocus

@@ -7,6 +7,12 @@ const emailSchema = new mongoose.Schema(
             required: true,
             lowercase: true,
         },
+        fromFirstName: {
+            type: String,
+            required: true,
+            min: 3,
+            max: 100,
+        },
         to: {
             type: String,
             required: true,
