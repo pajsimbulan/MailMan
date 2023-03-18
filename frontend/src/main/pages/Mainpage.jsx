@@ -1,24 +1,9 @@
 import * as React from 'react';
-import Paper from '@material-ui/core/Paper';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { Box } from '@mui/system';
-import EmailAppBar from '../components/MailAppBar';
-import EmailNavBar from '../components/MailNavBar';
-import EmailBody from '../components/MailBody';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-const theme = createTheme({
-  palette: {
-    colors: {
-      bg:'#FBFBFB',
-      color2:'#F1F5F9',
-      text: '#334155',
-      button: '#0F172A',
-    }
-  },
-});
-
-
+import MailAppBar from '../components/MailAppBar';
+import MailNavBar from '../components/MailNavBar';
+import MailBody from '../components/MailBody';
 
 export const GlobalContext = React.createContext();
 function Mainpage() {
@@ -29,12 +14,12 @@ function Mainpage() {
       <Grid2 container>
         <GlobalContext.Provider value={{selectedIndex, setSelectedIndex}}>
         <Grid2  xs={2} >
-            <EmailNavBar />
+            <MailNavBar />
         </Grid2>
         </GlobalContext.Provider>
         <Grid2 xs={10} >
-          <EmailAppBar />
-          <EmailBody/>
+          <MailAppBar />
+          <MailBody/>
         </Grid2>
       </Grid2>
     </Box>

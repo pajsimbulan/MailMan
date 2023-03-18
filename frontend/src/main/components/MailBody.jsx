@@ -35,7 +35,7 @@ const data2={"_id":"63ba603e72a3c87194d8550f",
 const tempDatas= [data1,data2,data1,data2,data1,data2,data1,data2,data1,data2,data1,data2,data1,data2];
 
 
-function EmailBody() {  
+function MailBody() {  
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const user = useContext(UserContext);
@@ -97,4 +97,4 @@ function EmailBody() {
   );
 }
 
-export default EmailBody;
+export default MailBody;

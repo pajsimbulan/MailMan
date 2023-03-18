@@ -15,7 +15,7 @@ import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import { Avatar } from '@mui/material';
 import { UserContext } from '../../App';
 
-export default function EmailAppBar() {
+function MailAppBar() {
   const user = React.useContext(UserContext);
   const theme = useTheme();
   const navigate = useNavigate();
@@ -149,3 +149,5 @@ export default function EmailAppBar() {
     </Box>
   );
 }
+
+export default MailAppBar;

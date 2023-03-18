@@ -19,7 +19,7 @@ import Avatar from '@mui/material/Avatar';
 const ListItemStyling = {m:2, mr:4, borderRadius:3, p:3, overflow:'hidden'};
 const TypographyStyling = {color:'#002159', fontWeight:'bold'};
 
-export default function EmailNavBar() {
+function MailNavBar() {
   const globalVars = React.useContext(GlobalContext);
   console.log('nav bar render');
   const handleListItemClick = (event, index) => {
@@ -113,3 +113,5 @@ export default function EmailNavBar() {
     </Box>
   );
 }
+
+export default MailNavBar;

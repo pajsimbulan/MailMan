@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import { Avatar } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
+import { parseDate } from '../../utils/DateParser'
 
 export default function EmailContentWindow ({ closeEmail, email, onCLose}) {
     const [open, setOpen] = React.useState(true);
@@ -33,11 +34,14 @@ export default function EmailContentWindow ({ closeEmail, email, onCLose}) {
                         minWidth: '90%',
                         maxWidth: '90%',
                         borderRadius:10,
+                        border:'solid',
+                        borderWidth:10,
+                        borderColor:'#C6CED6',
                     }}}  open={open} onClose={() => {
                         console.log('Modal closed');
                         handleClose();
                       }}>
-                <Box sx={{display:'flex', flexDirection:'row', flexWrap:'wrap', p:2}}>
+                <Box sx={{display:'flex', flexDirection:'row', flexWrap:'wrap', p:2,}}>
                     <Box sx={{width:'33.33%', display:'flex', flexDirection:'row',}}>   
                         <Avatar  sx={{mr:2, height:60, width:60}} />
                     <Box sx={{display:'flex', flexDirection:'column', my:'auto'}}>
@@ -55,6 +59,9 @@ export default function EmailContentWindow ({ closeEmail, email, onCLose}) {
                         </Typography>
                     </Box>    
                     <Box sx={{width:'33.33%', display:'flex', justifyContent:'end'}}>
+                      <Typography sx={{my:'auto'}}>
+                        {parseDate(email.createdAt)}
+                      </Typography>
                     <IconButton  sx={{height:40, width:40, my:'auto', mx:1}} onClick={(event) => {event.stopPropagation();setStarred(!starred); console.log('star');}}>
                         {starred? <StarIcon sx={{height:25, width:25,}}/> : <StarBorderIcon sx={{height:25, width:25,}}/>}
                     </IconButton>
@@ -72,9 +79,11 @@ export default function EmailContentWindow ({ closeEmail, email, onCLose}) {
                         </IconButton>   
                     </Box>    
                 </Box>
-                    <DialogContent>
-                    
-                    </DialogContent>
+                    <Box sx={{ width:'99%', height:'100%', bgcolor:'#f5faff', mx:10, borderRadius:5 }}>
+                        <Typography>
+                            {email.contents}
+                        </Typography>
+                    </Box>
                 </Dialog>
             </Box>
     );
