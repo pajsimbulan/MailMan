@@ -1,30 +1,31 @@
 import * as React from 'react';
 import { Box } from '@mui/system';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { Avatar } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
-import { parseDate } from '../../utils/DateParser'
+import ReplyIcon from '@mui/icons-material/Reply';
+import { parseDate } from '../../utils/DateParser';
+import EmailReplying from '../blocks/EmailReplying';
+import EmailReplyBlock from '../blocks/EmailReplyBlock';
 
-export default function EmailContentWindow ({ closeEmail, email, onCLose}) {
+function EmailContentWindow ({ closeEmail, email, onCLose}) {
     const [open, setOpen] = React.useState(true);
     const [starred, setStarred] = React.useState(false);
-
+    const [reply, setReply] = React.useState(false);
+    const replies = React.useRef([]);
+    console.log(replies.current.length);
     const handleClose = () => {
         console.log('handleClose called');
         setOpen(false);
         closeEmail();
         //onClose(starred);
     };  
+  
     return (     
         <Box>
             <Dialog 
@@ -33,10 +34,11 @@ export default function EmailContentWindow ({ closeEmail, email, onCLose}) {
                         maxHeight: '90%',
                         minWidth: '90%',
                         maxWidth: '90%',
-                        borderRadius:10,
                         border:'solid',
-                        borderWidth:10,
-                        borderColor:'#C6CED6',
+                        borderWidth:5,
+                        borderRadius:10,
+                        borderColor:'#edf4fb'
+                        
                     }}}  open={open} onClose={() => {
                         console.log('Modal closed');
                         handleClose();
@@ -79,12 +81,30 @@ export default function EmailContentWindow ({ closeEmail, email, onCLose}) {
                         </IconButton>   
                     </Box>    
                 </Box>
-                    <Box sx={{ width:'99%', height:'100%', bgcolor:'#f5faff', mx:10, borderRadius:5 }}>
+                <Box sx={{ width:'100%' }}>
+                    {/**Main Email*/}
+                    <Box sx={{ display:'flex', flexGrow:1, flexDirection:'column',bgcolor:'#ECEFF1',mx:5, p:2, borderRadius:5, gap:2 }}>
                         <Typography>
                             {email.contents}
                         </Typography>
+                        <Avatar sx={{width:200,height:200}}/>
                     </Box>
-                </Dialog>
-            </Box>
+                    {replies.current.map((reply) => {return <EmailReplyBlock key={reply} contents={reply}/>})}
+                    {reply? null :
+                    <Box sx={{display:'flex', flexGrow:1, justifyContent:'end', my:1, mx:5,}}>
+                        <Button variant='outlined' onClick={() => {setReply(true);}} endIcon={<ReplyIcon />} sx={{border:'solid', borderRadius:4, borderWidth:2,textTransform: 'none', color:'#338feb'}}>
+                            Reply
+                        </Button>
+                    </Box> }
+                     {/** END of Main Email*/}
+                     {/** Reply Email */}
+                     {reply? <EmailReplying submitReply={(value) => {setReply(false); replies.current.push(value)}}  exitReply={() => {setReply(false);}}/> : null}
+                    {/** END of Reply Email */}
+                    
+                </Box>
+        </Dialog>
+    </Box>
     );
 }
+
+export default EmailContentWindow;

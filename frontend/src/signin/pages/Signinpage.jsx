@@ -79,7 +79,7 @@ function Signinpage() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx = {{width: "100%",minHeight:'100vh', background:'repeating-radial-gradient(#EBF5FF,#FCFDFE)', m:-1, display: 'flex', flexDirection:'column'}}>
+      <Box sx = {{width: "100%",minHeight:'100vh', background:'repeating-radial-gradient(#CCE3FA,#EDF6FF)', m:-1, display: 'flex', flexDirection:'column'}}>
       <ErrorActionAlert openAlert={openErrorAlert} message={alertMessage} closeAlert={() => {setOpenErrorAlert(!openErrorAlert)}}/>
         <Box component="form" onSubmit={(event) => {submitLogin(event);}} 
           noValidate sx = {{width: "100%", height: '100vh',display: 'flex', flexDirection:'column', alignItems:'center'}}>
@@ -88,7 +88,7 @@ function Signinpage() {
           <Avatar src='postman.jpg' sx={{width:150, height:150, border:'solid', borderWidth:'3px', borderColor: 'colors.bc',background:'transparent'}}/>
           <Typography sx={{fontWeight:'bold', fontSize:'25px', color:'colors.text'}}>MAN</Typography>
           </Box>
-          <Box sx={{
+            <Box sx={{
               width: 'auto',
               height: 'auto',
               borderRadius: 3,
