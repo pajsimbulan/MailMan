@@ -48,6 +48,10 @@ const userSchema = new mongoose.Schema(
         updatedAt: {
             type: Date,
             default: () => Date.now(),
+        },
+        inboxes: {
+            type:[String],
+            default: ["inbox", "sent", "starred", "drafts","trash", "spam", "all emails"],
         }
     },
 );

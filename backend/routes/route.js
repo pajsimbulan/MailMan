@@ -1,36 +1,60 @@
 const mongoose = require('mongoose');
 const userdb = require('../schemas/user');
 const emaildb = require('../schemas/email');
+const inboxdb = require('../schemas/inbox');
 const bcrypt = require('bcrypt');
-const jwtSecretKey = process.env.JWT_SECRET_KEY;
 const jwt = require('jsonwebtoken');
+const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
 
 exports.getEmail = async (req, res) => {
     try {
         let email = await emaildb.findOne({_id: req.query._id});
         if (email == null) {
-            email = undefined;
+            res.status(404).send("Email doesn't exist");
         }
         res.status(200).send(email);
     } catch (error) {
         console.log(error.message);
-        res.status(401).send(error.message);
+        res.status(500).send(error.message);
     }
 };
 
-exports.getAllEmails = async(req, res) => {
+exports.getInbox = async(req, res) => {
     try {
-        console.log(req.user.email);
-        let emails = await emaildb.find({from: req.user.email});
-        console.log(emails);
-        emails = emails.concat(await emaildb.find({to: req.user.email}));
-        emails.sort((a,b) => {return (b-a)});
-        res.status(200).send(emails);
-        return emails;
+        let inbox = await inboxdb.find({ userId: req.body.userId, inboxName: req.query.inboxName.tolowercase() })
+        .populate({ path: 'emails', options: { sort: { createdAt: 'asc' } } });
+        if (inbox == null) {
+            res.status(404).send("Inbox doesn't exist");
+        }
+        res.status(200).send(inbox);
     } catch (error) {
         console.log(error.message);
-        res.status(401).send(error.message);
+        res.status(500).send(error.message);
+    }
+    
+};
+
+exports.moveEmail = async(req, res) => {
+    try {
+        let fromInbox = await inboxdb.find({ userId: req.body.userId, inboxName: req.body.fromInboxName.tolowercase()});
+        let toInbox = await inboxdb.find({ userId: req.body.userId,  inboxName: req.body.toInboxName.tolowercase()});
+        if ( (fromInbox == null) || (toInbox == null) ) {
+            res.status(404).send("Inbox doesn't exist");
+        }
+        //delete email from fromInbox
+        const tempFromArray = fromInbox.emails.filter((email) => email._id != req.body.emailId);
+        fromInbox.emails = tempFromArray;
+        await fromInbox.save();
+        
+        // add email to toInbox
+        toInbox.emails.push(req.body.emailId);
+        await toInbox.save();
+        res.status(200).send("Email moved successfully");
+    
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send(error.message);
     }
     
 };

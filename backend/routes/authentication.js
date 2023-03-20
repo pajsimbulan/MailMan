@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const userdb = require('../schemas/user');
 const emaildb = require('../schemas/email');
+const inboxdb = require('../schemas/inbox');
 const bcrypt = require('bcrypt');
 const jwtSecretKey = 's3Cr3Tk3Y';
 
@@ -21,6 +22,15 @@ exports.register = async (req, res) => {
         });
         let savedUser = await newUser.save();
         delete savedUser.password;
+
+        //initialize inboxes
+        savedUser.inboxes.forEach(async (inboxName) => {
+          let newInbox = new inboxdb({
+            userId: savedUser._id,
+            inboxName,
+          });
+          await newInbox.save();
+        });
         res.status(201).json(savedUser); 
     } catch(error) {
         res.status(400).send(error.message);

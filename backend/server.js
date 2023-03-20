@@ -17,7 +17,7 @@ app.use(cors());
 
 //SERVER MIDDLEWARE + ENDPOINTS
 app.get(`/${VERSION}/authorize`,   auth.authorize);
-app.get(`/${VERSION}/email`,       auth.check, route.getAllEmails);
+app.get(`/${VERSION}/inbox/:name`,       auth.check, route.getInbox);
 app.get(`/${VERSION}/email/:id`,   auth.check, route.getEmail);
 
 app.post(`/${VERSION}/user`,         auth.check, route.getUserInfo);
@@ -26,6 +26,7 @@ app.post(`/${VERSION}/login`,      auth.login);
 app.post(`/${VERSION}/email`,      auth.check, route.sendEmail);
 
 app.put(`/${VERSION}/user`,   auth.check, route.updateUserInfo); 
+app.put(`/${VERSION}/email`,   auth.check, route.moveEmail);
 app.put(`/${VERSION}/changepassword`, auth.changePassword);
 
 
