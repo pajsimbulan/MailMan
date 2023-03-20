@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -6,9 +7,9 @@ const route = require('./routes/route');
 const app = express();
 
 //SERVER CONSTANTS
-const PORT = 4000;
-const DB_URL = 'mongodb+srv://mailman:mailman98@cluster0.s2lr8pa.mongodb.net/?retryWrites=true&w=majority';
-const VERSION = 'v0';
+const PORT = process.env.PORT;
+const DB_URL = process.env.DB_URL;
+const VERSION = process.env.VERSION;
 
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));

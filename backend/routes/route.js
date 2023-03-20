@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const userdb = require('../schemas/user');
 const emaildb = require('../schemas/email');
 const bcrypt = require('bcrypt');
-const jwtSecretKey = 's3Cr3Tk3Y';
+const jwtSecretKey = process.env.JWT_SECRET_KEY;
 const jwt = require('jsonwebtoken');
 
 
