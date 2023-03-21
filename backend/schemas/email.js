@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const replyEmailSchema = require('./replyEmail');
 
 const emailSchema = new mongoose.Schema(
     {
@@ -31,6 +32,10 @@ const emailSchema = new mongoose.Schema(
             immutable: true,
             default: () => Date.now(),
         },
+        replies: {
+            type:[replyEmailSchema],
+            default: [],
+        }
     },
 );
 

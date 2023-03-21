@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const userdb = require('../schemas/user');
 const emaildb = require('../schemas/email');
 const inboxdb = require('../schemas/inbox');
+const replydb = require('../schemas/replyEmail');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const jwtSecretKey = process.env.JWT_SECRET_KEY;
@@ -22,7 +23,7 @@ exports.getEmail = async (req, res) => {
 
 exports.getInbox = async(req, res) => {
     try {
-        let inbox = await inboxdb.find({ userId: req.body.userId, inboxName: req.query.inboxName.tolowercase() })
+        let inbox = await inboxdb.find({ userId: req.user._id, inboxName: req.query.inboxName.tolowercase() })
         .populate({ path: 'emails', options: { sort: { createdAt: 'asc' } } });
         if (inbox == null) {
             res.status(404).send("Inbox doesn't exist");
@@ -37,8 +38,8 @@ exports.getInbox = async(req, res) => {
 
 exports.moveEmail = async(req, res) => {
     try {
-        let fromInbox = await inboxdb.find({ userId: req.body.userId, inboxName: req.body.fromInboxName.tolowercase()});
-        let toInbox = await inboxdb.find({ userId: req.body.userId,  inboxName: req.body.toInboxName.tolowercase()});
+        let fromInbox = await inboxdb.find({ userId: req.user._id, inboxName: req.body.fromInboxName.tolowercase()});
+        let toInbox = await inboxdb.find({ userId: req.user._id,  inboxName: req.body.toInboxName.tolowercase()});
         if ( (fromInbox == null) || (toInbox == null) ) {
             res.status(404).send("Inbox doesn't exist");
         }
@@ -64,10 +65,34 @@ exports.sendEmail = async(req, res) => {
         const {to, subject, contents} = req.body;
         let email = new emaildb({from: req.user.email, fromName: req.user.fromFirstName, to, subject, contents});
         let savedEmail = await email.save();
+        await inboxdb.find({ userId: req.user._id, inboxName: 'sent'}).emails.push(savedEmail._id);
+        
+        let userRecipient = userdb.find({email: to});
+        if(userRecipient !== null) {
+            await inboxdb.find({ userId: userRecipient._id,  inboxName: 'inbox'}).emails.push(savedEmail._id);
+        }
         res.status(200).send(savedEmail);
     } catch (error) {
         console.log(error.message);
-        res.status(401).send(error.message);
+        res.status(500).send(error.message);
+    }
+}
+
+exports.replyEmail = async(req, res) => { 
+    try {
+        const {originalEmailId ,contents} = req.body;
+        let replyEmail = replydb({from: req.user.email, fromName: req.user.fromFirstName, contents});
+        replyEmail.save();
+        let originEmail = emaildb.find({_id: originalEmailId});
+        if(originEmail == null) {
+            res.status(404).send("Email doesn't exist");
+        }
+        originEmail.replies.push(replyEmail._id);
+        originEmail.save();
+        res.status(200).send("Reply sent successfully");
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send(error.message);
     }
 }
 
