@@ -9,7 +9,7 @@ import { Avatar } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import ReplyIcon from '@mui/icons-material/Reply';
-import { parseDate } from '../../utils/DateParser';
+import formatDate from '../../utils/DateFormat';
 import EmailReplying from '../blocks/EmailReplying';
 import EmailReplyBlock from '../blocks/EmailReplyBlock';
 
@@ -61,8 +61,8 @@ function EmailContentWindow ({ closeEmail, email, onCLose}) {
                         </Typography>
                     </Box>    
                     <Box sx={{width:'33.33%', display:'flex', justifyContent:'end'}}>
-                      <Typography sx={{my:'auto'}}>
-                        {parseDate(email.createdAt)}
+                      <Typography sx={{my:'auto', color:'#8e8080', fontSize:13}}>
+                        {formatDate(email.createdAt)} 
                       </Typography>
                     <IconButton  sx={{height:40, width:40, my:'auto', mx:1}} onClick={(event) => {event.stopPropagation();setStarred(!starred); console.log('star');}}>
                         {starred? <StarIcon sx={{height:25, width:25,}}/> : <StarBorderIcon sx={{height:25, width:25,}}/>}

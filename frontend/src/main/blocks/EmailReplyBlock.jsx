@@ -5,7 +5,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { Avatar, Divider, TextField } from '@mui/material';
-import { parseDate } from '../../utils/DateParser';
+import parseDate from '../../utils/DateParser';
+import formatDate from '../../utils/DateFormat';
 
 function EmailReplyBlock ({contents}) {
     const [value, setValue] = React.useState('');
@@ -20,8 +21,8 @@ function EmailReplyBlock ({contents}) {
                         You
                     </Typography>
                 </Box>
-                <Typography>
-                    {parseDate(new Date())}
+                <Typography sx={{color:'#8e8080', fontSize:13}}>
+                    { formatDate(new Date()) + ' ('+ parseDate(new Date()) + ')'}
                 </Typography>
             </Box>
             <Typography>

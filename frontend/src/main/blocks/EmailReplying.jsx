@@ -11,7 +11,7 @@ function EmailReplying ({submitReply, exitReply}) {
     return (
     <Box>
         <Divider  sx={{my:2}}/>
-        <Box component="form" sx={{ display:'flex', flexGrow:1, flexDirection:'column',bgcolor:'#ECEFF1',mx:5, p:2, borderRadius:5, gap:2}}>   
+        <Box component="form" onSubmit={() => {submitReply(value);}} sx={{ display:'flex', flexGrow:1, flexDirection:'column',bgcolor:'#ECEFF1',mx:5, p:2, borderRadius:5, gap:2}}>   
             <Box sx={{display:'flex', justifyContent:'space-between'}}>
                 <Box sx={{display:'flex', flexDirection:'row', gap:1}}>
                     <Avatar />
@@ -26,7 +26,7 @@ function EmailReplying ({submitReply, exitReply}) {
             <TextField onChange={(event) => {setValue(event.target.value)}} autoFocus sx={{"& fieldset": { border: 'none' }}}/>
         </Box>
         <Box sx={{display:'flex', justifyContent:'end', my:1, mx:5,}}>
-            <Button type="button" variant='contained' onClick={() => {submitReply(value);}} sx={{border:'solid', borderRadius:4, borderWidth:0,textTransform: 'none', }}>
+            <Button type="submit" variant='contained' onSubmit={() => {submitReply(value);}} sx={{border:'solid', borderRadius:4, borderWidth:0,textTransform: 'none', }}>
                 Send
             </Button>
         </Box> 

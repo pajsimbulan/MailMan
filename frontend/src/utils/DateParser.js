@@ -1,12 +1,12 @@
 /**
  * parses a iso string object and compares it to current date
  * returns difference of date as string value in different formats
- * @param {ISO String data} dateStr 
+ * @param {ISO String data} dateString 
  * @returns string vals Today,Yesterday,2D-6D, MM/DD/YYYY
  */
-export const parseDate = (dateStr) => {
+function parseDate (dateString) {
     const now = new Date();
-    const date = new Date(dateStr);
+    const date = new Date(dateString);
     
     if (date.toDateString() === now.toDateString()) {
       return 'Today';
@@ -25,3 +25,5 @@ export const parseDate = (dateStr) => {
       return `${month}/${day}/${year}`;
     }
 }
+
+export default parseDate;

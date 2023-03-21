@@ -77,7 +77,7 @@ function Profile() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{width: "100%", minHeight: '100vh',background:'repeating-radial-gradient(#EBF5FF,#FCFDFE)'}}>
+      <Box sx={{width: "100%", minHeight: '100vh',background:'repeating-radial-gradient(#CCE3FA,#EDF6FF)', m:-1}}>
         <ErrorActionAlert openAlert={openErrorAlert.current} message={alertMessage} closeAlert={() => {openErrorAlert.current = (!openErrorAlert.current)}}/>
         <SuccessActionAlert openAlert={openSuccessAlert.current} message={alertMessage} closeAlert={() => {openSuccessAlert.current = (!openSuccessAlert.current)}}/>
           <Box sx={{display: 'flex', flexDirection:'row',  alignItems:'center', mt:1,ml:3}}>
