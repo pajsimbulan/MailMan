@@ -11,3 +11,21 @@
 - MongoDB
 - JWT + bcrypt (Authentication) <br/>
 ****************
+# Screenshots <br/>
+(mainpage excluded)<br/>
+**Signin**
+<img src="./Screenshots/Signinpage.jpg"  alt="img" />
+ <br/> <br/>
+**Signup**
+<img src="./Screenshots/Signuppage.jpg"  alt="img" />
+ <br/> <br/>
+ **Forgot Password**
+<img src="./Screenshots/ForgotPassword.jpg"  alt="img" />
+ <br/> <br/>
+ **Account Creation Successful**
+<img src="./Screenshots/AccountCreationSuccessful.jpg"  alt="img" />
+ <br/> <br/>
+ **Edit Profile**
+<img src="./Screenshots/Profilepage.jpg"  alt="img" />
+ <br/> <br/>
+
