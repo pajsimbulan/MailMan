@@ -53,7 +53,7 @@ function Signuppage() {
       return;
     }
     let statusCode;
-    fetch('http://localhost:4000/v0/changepassword', {
+    fetch('http://localhost:4000/v0/changePassword', {
     method: 'PUT',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({

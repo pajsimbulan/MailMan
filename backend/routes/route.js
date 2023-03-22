@@ -10,7 +10,8 @@ const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
 exports.getEmail = async (req, res) => {
     try {
-        let email = await emaildb.findOne({_id: req.query._id});
+        console.log(`email id: ${req.params.id}`);
+        let email = await emaildb.findOne({_id: req.params.id}).populate('replies');
         if (email == null) {
             res.status(404).send("Email doesn't exist");
         }
@@ -21,10 +22,12 @@ exports.getEmail = async (req, res) => {
     }
 };
 
+
 exports.getInbox = async(req, res) => {
-    try {
-        let inbox = await inboxdb.find({ userId: req.user._id, inboxName: req.query.inboxName.tolowercase() })
-        .populate({ path: 'emails', options: { sort: { createdAt: 'asc' } } });
+    try {   
+        const {userId, inboxName} = req.params;
+        let inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase()})
+        .populate('emails').populate({path:'emails', populate:{path:'replies'}});
         if (inbox == null) {
             res.status(404).send("Inbox doesn't exist");
         }
@@ -36,20 +39,22 @@ exports.getInbox = async(req, res) => {
     
 };
 
+
 exports.moveEmail = async(req, res) => {
     try {
-        let fromInbox = await inboxdb.find({ userId: req.user._id, inboxName: req.body.fromInboxName.tolowercase()});
-        let toInbox = await inboxdb.find({ userId: req.user._id,  inboxName: req.body.toInboxName.tolowercase()});
+        const {userId, fromInboxName, toInboxName, emailId} = req.body;
+        let fromInbox = await inboxdb.findOne({ userId: userId, inboxName: fromInboxName.toLowerCase()});
+        let toInbox = await inboxdb.findOne({ userId: userId,  inboxName: toInboxName.toLowerCase()});
         if ( (fromInbox == null) || (toInbox == null) ) {
             res.status(404).send("Inbox doesn't exist");
         }
         //delete email from fromInbox
-        const tempFromArray = fromInbox.emails.filter((email) => email._id != req.body.emailId);
-        fromInbox.emails = tempFromArray;
+        const tempFromArray = fromInbox.emails.filter((email) => email._id != emailId);
+        fromInbox.emails = [...tempFromArray];
         await fromInbox.save();
         
         // add email to toInbox
-        toInbox.emails.push(req.body.emailId);
+        toInbox.emails.push(emailId);
         await toInbox.save();
         res.status(200).send("Email moved successfully");
     
@@ -60,18 +65,28 @@ exports.moveEmail = async(req, res) => {
     
 };
 
+
 exports.sendEmail = async(req, res) => {
     try {
-        const {to, subject, contents} = req.body;
-        let email = new emaildb({from: req.user.email, fromName: req.user.fromFirstName, to, subject, contents});
+        const {userId, from, fromFirstName, to, subject, contents} = req.body;   
+        let email = new emaildb({from, fromFirstName, to, subject, contents}); 
         let savedEmail = await email.save();
-        await inboxdb.find({ userId: req.user._id, inboxName: 'sent'}).emails.push(savedEmail._id);
-        
-        let userRecipient = userdb.find({email: to});
+        const fromInbox = await inboxdb.findOne({ userId: userId, inboxName: 'sent'});
+        const userAllEmails = await inboxdb.findOne({ userId: userId, inboxName: 'all emails'});
+        fromInbox.emails.push(savedEmail._id);
+        userAllEmails.emails.push(savedEmail._id);
+        await fromInbox.save();
+        await userAllEmails.save();
+        let userRecipient = await userdb.findOne({email: to});
         if(userRecipient !== null) {
-            await inboxdb.find({ userId: userRecipient._id,  inboxName: 'inbox'}).emails.push(savedEmail._id);
+            const toInbox = await inboxdb.findOne({ userId: userRecipient._id,  inboxName: 'inbox'});
+            const userRecepientAllEmails = await inboxdb.findOne({ userId: userRecipient._id,  inboxName: 'all emails'});
+            toInbox.emails.push(savedEmail._id);
+            userRecepientAllEmails.emails.push(savedEmail._id);
+            await toInbox.save();
+            await userRecepientAllEmails.save();
         }
-        res.status(200).send(savedEmail);
+        res.status(201).send("Email sent successfully");
     } catch (error) {
         console.log(error.message);
         res.status(500).send(error.message);
@@ -80,41 +95,23 @@ exports.sendEmail = async(req, res) => {
 
 exports.replyEmail = async(req, res) => { 
     try {
-        const {originalEmailId ,contents} = req.body;
-        let replyEmail = replydb({from: req.user.email, fromName: req.user.fromFirstName, contents});
+        const {userEmail, userFirstName, originalEmailId,contents} = req.body;
+        let replyEmail = new replydb({from: userEmail, fromFirstName: userFirstName, contents});
         replyEmail.save();
-        let originEmail = emaildb.find({_id: originalEmailId});
-        if(originEmail == null) {
+        console.log(originalEmailId);
+        let originalEmail = await emaildb.findOne({_id: originalEmailId});
+        console.log(originalEmail);
+        if(originalEmail == null) {
             res.status(404).send("Email doesn't exist");
         }
-        originEmail.replies.push(replyEmail._id);
-        originEmail.save();
-        res.status(200).send("Reply sent successfully");
+        originalEmail.replies.push(replyEmail._id);
+        originalEmail.save();
+        res.status(201).send(replyEmail);
     } catch (error) {
         console.log(error.message);
         res.status(500).send(error.message);
     }
 }
-
-exports.getUserInfo = async (req, res) => {
-    try{
-        const {email} = req.body;
-        const tempUser = await userdb.findOne({email: email});
-        if(tempUser == null) {
-        res.status(404).send("Account doesn't exist");
-        return;
-        }
-        res.status(200).json({firstName: tempUser.firstName,
-            email: tempUser.email,
-            createdAt: tempUser.createdAt,
-            lastName: tempUser.lastName,
-            gender: tempUser.gender,
-            birthDate: tempUser.birthDate});
-  } catch(error) {
-    res.status(500).send(error.message);
-  }
-};
-
 
 exports.updateUserInfo = async (req, res) => {
     try {

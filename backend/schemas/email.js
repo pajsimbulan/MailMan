@@ -33,8 +33,9 @@ const emailSchema = new mongoose.Schema(
             default: () => Date.now(),
         },
         replies: {
-            type:[replyEmailSchema],
+            type:[mongoose.Schema.Types.ObjectId],
             default: [],
+            ref: 'ReplyEmail',
         }
     },
 );

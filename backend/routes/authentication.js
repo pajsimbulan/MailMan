@@ -3,7 +3,7 @@ const userdb = require('../schemas/user');
 const emaildb = require('../schemas/email');
 const inboxdb = require('../schemas/inbox');
 const bcrypt = require('bcrypt');
-const jwtSecretKey = 's3Cr3Tk3Y';
+const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
 exports.register = async (req, res) => {
     try {
@@ -73,7 +73,7 @@ exports.check = (req, res, next) => {
       if (err) {
         return res.sendStatus(400);
       }
-      req.user = user;
+      req.userEmail = user.email;
       next();
     });
   } else {

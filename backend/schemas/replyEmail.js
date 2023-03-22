@@ -27,5 +27,4 @@ const replyEmailSchema = new mongoose.Schema(
 
  const replyEmail = mongoose.model("ReplyEmail", replyEmailSchema);
 
-module.exports = replyEmail;
-module.exports = replyEmailSchema;
+ module.exports = replyEmail;

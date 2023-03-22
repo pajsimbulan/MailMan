@@ -14,6 +14,7 @@ const inboxSchema = new mongoose.Schema({
     emails: {
         type:[mongoose.Schema.Types.ObjectId],
         default: [],
+        ref: 'Email',
     },
 
 });

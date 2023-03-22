@@ -72,6 +72,8 @@ function Signinpage() {
       openError("Error: Invalid Input");
     } else {
       openError("Error: Make sure to fill all the required forms");
+      console.log(error.message);
+      console.log(statusCode);
     }
     
   }); 

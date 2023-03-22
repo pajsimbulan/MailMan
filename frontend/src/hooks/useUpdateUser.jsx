@@ -41,7 +41,7 @@ import {useState, useEffect, useRef} from 'react';
 
       async function updatePassword(firstName, email, newPassword) {
         return new Promise((resolve, reject) => {
-          fetch('http://localhost:4000/v0/changepassword', {
+          fetch('http://localhost:4000/v0/changePassword', {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
