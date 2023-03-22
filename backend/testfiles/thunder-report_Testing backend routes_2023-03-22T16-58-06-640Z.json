@@ -1,0 +1,102 @@
+{
+  "client": "Thunder Client",
+  "collectionName": "Testing backend routes",
+  "folderName": "",
+  "environmentName": "",
+  "collectioId": "0d517f8e-59af-4eb6-8372-02f7db2f980a",
+  "environmentId": "",
+  "dateExported": "2023-03-22T16:58:06.640Z",
+  "totalIterations": 1,
+  "totalPassed": 1,
+  "totalFailed": 0,
+  "failedIterations": [],
+  "iterations": [
+    {
+      "iteration": 1,
+      "totalRequests": 6,
+      "totalPassed": 6,
+      "totalFailed": 0,
+      "requests": [
+        {
+          "reqId": "29f76859-71da-4f60-85e1-7cf8596dfcb9",
+          "name": "localhost:4000/v0/login",
+          "method": "POST",
+          "url": "http://localhost:4000/v0/login",
+          "resCode": 200,
+          "resTime": 141,
+          "resTimeText": "141 ms",
+          "resSize": 621,
+          "passed": 0,
+          "total": 0,
+          "tests": []
+        },
+        {
+          "reqId": "84377c13-0c73-47a9-a155-42b2e52a921a",
+          "name": "localhost:4000/v0/email",
+          "method": "POST",
+          "url": "http://localhost:4000/v0/email",
+          "resCode": 201,
+          "resTime": 429,
+          "resTimeText": "429 ms",
+          "resSize": 23,
+          "passed": 0,
+          "total": 0,
+          "tests": []
+        },
+        {
+          "reqId": "63550361-512a-4aea-b2cb-01ffcc005498",
+          "name": "localhost:4000/v0/email/641a42d78b9f71a863a583e2",
+          "method": "GET",
+          "url": "http://localhost:4000/v0/email/641a42d78b9f71a863a583e2",
+          "resCode": 200,
+          "resTime": 90,
+          "resTimeText": "90 ms",
+          "resSize": 873,
+          "passed": 0,
+          "total": 0,
+          "tests": []
+        },
+        {
+          "reqId": "389d2b86-3254-4a07-8126-35878d312ce8",
+          "name": "localhost:4000/v0/user/6418ce3d4872485af19a727a/inbox/sent",
+          "method": "GET",
+          "url": "http://localhost:4000/v0/user/6418ce3d4872485af19a727a/inbox/sent?page=1&limit=5",
+          "resCode": 200,
+          "resTime": 162,
+          "resTimeText": "162 ms",
+          "resSize": 1657,
+          "passed": 0,
+          "total": 0,
+          "tests": []
+        },
+        {
+          "reqId": "2e2e114d-8741-4b97-ae80-0c37170dce4f",
+          "name": "localhost:4000/v0/moveEmail",
+          "method": "PUT",
+          "url": "http://localhost:4000/v0/moveEmail",
+          "resCode": 200,
+          "resTime": 160,
+          "resTimeText": "160 ms",
+          "resSize": 24,
+          "passed": 0,
+          "total": 0,
+          "tests": []
+        },
+        {
+          "reqId": "db636fba-da74-449f-b566-ae93a5cf3063",
+          "name": "localhost:4000/v0/reply",
+          "method": "POST",
+          "url": "http://localhost:4000/v0/reply",
+          "resCode": 201,
+          "resTime": 53,
+          "resTimeText": "53 ms",
+          "resSize": 189,
+          "passed": 0,
+          "total": 0,
+          "tests": []
+        }
+      ]
+    }
+  ],
+  "folderId": ""
+}

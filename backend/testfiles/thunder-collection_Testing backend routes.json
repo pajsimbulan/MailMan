@@ -1,0 +1,145 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Testing backend routes",
+    "dateExported": "2023-03-22T16:59:26.722Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "29f76859-71da-4f60-85e1-7cf8596dfcb9",
+            "colId": "0d517f8e-59af-4eb6-8372-02f7db2f980a",
+            "containerId": "",
+            "name": "localhost:4000/v0/login",
+            "url": "localhost:4000/v0/login",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2023-03-22T16:53:52.745Z",
+            "modified": "2023-03-22T16:53:52.745Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\":\"admin@mailman.com\",\n  \"password\":\"admin\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "84377c13-0c73-47a9-a155-42b2e52a921a",
+            "colId": "0d517f8e-59af-4eb6-8372-02f7db2f980a",
+            "containerId": "",
+            "name": "localhost:4000/v0/email",
+            "url": "localhost:4000/v0/email",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2023-03-22T16:54:10.064Z",
+            "modified": "2023-03-22T16:54:10.064Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"userId\":\"6418ce3d4872485af19a727a\",\n  \"from\":\"admin@mailman.com\",\n  \"fromFirstName\":\"Admin\",\n  \"to\":\"admin2@mailman.com\",\n  \"subject\":\"admin1 to admin2 email testing api\",\n  \"contents\":\"Hey Admin1 its Admin2.  I'm testint the api from the backend agannn1111!\"\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQG1haWxtYW4uY29tIiwicGFzc3dvcmQiOiJhZG1pbiIsImlhdCI6MTY3OTQ0MDM2MiwiZXhwIjoxNjc5NTI2NzYyfQ.CkIixm8HGJLCTll50yxR7EWfK924VHmbBAx3Y96b8mE"
+            },
+            "tests": []
+        },
+        {
+            "_id": "63550361-512a-4aea-b2cb-01ffcc005498",
+            "colId": "0d517f8e-59af-4eb6-8372-02f7db2f980a",
+            "containerId": "",
+            "name": "localhost:4000/v0/email/641a42d78b9f71a863a583e2",
+            "url": "localhost:4000/v0/email/641a42d78b9f71a863a583e2",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2023-03-22T16:54:16.472Z",
+            "modified": "2023-03-22T16:54:16.472Z",
+            "headers": [],
+            "params": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQG1haWxtYW4uY29tIiwicGFzc3dvcmQiOiJhZG1pbiIsImlhdCI6MTY3OTQ5ODc5MSwiZXhwIjoxNjc5NTg1MTkxfQ.vzAn5AMJsKIPNQvFyGKFsKlP-Ofxe-A5dvZDtyvm-XM"
+            },
+            "tests": []
+        },
+        {
+            "_id": "389d2b86-3254-4a07-8126-35878d312ce8",
+            "colId": "0d517f8e-59af-4eb6-8372-02f7db2f980a",
+            "containerId": "",
+            "name": "localhost:4000/v0/user/6418ce3d4872485af19a727a/inbox/sent",
+            "url": "localhost:4000/v0/user/6418ce3d4872485af19a727a/inbox/sent?page=1&limit=5",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2023-03-22T16:54:23.074Z",
+            "modified": "2023-03-22T16:54:23.074Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "page",
+                    "value": "1",
+                    "isPath": false
+                },
+                {
+                    "name": "limit",
+                    "value": "5",
+                    "isPath": false
+                }
+            ],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQG1haWxtYW4uY29tIiwicGFzc3dvcmQiOiJhZG1pbiIsImlhdCI6MTY3OTUwMzMwMSwiZXhwIjoxNjc5NTg5NzAxfQ.Mw0Hnx3TnIxXLErv_fWUMAxCgvrX1zHnCHh9Fi9sv8A"
+            },
+            "tests": []
+        },
+        {
+            "_id": "2e2e114d-8741-4b97-ae80-0c37170dce4f",
+            "colId": "0d517f8e-59af-4eb6-8372-02f7db2f980a",
+            "containerId": "",
+            "name": "localhost:4000/v0/moveEmail",
+            "url": "localhost:4000/v0/moveEmail",
+            "method": "PUT",
+            "sortNum": 50000,
+            "created": "2023-03-22T16:54:38.091Z",
+            "modified": "2023-03-22T16:54:38.091Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"userId\":\"6418ce3d4872485af19a727a\",\n  \"fromInboxName\":\"sent\",\n  \"toInboxName\":\"starred\",\n  \"emailId\":\"641a42d78b9f71a863a583e2\"\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQG1haWxtYW4uY29tIiwicGFzc3dvcmQiOiJhZG1pbiIsImlhdCI6MTY3OTQ2MDI5MiwiZXhwIjoxNjc5NTQ2NjkyfQ.6e24rwdZnNxHAnVTA0Nsc9yUJB5ge02TWHzQFsEDUVk"
+            },
+            "tests": []
+        },
+        {
+            "_id": "db636fba-da74-449f-b566-ae93a5cf3063",
+            "colId": "0d517f8e-59af-4eb6-8372-02f7db2f980a",
+            "containerId": "",
+            "name": "localhost:4000/v0/reply",
+            "url": "localhost:4000/v0/reply",
+            "method": "POST",
+            "sortNum": 60000,
+            "created": "2023-03-22T16:54:44.665Z",
+            "modified": "2023-03-22T16:54:44.665Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"userEmail\":\"admin@mailman.com\",\n  \"userFirstName\":\"Admin\", \n  \"originalEmailId\":\"641a42d78b9f71a863a583e2\",\n  \"contents\":\"just replying to this for testing reply api\"\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQG1haWxtYW4uY29tIiwicGFzc3dvcmQiOiJhZG1pbiIsImlhdCI6MTY3OTQ2MTQ0OSwiZXhwIjoxNjc5NTQ3ODQ5fQ.BwKveCK3CInzxWXW8Ug27pFt1_k9v4dEekgkGjk_F8U"
+            },
+            "tests": []
+        }
+    ],
+    "settings": {}
+}
