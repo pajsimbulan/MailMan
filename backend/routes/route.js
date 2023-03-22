@@ -27,13 +27,25 @@ exports.getInbox = async(req, res) => {
         const {userId, inboxName} = req.params;
         const { page = 1, limit = 10 } = req.query;
         const skip = (page - 1) * limit;
+        const tempInbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase() }).populate('emails');
+        const count = tempInbox.emails.length;
+        const totalPages = Math.ceil(count / limit);
+        console.log(count);
         let inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase()})
             .populate('emails')   
             .populate({path:'emails', populate:{path:'replies'}, options: { skip: skip, limit: limit }});
         if (inbox == null) {
             res.status(404).send("Inbox doesn't exist");
         }
-        res.status(200).send(inbox);
+        res.status(200).send({
+            inbox,
+            pagination: {
+              page: page,
+              limit: limit,
+              totalCount: count,
+              totalPages: totalPages
+            }
+          });
     } catch (error) {
         console.log(error.message);
         res.status(500).send(error.message);
