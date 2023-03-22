@@ -10,7 +10,6 @@ const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
 exports.getEmail = async (req, res) => {
     try {
-        console.log(`email id: ${req.params.id}`);
         let email = await emaildb.findOne({_id: req.params.id}).populate('replies');
         if (email == null) {
             res.status(404).send("Email doesn't exist");
@@ -26,8 +25,11 @@ exports.getEmail = async (req, res) => {
 exports.getInbox = async(req, res) => {
     try {   
         const {userId, inboxName} = req.params;
+        const { page = 1, limit = 10 } = req.query;
+        const skip = (page - 1) * limit;
         let inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase()})
-        .populate('emails').populate({path:'emails', populate:{path:'replies'}});
+            .populate('emails')   
+            .populate({path:'emails', populate:{path:'replies'}, options: { skip: skip, limit: limit }});
         if (inbox == null) {
             res.status(404).send("Inbox doesn't exist");
         }
@@ -38,6 +40,7 @@ exports.getInbox = async(req, res) => {
     }
     
 };
+
 
 
 exports.moveEmail = async(req, res) => {

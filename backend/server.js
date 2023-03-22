@@ -20,6 +20,7 @@ app.get(`/${VERSION}/authorize`,   auth.authorize);
 app.get(`/${VERSION}/email/:id`,   auth.check, route.getEmail);
 app.get(`/${VERSION}/user/:userId/inbox/:inboxName`,       auth.check, route.getInbox);
 
+
 app.post(`/${VERSION}/register`,   auth.register);
 app.post(`/${VERSION}/login`,      auth.login);
 app.post(`/${VERSION}/email`,      auth.check, route.sendEmail);
