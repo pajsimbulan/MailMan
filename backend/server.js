@@ -19,16 +19,22 @@ app.use(cors());
 app.get(`/${VERSION}/authorize`,   auth.authorize);
 app.get(`/${VERSION}/email/:id`,   auth.check, route.getEmail);
 app.get(`/${VERSION}/user/:userId/inbox/:inboxName`,       auth.check, route.getInbox);
+app.get(`/${VERSION}/draft/:id`, auth.check, route.getDraft);
 
 
 app.post(`/${VERSION}/register`,   auth.register);
 app.post(`/${VERSION}/login`,      auth.login);
 app.post(`/${VERSION}/email`,      auth.check, route.sendEmail);
 app.post(`/${VERSION}/reply`,      auth.check, route.replyEmail);
+app.post(`/${VERSION}/draft`,      auth.check, route.createDraft);
+app.post(`/${VERSION}/postDraft`,      auth.check, route.postDraft);
+
 
 app.put(`/${VERSION}/user`,   auth.check, route.updateUserInfo); 
-app.put(`/${VERSION}/moveEmail`,   auth.check, route.moveEmail);
+app.put(`/${VERSION}/moveEmail`,   auth.check, route.moveEmails);
 app.put(`/${VERSION}/changePassword`, auth.changePassword);
+app.put(`/${VERSION}/draft`, auth.check, route.updateDraft);
+app.put(`/${VERSION}/deleteDrafts`, auth.check, route.deleteDrafts);
 
 
 //SERVER and DB initialize connections

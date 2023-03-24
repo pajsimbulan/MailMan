@@ -34,8 +34,7 @@ const data2={"_id":"63ba603e72a3c87194d8550f",
 "__v":{"$numberInt":"0"}};
 const tempDatas= [data1,data2,data1,data2,data1,data2,data1,data2,data1,data2,data1,data2,data1,data2];
 
-
-function MailBody() {  
+function MailBody({selectedInbox}) {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const user = useContext(UserContext);
@@ -44,6 +43,7 @@ function MailBody() {
   const [checkboxArray, setCheckBoxArray] = useState([]);
   const [openEmail, setOpenEmail] = React.useState(false);
   const [openedEmail, setOpenedEmail] = React.useState(undefined);
+  const [dateFilter, setDateFilter] = useState('today');
 
   const renderEmails = React.useMemo(() => {
     return (tempDatas.map((email) => (
@@ -89,7 +89,7 @@ function MailBody() {
             <EmailPopOvers item={()=> {return <ReportGmailerrorredIcon sx={{color:'grey'}}/>}} name={"Spam"}></EmailPopOvers>
         </Toolbar>
         <MailPagination range={50} totalCount={11}/>
-        <EmailDateFilterToggleButton />
+        <EmailDateFilterToggleButton setFilter={(filter) => {setDateFilter(filter)}}/>
       </ListItem> 
       {renderEmails}
     </List>

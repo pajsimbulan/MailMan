@@ -11,33 +11,38 @@ import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import ReportRoundedIcon from '@mui/icons-material/ReportRounded';
 import ComposeEmail from './ComposeEmail';
-import { GlobalContext } from '../pages/Mainpage';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 
-//bgcolor:'#002159
-const ListItemStyling = {m:2, mr:4, borderRadius:3, p:3, overflow:'hidden'};
+const ListItemStyling = {m:2, mx:4, borderRadius:3, p:3, overflow:'hidden'};
 const TypographyStyling = {color:'#002159', fontWeight:'bold'};
 
-function MailNavBar() {
-  const globalVars = React.useContext(GlobalContext);
+const inboxes = ['inbox', 'sent', 'starred', 'drafts', 'all emails','trash', 'spam'];
+
+function MailNavBar({selectedInbox}) {
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [composeEmail, setComposeEmail] = React.useState(false);
   console.log('nav bar render');
   const handleListItemClick = (event, index) => {
-    globalVars.setSelectedIndex(index);
+    setSelectedIndex(index);
+    selectedInbox(inboxes[index]);
   };
 
   return (
     <Box sx={{ width: '90%', minHeight:'100vh', display:'flex', flexDirection:'column',borderRight: 'solid',borderWidth:5, borderColor:'#C6CED6', borderTopRightRadius:75, borderBottomRightRadius:75, bgcolor:'white'}}>
+      {composeEmail? <ComposeEmail closeComposeEmail={()=>{setComposeEmail(false)}}/>: null}
       <Box sx={{display: 'flex', flexDirection:'row', flexWrap:'wrap', alignItems:'center', mt:2,  mx:3,  borderBottomColor:'#C6CED6', pb:2,}}>
-              <Avatar src='postman.jpg' sx={{width:50, height:50, background:'transparent', my:'auto', mx:2, mb:2}}/>
-              <Typography  sx={{fontWeight:'bold', fontSize:'20px', color:'#2E3D54', letterSpacing:8, my:'auto', overflow:'hidden'}}>MAILMAN</Typography>
+              <Avatar src='postman.jpg' sx={{width:50, height:50, background:'transparent', my:'auto', mx:'auto', mb:2}}/>
+              <Typography  sx={{fontWeight:'bold', fontSize:'20px', color:'#2E3D54', letterSpacing:8, my:'auto', overflow:'hidden',mx:'auto'}}>MAILMAN</Typography>
         </Box>
       <List component="nav" aria-label="main mailbox folders" >
-        <ListItem sx={{marginY:2}}>
-           <ComposeEmail />
-        </ListItem>
+        <ListItemButton sx = {{ width: '80%', backgroundColor: '#338FEB', color:'white', borderRadius:3, mx:'auto', my:2}} onClick={()=>{setComposeEmail(true)}}>
+                <Typography variant="overline" sx={{overflow:'hidden', mx:'auto'}}>
+                    Compose
+                </Typography>
+        </ListItemButton>
         <ListItemButton
-          selected={globalVars.selectedIndex === 0}
+          selected={selectedIndex === 0}
           onClick={(event) => handleListItemClick(event, 0)}
           sx={ListItemStyling}
         >
@@ -47,7 +52,7 @@ function MailNavBar() {
           <Typography sx={TypographyStyling}>Inbox</Typography>
         </ListItemButton>
         <ListItemButton
-          selected={globalVars.selectedIndex === 1}
+          selected={selectedIndex === 1}
           onClick={(event) => handleListItemClick(event, 1)}
           sx={ListItemStyling}
         >
@@ -57,7 +62,7 @@ function MailNavBar() {
           <Typography sx={TypographyStyling}>Sent</Typography>
         </ListItemButton>
         <ListItemButton
-          selected={globalVars.selectedIndex === 2}
+          selected={selectedIndex === 2}
           onClick={(event) => handleListItemClick(event, 2)}
           sx={ListItemStyling}
         >
@@ -67,7 +72,7 @@ function MailNavBar() {
           <Typography sx={TypographyStyling}>Starred</Typography>
         </ListItemButton>
         <ListItemButton
-          selected={globalVars.selectedIndex === 3}
+          selected={selectedIndex === 3}
           onClick={(event) => handleListItemClick(event, 3)}
           sx={ListItemStyling}
         >
@@ -80,7 +85,7 @@ function MailNavBar() {
           <Box sx={{width:'100%', borderBottom:'solid', borderBottomWidth:2, borderBottomColor:'#C6CED6', mx:3}}/>
         </ListItem>
         <ListItemButton
-          selected={globalVars.selectedIndex === 4}
+          selected={selectedIndex === 4}
           onClick={(event) => handleListItemClick(event, 4)}
           sx={ListItemStyling}
         >
@@ -90,7 +95,7 @@ function MailNavBar() {
           <Typography sx={TypographyStyling}>All Emails</Typography>
         </ListItemButton>
         <ListItemButton
-          selected={globalVars.selectedIndex === 5}
+          selected={selectedIndex === 5}
           onClick={(event) => handleListItemClick(event, 5)}
           sx={ListItemStyling}
         >
@@ -100,7 +105,7 @@ function MailNavBar() {
           <Typography sx={TypographyStyling}>Trash</Typography>
         </ListItemButton>
         <ListItemButton
-          selected={globalVars.selectedIndex === 6}
+          selected={selectedIndex === 6}
           onClick={(event) => handleListItemClick(event, 6)}
           sx={ListItemStyling}
         >

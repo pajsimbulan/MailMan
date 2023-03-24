@@ -26,7 +26,7 @@ function EmailReplying ({submitReply, exitReply}) {
             <TextField onChange={(event) => {setValue(event.target.value)}} autoFocus sx={{"& fieldset": { border: 'none' }}}/>
         </Box>
         <Box sx={{display:'flex', justifyContent:'end', my:1, mx:5,}}>
-            <Button type="submit" variant='contained' onSubmit={() => {submitReply(value);}} sx={{border:'solid', borderRadius:4, borderWidth:0,textTransform: 'none', }}>
+            <Button type="submit" variant='contained' onClick={() => {submitReply(value);}} sx={{border:'solid', borderRadius:4, borderWidth:0,textTransform: 'none', }}>
                 Send
             </Button>
         </Box> 

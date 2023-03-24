@@ -56,7 +56,7 @@ export default function FirstNameModal({edit, closeModal, oldValue, setFirstName
             bgcolor: 'background.paper',
             border: 'solid',
             borderWidth:'16px',
-            borderColor: 'colors.color2',
+            borderColor: '#deedfd',
             p: 4,
             }}
             onSubmit={()=> {submitHandler();}}>

@@ -3,6 +3,7 @@ const userdb = require('../schemas/user');
 const emaildb = require('../schemas/email');
 const inboxdb = require('../schemas/inbox');
 const replydb = require('../schemas/replyEmail');
+const draftdb  = require('../schemas/draft');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const jwtSecretKey = process.env.JWT_SECRET_KEY;
@@ -13,6 +14,7 @@ exports.getEmail = async (req, res) => {
         let email = await emaildb.findOne({_id: req.params.id}).populate('replies');
         if (email == null) {
             res.status(404).send("Email doesn't exist");
+            return;
         }
         res.status(200).send(email);
     } catch (error) {
@@ -22,54 +24,22 @@ exports.getEmail = async (req, res) => {
 };
 
 
-exports.getInbox = async(req, res) => {
-    try {   
-        const {userId, inboxName} = req.params;
-        const { page = 1, limit = 10 } = req.query;
-        const skip = (page - 1) * limit;
-        const tempInbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase() }).populate('emails');
-        const count = tempInbox.emails.length;
-        const totalPages = Math.ceil(count / limit);
-        console.log(count);
-        let inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase()})
-            .populate('emails')   
-            .populate({path:'emails', populate:{path:'replies'}, options: { skip: skip, limit: limit }});
-        if (inbox == null) {
-            res.status(404).send("Inbox doesn't exist");
-        }
-        res.status(200).send({
-            inbox,
-            pagination: {
-              page: page,
-              limit: limit,
-              totalCount: count,
-              totalPages: totalPages
-            }
-          });
-    } catch (error) {
-        console.log(error.message);
-        res.status(500).send(error.message);
-    }
-    
-};
-
-
-
-exports.moveEmail = async(req, res) => {
+exports.moveEmails = async(req, res) => {
     try {
-        const {userId, fromInboxName, toInboxName, emailId} = req.body;
+        const {userId, fromInboxName, toInboxName, emailIdArray} = req.body;
         let fromInbox = await inboxdb.findOne({ userId: userId, inboxName: fromInboxName.toLowerCase()});
         let toInbox = await inboxdb.findOne({ userId: userId,  inboxName: toInboxName.toLowerCase()});
         if ( (fromInbox == null) || (toInbox == null) ) {
             res.status(404).send("Inbox doesn't exist");
+            return;
         }
-        //delete email from fromInbox
-        const tempFromArray = fromInbox.emails.filter((email) => email._id != emailId);
+        //delete emails from fromInbox
+        const tempFromArray = fromInbox.emails.filter((email) => {return(!emailIdArray.includes(email._id.toString()));});
         fromInbox.emails = [...tempFromArray];
         await fromInbox.save();
         
         // add email to toInbox
-        toInbox.emails.push(emailId);
+        toInbox.emails = [...toInbox.emails, ...emailIdArray];
         await toInbox.save();
         res.status(200).send("Email moved successfully");
     
@@ -79,7 +49,6 @@ exports.moveEmail = async(req, res) => {
     }
     
 };
-
 
 exports.sendEmail = async(req, res) => {
     try {
@@ -101,7 +70,7 @@ exports.sendEmail = async(req, res) => {
             await toInbox.save();
             await userRecepientAllEmails.save();
         }
-        res.status(201).send("Email sent successfully");
+        res.status(201).send({message:"Email sent successfully", email: savedEmail});
     } catch (error) {
         console.log(error.message);
         res.status(500).send(error.message);
@@ -113,20 +82,162 @@ exports.replyEmail = async(req, res) => {
         const {userEmail, userFirstName, originalEmailId,contents} = req.body;
         let replyEmail = new replydb({from: userEmail, fromFirstName: userFirstName, contents});
         replyEmail.save();
-        console.log(originalEmailId);
         let originalEmail = await emaildb.findOne({_id: originalEmailId});
-        console.log(originalEmail);
         if(originalEmail == null) {
             res.status(404).send("Email doesn't exist");
+            return;
         }
         originalEmail.replies.push(replyEmail._id);
         originalEmail.save();
-        res.status(201).send(replyEmail);
+        res.status(201).send({message:"Reply sent successfully", reply: replyEmail});
     } catch (error) {
         console.log(error.message);
         res.status(500).send(error.message);
     }
 }
+
+
+exports.createDraft = async(req, res) => {
+    try {
+        const {userId, to, subject, contents} = req.body;   
+        const draftEmail = new draftdb({userId, to, subject, contents}); 
+        const drafts = await inboxdb.findOne({ userId: userId, inboxName: 'drafts'});
+        if(drafts == null) {
+            res.status(404).send("User doesn't exist");
+            return;
+        }
+        const savedDraftEmail = await draftEmail.save();
+        drafts.emails.push(savedDraftEmail._id);
+        await drafts.save();
+        res.status(201).send(savedDraftEmail);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send(error.message);
+    }
+}
+
+exports.updateDraft = async(req, res) => {
+    try {
+        const {draftId, to, subject, contents} = req.body;   
+        const draftEmail = await draftdb.findOne({_id: draftId}); 
+        if(draftEmail == null) {
+            res.status(404).send("Draft doesn't exist");
+            return;
+        }
+        draftEmail.to = to;
+        draftEmail.subject = subject;
+        draftEmail.contents = contents;
+        const savedDraftEmail = await draftEmail.save();
+        res.status(200).send({message:"Draft updated successfully", draft: savedDraftEmail});
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send(error.message);
+    }
+}
+
+
+exports.getDraft = async(req, res) => {
+    try {
+        let draftEmail = await draftdb.findOne({_id: req.params.id });
+        if (draftEmail == null) {
+            res.status(404).send("Draft Email doesn't exist");
+            return;
+        }
+        res.status(200).send(draftEmail);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send(error.message);
+    }
+}
+
+exports.postDraft = async(req, res) => {
+    try {
+        const {userId, draftId, from, fromFirstName, to, subject, contents} = req.body;
+
+        //delete draft from drafts db
+        await draftdb.deleteOne({_id: draftId});
+        const draftInbox = await inboxdb.findOne({ userId: userId, inboxName: 'drafts'});
+        const tempDrafts = draftInbox.emails.filter((email) => {return(email._id.toString() !== draftId);});
+        draftInbox.emails = [...tempDrafts];
+        await draftInbox.save();
+
+        //send email
+        let email = new emaildb({from, fromFirstName, to, subject, contents}); 
+        let savedEmail = await email.save();
+        const fromInbox = await inboxdb.findOne({ userId: userId, inboxName: 'sent'});
+        const userAllEmails = await inboxdb.findOne({ userId: userId, inboxName: 'all emails'});
+        fromInbox.emails.push(savedEmail._id);
+        userAllEmails.emails.push(savedEmail._id);
+        await fromInbox.save();
+        await userAllEmails.save();
+        let userRecipient = await userdb.findOne({email: to});
+        if(userRecipient !== null) {
+            const toInbox = await inboxdb.findOne({ userId: userRecipient._id,  inboxName: 'inbox'});
+            const userRecepientAllEmails = await inboxdb.findOne({ userId: userRecipient._id,  inboxName: 'all emails'});
+            toInbox.emails.push(savedEmail._id);
+            userRecepientAllEmails.emails.push(savedEmail._id);
+            await toInbox.save();
+            await userRecepientAllEmails.save();
+        }
+
+        //return email
+        res.status(201).send({message:"Email sent successfully", email: savedEmail});
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send(error.message);
+    }
+}
+
+
+exports.deleteDrafts = async(req, res) => {
+    try {
+        const {userId, draftIdArray} = req.body;
+        const drafts = await inboxdb.findOne({ userId: userId, inboxName: 'drafts'});
+        if(drafts == null) {
+            res.status(404).send("User doesn't exist");
+            return;
+        }
+        const tempDraftsArray = drafts.emails.filter((draftEmail) => { return (!draftIdArray.includes(draftEmail._id.toString()));});
+        drafts.emails = [...tempDraftsArray];
+        await drafts.save();
+        res.status(200).send("Drafts deleted successfully");
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send(error.message);
+    }
+}
+
+
+exports.getInbox = async(req, res) => {
+    try {   
+        const {userId, inboxName} = req.params;
+        const { page = 1, limit = 10 } = req.query;
+        const skip = (page - 1) * limit;
+        const tempInbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase() }).populate('emails');
+        const count = tempInbox.emails.length;
+        const totalPages = Math.ceil(count / limit);
+        let inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase()})
+            .populate('emails')   
+            .populate({path:'emails', populate:{path:'replies'}, options: { skip: skip, limit: limit }});
+        if (inbox == null) {
+            res.status(404).send("Inbox doesn't exist");
+            return;
+        }
+        res.status(200).send({
+            inbox,
+            pagination: {
+              page: page,
+              limit: limit,
+              totalCount: count,
+              totalPages: totalPages
+            }
+          });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send(error.message);
+    }
+    
+};
 
 exports.updateUserInfo = async (req, res) => {
     try {

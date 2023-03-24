@@ -57,7 +57,7 @@ export default function LastNameModal({edit, closeModal, oldValue, setLastName})
             bgcolor: 'background.paper',
             border: 'solid',
             borderWidth:'16px',
-            borderColor: 'colors.color2',
+            borderColor: '#deedfd',
             p: 4,
         }}>
           <Box sx={{display:'flex',justifyContent:'center', width:'100%'}}>

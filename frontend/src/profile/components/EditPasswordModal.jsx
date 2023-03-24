@@ -49,7 +49,7 @@ export default function PasswordModal({edit, closeModal, updatePassword}) {
             bgcolor: 'background.paper',
             border: 'solid',
             borderWidth:'16px',
-            borderColor: 'colors.color2',
+            borderColor: '#deedfd',
             p: 4,
         }}>
         <Box component="form" sx={{display:'flex',justifyContent:'center', width:'100%'}}>

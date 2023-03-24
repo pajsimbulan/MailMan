@@ -4,11 +4,12 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
 const toggleButtonStyling= {border:'solid', borderWidth:0, color:'grey', fontWeight:'bold', width:75, fontSize:12,};
 
-function EmailDateFilterToggleButton() {
+function EmailDateFilterToggleButton({setFilter}) {
   const [emailDateFilter, setEmailDateFilter] = React.useState("today");
 
   const handleChange = (event, newEmailDateFilter) => {
     setEmailDateFilter(newEmailDateFilter);
+    setFilter(newEmailDateFilter.toLowerCase());
   };
 
   return (
