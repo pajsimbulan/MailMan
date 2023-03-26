@@ -2,21 +2,19 @@ import * as React from 'react';
 import List from '@mui/material/List';
 import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';
-import Divider from '@mui/material/Divider';
 import Checkbox from '@mui/material/Checkbox';
-import Avatar from '@mui/material/Avatar';
 import StarIcon from '@mui/icons-material/Star';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { IconButton, ListItemButton, Toolbar } from '@mui/material';
+import { Toolbar } from '@mui/material';
 import {useNavigate} from 'react-router';
 import { useContext, useState, useEffect, useRef } from 'react';
 import { UserContext } from '../../App';
 import EmailPopOvers from './EmailPopOver';
 import EmailDateFilterToggleButton from './EmailToggle';
 import MailPagination from './MailPagination';
-import EmailBlock from './MailBodyEmailBlock';
+import EmailBlock from '../blocks/MailBodyEmailBlock';
 import EmailContentWindow from './EmailContents';
 
 const data1={"_id":"63ba4964742a1ea687c54c43",
@@ -33,6 +31,7 @@ const data2={"_id":"63ba603e72a3c87194d8550f",
 "createdAt":'2023-01-08T04:41:08.635+00:00',
 "__v":{"$numberInt":"0"}};
 const tempDatas= [data1,data2,data1,data2,data1,data2,data1,data2,data1,data2,data1,data2,data1,data2];
+const EmailPopOversStyle={color:'grey', height:20, width:20};
 
 function MailBody({selectedInbox}) {
   const navigate = useNavigate();
@@ -44,6 +43,7 @@ function MailBody({selectedInbox}) {
   const [openEmail, setOpenEmail] = React.useState(false);
   const [openedEmail, setOpenedEmail] = React.useState(undefined);
   const [dateFilter, setDateFilter] = useState('today');
+  const [selected, setSelected] = useState([]);
 
   const renderEmails = React.useMemo(() => {
     return (tempDatas.map((email) => (
@@ -80,14 +80,20 @@ function MailBody({selectedInbox}) {
     <Box sx = {{width: "100%", maxHeight:'100%', display:'flex', margin:0, borderRadius:10, alignItems:'center', justifyContent:'center', overflow:'scroll'}} >
        {openEmail? <EmailContentWindow closeEmail={() => {setOpenEmail(false)}} email={openedEmail}/> : null}
     <List sx={{ width:'100%', maxWidth: "95%", borderRadius:10, bgcolor:'#edf4fb', mt:2, px:2}}>
-      <ListItem sx={{display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'space-between',gap:2}}>
-        <Toolbar position="static" sx={{ my:'auto',bgcolor:'#dceaf7', borderRadius:5}}>
-            <Checkbox edge="start"  sx={{color:'grey'}} onChange={(event) => {setCheckBoxArray(new Array(size.current).fill(event.target.checked));}}/>
-            <EmailPopOvers item={()=> {return <RefreshIcon sx={{color:'grey'}}/>}} name={"Refresh"}></EmailPopOvers>
-            <EmailPopOvers item={()=> {return <DeleteForeverIcon sx={{color:'grey'}}/>}} name={"Delete"}></EmailPopOvers>
-            <EmailPopOvers item={()=> {return <StarIcon sx={{color:'grey'}}/>}} name={"Starred"}></EmailPopOvers>
-            <EmailPopOvers item={()=> {return <ReportGmailerrorredIcon sx={{color:'grey'}}/>}} name={"Spam"}></EmailPopOvers>
-        </Toolbar>
+      <ListItem sx={{display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'space-between'}}>
+        <Box sx={{ my:'auto',bgcolor:'#dceaf7', borderRadius:10, p:0.5}}>
+            <Checkbox edge="start"  sx={{color:'grey',transform: "scale(0.8)", ml:0.5}} onChange={(event) => {
+              setCheckBoxArray(new Array(size.current).fill(event.target.checked));
+              setSelected(selected => { selected.push(1);console.log(selected); return selected;});
+              }}/>
+            <EmailPopOvers item={()=> {return <RefreshIcon sx={EmailPopOversStyle}/>}} name={"Refresh"}></EmailPopOvers>
+            {selected.length > 0 ?  <>
+              <EmailPopOvers item={()=> {return <DeleteForeverIcon sx={EmailPopOversStyle}/>}} name={"Delete"}></EmailPopOvers>
+              <EmailPopOvers item={()=> {return <StarIcon sx={EmailPopOversStyle}/>}} name={"Starred"}></EmailPopOvers>
+              <EmailPopOvers item={()=> {return <ReportGmailerrorredIcon sx={EmailPopOversStyle}/>}} name={"Spam"}></EmailPopOvers>
+            </>
+            : null}
+        </Box>
         <MailPagination range={50} totalCount={11}/>
         <EmailDateFilterToggleButton setFilter={(filter) => {setDateFilter(filter)}}/>
       </ListItem> 

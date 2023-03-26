@@ -14,7 +14,7 @@ import ComposeEmail from './ComposeEmail';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 
-const ListItemStyling = {m:2, mx:4, borderRadius:3, p:3, overflow:'hidden'};
+const ListItemStyling = {m:2, mx:4, borderRadius:3, p:2, overflow:'hidden', '&:hover':{ bgcolor:'#edf4fb',borderColor:'#c6ced6'} };
 const TypographyStyling = {color:'#002159', fontWeight:'bold'};
 
 const inboxes = ['inbox', 'sent', 'starred', 'drafts', 'all emails','trash', 'spam'];
@@ -22,15 +22,42 @@ const inboxes = ['inbox', 'sent', 'starred', 'drafts', 'all emails','trash', 'sp
 function MailNavBar({selectedInbox}) {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [composeEmail, setComposeEmail] = React.useState(false);
+  
   console.log('nav bar render');
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
     selectedInbox(inboxes[index]);
   };
 
+  const [openSuccess, setOpenSuccess] = React.useState(false);
+  const [openError, setOpenError] = React.useState(false);
+  console.log(`open: ${open} openSuccess: ${openSuccess} openError: ${openError}`);
+
+  const closeAlerts = async () => {
+      setOpenSuccess(false);
+      setOpenError(false);
+  }
+
+  const openAlert = (status) => {
+    alert(`status: ${status}`);
+    if(status == "error"){
+      setOpenError(true);
+    } else {
+      setOpenSuccess(true);  
+    }
+    setTimeout(() => {
+      closeAlerts();
+    }, 2000);
+  }
+
   return (
     <Box sx={{ width: '90%', minHeight:'100vh', display:'flex', flexDirection:'column',borderRight: 'solid',borderWidth:5, borderColor:'#C6CED6', borderTopRightRadius:75, borderBottomRightRadius:75, bgcolor:'white'}}>
-      {composeEmail? <ComposeEmail closeComposeEmail={()=>{setComposeEmail(false)}}/>: null}
+      {composeEmail? <ComposeEmail closeComposeEmail={(status)=>{
+        setComposeEmail(false);
+        openAlert(status);
+        }}/>: null}
+      <SuccessActionAlert openAlert={openSuccess} message="Email sent successfully" closeAlert={() => {closeAlerts();}} />
+      <ErrorActionAlert openAlert={openError} message="Error sending email" closeAlert={() => {closeAlerts();}} />
       <Box sx={{display: 'flex', flexDirection:'row', flexWrap:'wrap', alignItems:'center', mt:2,  mx:3,  borderBottomColor:'#C6CED6', pb:2,}}>
               <Avatar src='postman.jpg' sx={{width:50, height:50, background:'transparent', my:'auto', mx:'auto', mb:2}}/>
               <Typography  sx={{fontWeight:'bold', fontSize:'20px', color:'#2E3D54', letterSpacing:8, my:'auto', overflow:'hidden',mx:'auto'}}>MAILMAN</Typography>

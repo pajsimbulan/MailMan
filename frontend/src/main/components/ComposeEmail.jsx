@@ -8,11 +8,9 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import SendIcon from '@mui/icons-material/Send';
 import { Avatar, Divider } from '@mui/material';
-import StarIcon from '@mui/icons-material/Star';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
-import ReplyIcon from '@mui/icons-material/Reply';
-import formatDate from '../../utils/DateFormat';
 import { UserContext } from '../../App';
+import SuccessActionAlert from '../../components/ErrorAlert';
+import ErrorActionAlert from '../../components/ErrorAlert';
 
 function ComposeEmail ({closeComposeEmail}) {
     const user = React.useContext(UserContext);
@@ -20,15 +18,12 @@ function ComposeEmail ({closeComposeEmail}) {
     const toRef = React.useRef();
     const subjectRef = React.useRef();
     const contentsRef = React.useRef();
-
-    const handleClose = () => {
-        setOpen(false);
-        closeComposeEmail();
-    };  
+   
     const submitSend = () => {
         console.log(`to: ${toRef.current.value} subject: ${subjectRef.current.value} contents: ${contentsRef.current.value}`);
         setOpen(false);
-        closeComposeEmail();
+        openSuccessAlert();
+        closeComposeEmail('success');
     }
   
     return (     
