@@ -87,7 +87,7 @@ function MailBody({selectedInbox}) {
   return (
     <Box sx = {{width: "100%", maxHeight:'100%', display:'flex', margin:0, borderRadius:10, alignItems:'center', justifyContent:'center', overflow:'scroll'}} >
        {openEmail? <EmailContentWindow closeEmail={() => {setOpenEmail(false)}} email={openedEmail}/> : null}
-    <List sx={{ width:'100%', maxWidth: "95%", borderRadius:10, bgcolor:'#edf4fb', mt:2, px:2}}>
+    <List sx={{ width:'100%', maxWidth: "95%", borderRadius:10, bgcolor:'#edf4fb', mt:2, px:2,}}>
       <ListItem sx={{display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'space-between'}}>
         <Box sx={{ my:'auto',bgcolor:'#dceaf7', borderRadius:10, p:0.5}}>
             <Checkbox edge="start"  sx={{color:'grey',transform: "scale(0.8)", ml:0.5}} onChange={(event) => {

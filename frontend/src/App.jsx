@@ -11,12 +11,12 @@ export const UserContext = createContext();
 export default function App() {
     let accessToken = ' ';
     let userInfo = {
-        firstName: undefined,
-        email: undefined,
-        createdAt: undefined,
-        lastName: undefined,
-        gender: undefined,
-        birthDate: undefined,
+        firstName: '',
+        email: '',
+        createdAt: '',
+        lastName: '',
+        gender: '',
+        birthDate: '',
     } ;
     return (
         <div>

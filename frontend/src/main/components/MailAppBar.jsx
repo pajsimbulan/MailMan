@@ -12,11 +12,14 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import {useNavigate} from 'react-router';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
-import { Avatar } from '@mui/material';
+import { Avatar, Divider } from '@mui/material';
 import { UserContext } from '../../App';
+import Typography from '@mui/material/Typography';
+import Link from '@mui/material/Link';
 
 function MailAppBar() {
-  const user = React.useContext(UserContext);
+  const {userInfo} = React.useContext(UserContext);
+  console.log(userInfo);
   const theme = useTheme();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -42,6 +45,12 @@ function MailAppBar() {
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
+      PaperProps={{style:{
+        borderRadius:10,
+        border:'solid',
+        borderWidth:3,
+        borderColor:'#e6f6ff',
+      }}}
       anchorEl={anchorEl}
       anchorOrigin={{
         vertical: 'top',
@@ -56,17 +65,50 @@ function MailAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
+      <Box sx={{m:2, display:'flex',flexDirection:'column',}}>
+        <Box sx={{display:'flex', flexDirection:'row', flexGrow:1, justifyContent:'space-between'}}>
+          <Box sx={{display:'flex', flexDirection:'row'}}>
+            <Typography Typography  sx={{fontWeight:'bold', fontSize:'15px', color:'#2e3d54', my:'auto', overflow:'hidden'}}>MAIL</Typography>
+            <Avatar src='postman.jpg' sx={{width:25, height:25, background:'transparent',mr:1 }}/>
+            <Typography  sx={{fontWeight:'bold', fontSize:'15px', color:'#2e3d54', my:'auto', overflow:'hidden'}}>MAN</Typography>
+          </Box>
+          <Typography 
+          sx={{color:'#0067b8', '&:hover':{ cursor:'pointer', color:'#338feb'}}}
+          onClick={() => {
+            handleMenuClose();
+            navigate('/'); }}> Sign Out </Typography>
+        </Box>
+        <Box sx={{display:'flex', flexDirection:'row', m:2}}>
+          <Avatar sx={{width: 60, height: 60, }} alt={userInfo.name} src={userInfo.avatar} />
+          <Box sx={{ml:4}}>
+            <Typography sx={{ fontWeight:'bold'}}>{userInfo.firstName + ' ' + userInfo.lastName}</Typography>
+            <Typography>{userInfo.email}</Typography>
+            <Typography 
+            sx={{fontWeight:'bold', fontSize:'15px', color:'#0067b8', my:'auto', overflow:'hidden', '&:hover':{ cursor:'pointer', color:'#338feb'}}}
+            onClick={() => {
+              handleMenuClose();
+              navigate('/profile'); }}
+            >Manage Profile</Typography>
+          </Box>
+        </Box>
+      </Box>
+     
+      {/** 
       <MenuItem onClick={() => {
         handleMenuClose();
-        navigate('/'); }}>
-          Sign Out
+        navigate('/profile'); }}
+        sx={{display:'flex',justifyContent:'center'}}>
+          <Typography>
+            Profile
+          </Typography>
       </MenuItem>
 
       <MenuItem onClick={() => {
         handleMenuClose();
-        navigate('/profile'); }}>
-          Profile
-      </MenuItem>
+        navigate('/'); }}
+        sx={{display:'flex',justifyContent:'center'}}>
+          Sign out
+      </MenuItem>*/}
     </Menu>
   );
 
