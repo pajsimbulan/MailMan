@@ -17,6 +17,7 @@ import MailPagination from './MailPagination';
 import EmailBlock from '../blocks/MailBodyEmailBlock';
 import EmailContentWindow from './EmailContents';
 
+
 const data1={"_id":"63ba4964742a1ea687c54c43",
 "from":"zaheer@avatar.com",
 "to":"aang@avatar.com",
@@ -30,7 +31,14 @@ const data2={"_id":"63ba603e72a3c87194d8550f",
 "contents":"Dear Aang, Im the real avatar and\n you arent.",
 "createdAt":'2023-01-08T04:41:08.635+00:00',
 "__v":{"$numberInt":"0"}};
-const tempDatas= [data1,data2,data1,data2,data1,data2,data1,data2,data1,data2,data1,data2,data1,data2];
+const data3={"_id":"63ba603e72a3c87194d85501",
+"from":"zaheer@avatar.com",
+"to":"aang@avatar.com",
+"subject":"I'm the real avatar!",
+"contents":"Dear Aang, Im the real avatar and\n you arent.",
+"createdAt":Date.now(),
+"__v":{"$numberInt":"0"}};
+const tempDatas= [data3,data1,data2,data1,data2,data1,data2,data1,data2,data1,data2,data1,data2,data1,data2];
 const EmailPopOversStyle={color:'grey', height:20, width:20};
 
 function MailBody({selectedInbox}) {
@@ -70,7 +78,7 @@ function MailBody({selectedInbox}) {
           size.current = jsondata.length;
           setData(jsondata);
           setCheckBoxArray(new Array(size.current).fill(false));
-        }).catch((error) => {alert(error);
+        }).catch((error) => {alert(error);  
          // navigate("/");
         }); 
       

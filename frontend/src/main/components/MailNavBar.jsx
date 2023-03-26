@@ -13,6 +13,8 @@ import ReportRoundedIcon from '@mui/icons-material/ReportRounded';
 import ComposeEmail from './ComposeEmail';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
+import SuccessActionAlert from '../../components/SuccessAlert';
+import ErrorActionAlert from '../../components/ErrorAlert';
 
 const ListItemStyling = {m:2, mx:4, borderRadius:3, p:2, overflow:'hidden', '&:hover':{ bgcolor:'#edf4fb',borderColor:'#c6ced6'} };
 const TypographyStyling = {color:'#002159', fontWeight:'bold'};
@@ -22,32 +24,31 @@ const inboxes = ['inbox', 'sent', 'starred', 'drafts', 'all emails','trash', 'sp
 function MailNavBar({selectedInbox}) {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [composeEmail, setComposeEmail] = React.useState(false);
-  
-  console.log('nav bar render');
+  const [openSuccess, setOpenSuccess] = React.useState(false);
+  const [openError, setOpenError] = React.useState(false);
+
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
     selectedInbox(inboxes[index]);
   };
 
-  const [openSuccess, setOpenSuccess] = React.useState(false);
-  const [openError, setOpenError] = React.useState(false);
-  console.log(`open: ${open} openSuccess: ${openSuccess} openError: ${openError}`);
 
-  const closeAlerts = async () => {
+  const closeAlerts = () => {
       setOpenSuccess(false);
       setOpenError(false);
   }
 
   const openAlert = (status) => {
-    alert(`status: ${status}`);
     if(status == "error"){
       setOpenError(true);
-    } else {
+    }
+    if(status == "success"){
       setOpenSuccess(true);  
     }
+    
     setTimeout(() => {
       closeAlerts();
-    }, 2000);
+    }, 3000);
   }
 
   return (

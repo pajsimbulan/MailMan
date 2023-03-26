@@ -21,9 +21,17 @@ export default function EmailPopOvers({item,name}) {
     onMouseLeave={handlePopoverClose}>
       {item()}
       <Popover
+        PaperProps={{
+          style:{
+            backgroundColor:'#1e1e1e',
+            borderRadius:10,
+            p:5
+          }
+        }}
         id="mouse-over-popover"
         sx={{
           pointerEvents: 'none',
+          p:4,
         }}
         open={open}
         anchorEl={anchorEl}
@@ -38,7 +46,7 @@ export default function EmailPopOvers({item,name}) {
         onClose={handlePopoverClose}
         disableRestoreFocus
       >
-        <Typography variant="caption" sx={{'m':2}}>{name}</Typography>
+        <Typography variant="caption" sx={{'m':2, color:'white'}}>{name}</Typography>
       </Popover>
     </IconButton>
   );

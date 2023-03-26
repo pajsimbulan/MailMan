@@ -24,7 +24,7 @@ export default function SuccessActionAlert({openAlert, message, closeAlert}) {
               <CloseIcon fontSize="inherit" />
             </IconButton>
           }
-          sx={{ mb: 2 }}
+          sx={{ position:'absolute', mb: 2, top:0, left:'50%',transform:'translateX(-50%)' ,zIndex:1000 }}
         >
           {message}
         </Alert>

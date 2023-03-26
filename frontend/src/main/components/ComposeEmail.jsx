@@ -20,12 +20,14 @@ function ComposeEmail ({closeComposeEmail}) {
     const contentsRef = React.useRef();
    
     const submitSend = () => {
-        console.log(`to: ${toRef.current.value} subject: ${subjectRef.current.value} contents: ${contentsRef.current.value}`);
         setOpen(false);
-        openSuccessAlert();
         closeComposeEmail('success');
     }
-  
+    const handleClose = () => {
+        setOpen(false);
+        closeComposeEmail('none');
+    };  
+
     return (     
         <Box>
             <Dialog 
