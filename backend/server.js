@@ -11,9 +11,11 @@ const PORT = process.env.PORT;
 const DB_URL = process.env.DB_URL;
 const VERSION = process.env.VERSION;
 
-app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.json({ limit: '20mb' }));
+app.use(express.urlencoded({limit:'13mb', extended: false}));
 app.use(cors());
+
+
 
 //SERVER MIDDLEWARE + ENDPOINTS
 app.get(`/${VERSION}/authorize`,   auth.authorize);

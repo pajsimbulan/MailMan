@@ -54,11 +54,12 @@ exports.moveEmails = async(req, res) => {
 exports.sendEmail = async(req, res) => {
     try {
         const {userId, from, fromFirstName, to, subject, contents, files= []} = req.body;   
+        let fileIds = [];
         if(files.length > 0) {
-            var fileIds = [];
-            files.forEach(async (file) => {
-                let newFile = new filedb({name: file.name, data: file.data});
-                await newFile.save();
+            files.forEach( (file) => {
+
+                let newFile = new filedb({name: file.name, data: Buffer.from(file.data, 'base64')});
+                newFile.save();
                 fileIds.push(newFile._id);
             });
         }
@@ -91,9 +92,9 @@ exports.replyEmail = async(req, res) => {
         const {userEmail, userFirstName, originalEmailId,contents, files= []} = req.body;
         if(files.length > 0) {
             var fileIds = [];
-            files.forEach(async (file) => {
-                let newFile = new filedb({name: file.name, data: file.data});
-                await newFile.save();
+            files.forEach((file) => {
+                let newFile = new filedb({name: file.name, data: Buffer.from(file.data, 'base64')});
+                newFile.save();
                 fileIds.push(newFile._id);
             });
         }
@@ -119,9 +120,9 @@ exports.createDraft = async(req, res) => {
         const {userId, to, subject, contents, files=[]} = req.body;   
         if(files.length > 0) {
             var fileIds = [];
-            files.forEach(async (file) => {
-                let newFile = new filedb({name: file.name, data: file.data});
-                await newFile.save();
+            files.forEach((file) => {
+                let newFile = new filedb({name: file.name, data: Buffer.from(file.data, 'base64')});
+                newFile.save();
                 fileIds.push(newFile._id);
             });
         }
@@ -146,9 +147,9 @@ exports.updateDraft = async(req, res) => {
         const {draftId, to, subject, contents, files=[]} = req.body;   
         if(files.length > 0) {
             var fileIds = [];
-            files.forEach(async (file) => {
-                let newFile = new filedb({name: file.name, data: file.data});
-                await newFile.save();
+            files.forEach((file) => {
+                let newFile = new filedb({name: file.name, data: Buffer.from(file.data, 'base64')});
+                newFile.save();
                 fileIds.push(newFile._id);
             });
         }
@@ -199,9 +200,9 @@ exports.postDraft = async(req, res) => {
 
         if(files.length > 0) {
             var fileIds = [];
-            files.forEach(async (file) => {
+            files.forEach((file) => {
                 let newFile = new filedb({name: file.name, data: file.data});
-                await newFile.save();
+                newFile.save();
                 fileIds.push(newFile._id);
             });
         }
@@ -246,8 +247,8 @@ exports.deleteDrafts = async(req, res) => {
         drafts.emails = [...tempDraftsArray];
 
         //delete files from files db
-        drafts.files.forEach(async (file) => {
-            await filedb.deleteOne({_id: file._id});
+        drafts.files.forEach((file) => {
+            filedb.deleteOne({_id: file._id});
         });
         
         await drafts.save();
