@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const replyEmailSchema = require('./replyEmail');
 
 const emailSchema = new mongoose.Schema(
     {
@@ -36,6 +35,10 @@ const emailSchema = new mongoose.Schema(
             type:[mongoose.Schema.Types.ObjectId],
             default: [],
             ref: 'ReplyEmail',
+        },
+        files: {
+            type: [mongoose.Schema.Types.ObjectId],
+            ref: 'File',
         }
     },
 );
