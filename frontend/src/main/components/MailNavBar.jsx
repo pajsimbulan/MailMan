@@ -16,7 +16,7 @@ import Avatar from '@mui/material/Avatar';
 import SuccessActionAlert from '../../components/SuccessAlert';
 import ErrorActionAlert from '../../components/ErrorAlert';
 
-const ListItemStyling = {m:2, mx:4, borderRadius:3, p:2, overflow:'hidden', '&:hover':{ bgcolor:'#edf4fb',borderColor:'#c6ced6'} };
+const ListItemStyling = {m:2, mx:4, borderRadius:3, p:2, overflow:'hidden',    };
 const TypographyStyling = {color:'#002159', fontWeight:'bold'};
 
 const inboxes = ['inbox', 'sent', 'starred', 'drafts', 'all emails','trash', 'spam'];

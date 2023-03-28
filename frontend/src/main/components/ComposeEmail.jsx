@@ -7,18 +7,26 @@ import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import SendIcon from '@mui/icons-material/Send';
-import { Avatar, Divider } from '@mui/material';
+import { Alert, Avatar, Divider } from '@mui/material';
 import { UserContext } from '../../App';
 import SuccessActionAlert from '../../components/ErrorAlert';
 import ErrorActionAlert from '../../components/ErrorAlert';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import { InputAdornment } from '@mui/material';
+import { InputBase } from '@mui/material';
+import Input from '@mui/material/Input';
+import FileChip from './FileChip';
 
+const MAX_FILE_SIZE = 13000000;
 function ComposeEmail ({closeComposeEmail}) {
     const user = React.useContext(UserContext);
     const [open, setOpen] = React.useState(true);
     const toRef = React.useRef();
     const subjectRef = React.useRef();
     const contentsRef = React.useRef();
-   
+    const [binaryFiles, setBinaryFiles] = React.useState([]);
+    console.log(`rendering ComposeEmail ${binaryFiles.length}`);
+    
     const submitSend = () => {
         setOpen(false);
         closeComposeEmail('success');
@@ -27,6 +35,42 @@ function ComposeEmail ({closeComposeEmail}) {
         setOpen(false);
         closeComposeEmail('none');
     };  
+
+    const handleFileChange = async (event) => {
+        const files = event.target.files;
+      
+        const readFile = (file) => {
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+              const arrayBuffer = reader.result;
+              const base64Data = arrayBufferToBase64(arrayBuffer);
+              resolve({ name: file.name, data: base64Data });
+            };
+            reader.onerror = (error) => {
+              console.error(`Error reading file ${file.name}:`, error);
+              reject(error);
+            };
+            reader.readAsArrayBuffer(file);
+          });
+        };
+      
+        const tempFiles = await Promise.all(
+          Array.from(files)
+            .filter((file) => {
+              if (file.size <= MAX_FILE_SIZE) {
+                return true;
+              } else {
+                alert('File size is too large. Limit files to 13MB');
+                return false;
+              }
+            })
+            .map((file) => readFile(file))
+        );
+      
+        setBinaryFiles([...binaryFiles, ...tempFiles]);
+      };
+      
 
     return (     
         <Box>
@@ -96,6 +140,23 @@ function ComposeEmail ({closeComposeEmail}) {
                         <Box sx={{display:'flex', flexGrow:1, flexDirection:'row',bgcolor:'#ECEFF1', borderRadius:5,p:2 }}>
                             <TextField name="contents" id="contents" inputRef={contentsRef} fullWidth multiline rows={12} sx={{  "& fieldset": { border: 'none'}}}/>
                         </Box>
+                        <IconButton component="label" sx={{width:100}}>
+                                    <PhotoCamera type="file"/>
+                                    <input
+                                        type="file"
+                                        onChange={handleFileChange}
+                                        style={{ display: "none" }}
+                                        multiple
+                                        />
+                                </IconButton>
+                                {binaryFiles.length > 0 ?
+                                <FileChip fileNames={binaryFiles.map(file => file.name)} 
+                                    onClick={(index) => {console.log(`Chip clicked ${binaryFiles[index].name}`)}} 
+                                    onDelete={(index) => {setBinaryFiles(files => {
+                                        const toRemove = files[index].name;
+                                        const newFiles = files.filter(files => files.name !== toRemove);
+                                        return newFiles;
+                                    })}} /> : null}
                         <Box sx={{display:'flex', flexGrow:1, justifyContent:'end', my:1, }}>
                             <Button variant='outlined' onClick={submitSend} endIcon={<SendIcon />} sx={{border:'solid', borderRadius:4, borderWidth:2,textTransform: 'none', color:'#338feb'}}>
                                 Send
@@ -111,5 +172,13 @@ function ComposeEmail ({closeComposeEmail}) {
     </Box>
     );
 }
+
+const arrayBufferToBase64 = (buffer) => {
+    const binary = new Uint8Array(buffer).reduce(
+      (acc, byte) => acc + String.fromCharCode(byte),
+      ""
+    );
+    return btoa(binary);
+  };
 
 export default ComposeEmail;

@@ -22,6 +22,10 @@ const replyEmailSchema = new mongoose.Schema(
             immutable: true,
             default: () => Date.now(),
         },
+        files: {
+            type: [mongoose.Schema.Types.ObjectId],
+            ref: 'File',
+        }
     },
 );
 
