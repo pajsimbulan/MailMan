@@ -6,16 +6,12 @@ import Dialog from '@mui/material/Dialog';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import SendIcon from '@mui/icons-material/Send';
-import { Alert, Avatar, Divider } from '@mui/material';
+import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { Avatar, Divider } from '@mui/material';
 import { UserContext } from '../../App';
-import SuccessActionAlert from '../../components/ErrorAlert';
-import ErrorActionAlert from '../../components/ErrorAlert';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import { InputAdornment } from '@mui/material';
-import { InputBase } from '@mui/material';
-import Input from '@mui/material/Input';
 import FileChip from './FileChip';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 const MAX_FILE_SIZE = 13000000;
 function ComposeEmail ({closeComposeEmail}) {
@@ -36,6 +32,17 @@ function ComposeEmail ({closeComposeEmail}) {
         closeComposeEmail('none');
     };  
 
+    const downloadFile = (file) => {
+        const dataUrl = `data:application/octet-stream;base64,${file.data}`;
+        const link = document.createElement("a");
+        link.href = dataUrl;
+        link.download = file.name;
+        link.style.display = "none";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      };
+      
     const handleFileChange = async (event) => {
         const files = event.target.files;
       
@@ -89,7 +96,7 @@ function ComposeEmail ({closeComposeEmail}) {
                         console.log('Modal closed');
                         handleClose();
                       }}>
-                <Box sx={{display:'flex', flexDirection:'row', flexWrap:'wrap', p:2,}}>
+                <Box sx={{display:'flex', flexDirection:'row', flexWrap:'wrap', p:1,bgcolor:'#eceff1'}}>
                     <Box sx={{width:'33.33%', display:'flex', flexDirection:'row',}}>   
                         <Avatar  sx={{mr:2, height:40, width:40}} />
                     <Box sx={{display:'flex', flexDirection:'column', my:'auto'}}>
@@ -106,7 +113,7 @@ function ComposeEmail ({closeComposeEmail}) {
                             New Email 
                         </Typography>
                     </Box>    
-                    <Box sx={{width:'33.33%', display:'flex', justifyContent:'end'}}>
+                    <Box sx={{width:'33.33%', display:'flex', justifyContent:'end',}}>
                         <IconButton
                         edge="start"
                         color="inherit"
@@ -115,14 +122,14 @@ function ComposeEmail ({closeComposeEmail}) {
                             handleClose();
                           }}
                         aria-label="close"
-                        sx={{mr:1}}
                         >
-                        <CloseIcon />
+                        <CloseIcon sx={{color:'#002159'}}/>
                         </IconButton>   
+                    </Box>
                     </Box>    
                     <Box component="form" onSubmit={submitSend} noValidate sx={{ width:'100%' }}>
                     {/**Text Fields*/}
-                    <Box sx={{ display:'flex', flexGrow:1, flexDirection:'column',mx:5, p:5, borderRadius:5, gap:1, }}>
+                    <Box sx={{ display:'flex', flexGrow:1, flexDirection:'column',mx:5, px:5, py:2, borderRadius:5, gap:1, }}>
                         <Box sx={{display:'flex', flexGrow:1, flexDirection:'row',bgcolor:'#ECEFF1', borderRadius:5, p:2 }}>
                             <Typography sx={{my:'auto', mx:1,width:60, color:'grey', fontSize:14 }}>
                                 To:
@@ -137,36 +144,42 @@ function ComposeEmail ({closeComposeEmail}) {
                             <TextField name="subject" id="subject" fullWidth inputRef={subjectRef} sx={{  "& fieldset": { border: 'none'}}}/>
                         </Box>
                         <Divider />
-                        <Box sx={{display:'flex', flexGrow:1, flexDirection:'row',bgcolor:'#ECEFF1', borderRadius:5,p:2 }}>
+                        <Box sx={{display:'flex', flexGrow:1, flexDirection:'column',bgcolor:'#ECEFF1', borderRadius:5,p:2 }}>
                             <TextField name="contents" id="contents" inputRef={contentsRef} fullWidth multiline rows={12} sx={{  "& fieldset": { border: 'none'}}}/>
+                            {binaryFiles.length > 0 ?
+                        <FileChip fileNames={binaryFiles.map(file => file.name)} 
+                            onClick={(index) => {downloadFile(binaryFiles[index])}} 
+                            onDelete={(index) => {setBinaryFiles(files => {
+                                const toRemove = files[index].name;
+                                const newFiles = files.filter(files => files.name !== toRemove);
+                                return newFiles;
+                            })}} /> : null}
                         </Box>
-                        <IconButton component="label" sx={{width:100}}>
-                                    <PhotoCamera type="file"/>
-                                    <input
-                                        type="file"
-                                        onChange={handleFileChange}
-                                        style={{ display: "none" }}
-                                        multiple
-                                        />
-                                </IconButton>
-                                {binaryFiles.length > 0 ?
-                                <FileChip fileNames={binaryFiles.map(file => file.name)} 
-                                    onClick={(index) => {console.log(`Chip clicked ${binaryFiles[index].name}`)}} 
-                                    onDelete={(index) => {setBinaryFiles(files => {
-                                        const toRemove = files[index].name;
-                                        const newFiles = files.filter(files => files.name !== toRemove);
-                                        return newFiles;
-                                    })}} /> : null}
-                        <Box sx={{display:'flex', flexGrow:1, justifyContent:'end', my:1, }}>
-                            <Button variant='outlined' onClick={submitSend} endIcon={<SendIcon />} sx={{border:'solid', borderRadius:4, borderWidth:2,textTransform: 'none', color:'#338feb'}}>
+                        
+                        
+                        <Box sx={{display:'flex', flexGrow:1, justifyContent:'space-between', my:1, }}>
+                            <Button component="label"  size="small" variant='outlined' endIcon={<AttachFileIcon />} sx={{border:'solid', borderRadius:4, borderWidth:2,textTransform: 'none', color:'#2e7d32', '&:hover':{ borderColor:'#2e7d32'}}}>
+                            Attach File
+                            <input
+                                    type="file"
+                                    onChange={handleFileChange} 
+                                    style={{ display: "none" }}
+                                    multiple
+                            />
+                            </Button>
+                            <Box sx={{display:'flex', flexDirection:'row', flexWrap:'wrap', gap:1}}>
+                            <Button variant='outlined' size="small" onClick={handleClose} startIcon={<DeleteOutlineIcon />} sx={{border:'solid', borderRadius:4, borderWidth:2,textTransform: 'none', color:'#002159', '&:hover':{ borderColor:'#002159'}}}>
+                                Discard
+                            </Button>
+                            <Button variant='outlined' size="small" onClick={submitSend} endIcon={<SendOutlinedIcon />} sx={{border:'solid', borderRadius:4, borderWidth:2,textTransform: 'none', color:'#338feb'}}>
                                 Send
                             </Button>
+                            </Box>
                         </Box>
                     </Box> 
     
                     {/** END Text Fields*/}
                     
-                </Box>
                 </Box>
         </Dialog>
     </Box>
@@ -182,3 +195,14 @@ const arrayBufferToBase64 = (buffer) => {
   };
 
 export default ComposeEmail;
+
+/** 
+<IconButton component="label" sx={{width:50,height:50}}>
+                            <PhotoCamera type="file"/>
+                            <input
+                                    type="file"
+                                    onChange={handleFileChange}
+                                    style={{ display: "none" }}
+                                    multiple
+                            />
+                        </IconButton> */

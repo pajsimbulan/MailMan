@@ -1,18 +1,21 @@
 import * as React from 'react';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
+import { Box, Chip, Stack } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 function FileChip({fileNames, onClick, onDelete}) {
 
   return (
-    <Stack direction="row" spacing={1}>
+    <Box sx={{display:'flex', flexDirection:'row',flexWrap: 'wrap', p:1, }}>
         {fileNames.map((file,index) => (
         <Chip
             label={file}
+            deleteIcon={<CloseIcon sx={{width:15, '&:hover': { color:'red'}}}/>}
             onClick={() => onClick(index)}
             onDelete={() => onDelete(index)}
+            
+            sx={{bgcolor:'transparent', color:'grey',boxShadow:'1', fontSize:10, m:0.5}}
         />))}
-    </Stack>
+    </Box>
   );
 }
 
