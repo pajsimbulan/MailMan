@@ -65,21 +65,21 @@ function MailAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <Box sx={{m:2, display:'flex',flexDirection:'column',}}>
-        <Box sx={{display:'flex', flexDirection:'row', flexGrow:1, justifyContent:'space-between'}}>
-          <Box sx={{display:'flex', flexDirection:'row'}}>
-            <Typography Typography  sx={{fontWeight:'bold', fontSize:'15px', color:'#2e3d54', my:'auto', overflow:'hidden'}}>MAIL</Typography>
-            <Avatar src='postman.jpg' sx={{width:25, height:25, background:'transparent',mr:1 }}/>
-            <Typography  sx={{fontWeight:'bold', fontSize:'15px', color:'#2e3d54', my:'auto', overflow:'hidden'}}>MAN</Typography>
-          </Box>
+      <Box sx={{mx:2,mb:2,mt:1, display:'flex',flexDirection:'column',}}>
+        <Box sx={{display:'flex', flexGrow:1, justifyContent:'end'}}>
           <Typography 
-          sx={{color:'#0067b8', '&:hover':{ cursor:'pointer', color:'#338feb'}}}
-          onClick={() => {
-            handleMenuClose();
-            navigate('/'); }}> Sign Out </Typography>
+            sx={{color:'#0067b8', '&:hover':{ cursor:'pointer', color:'#338feb'}}}
+            onClick={() => {
+              handleMenuClose();
+              navigate('/'); }}> Sign Out </Typography>
         </Box>
-        <Box sx={{display:'flex', flexDirection:'row', m:2}}>
-          <Avatar sx={{width: 60, height: 60, }} alt={userInfo.name} src={userInfo.avatar} />
+        <Box sx={{display:'flex', flexDirection:'row',mt:1 }}>
+          <Avatar sx={{width: 60, height: 60, '&:hover':{ cursor:'pointer'}}} 
+            alt={userInfo.name} 
+            src={userInfo.avatar?`data:image/jpeg;base64,${userInfo.avatar}`:null}
+            onClick={() => {
+              handleMenuClose();
+              navigate('/profile'); }}/>
           <Box sx={{ml:4}}>
             <Typography sx={{ fontWeight:'bold'}}>{userInfo.firstName + ' ' + userInfo.lastName}</Typography>
             <Typography>{userInfo.email}</Typography>
@@ -92,23 +92,6 @@ function MailAppBar() {
           </Box>
         </Box>
       </Box>
-     
-      {/** 
-      <MenuItem onClick={() => {
-        handleMenuClose();
-        navigate('/profile'); }}
-        sx={{display:'flex',justifyContent:'center'}}>
-          <Typography>
-            Profile
-          </Typography>
-      </MenuItem>
-
-      <MenuItem onClick={() => {
-        handleMenuClose();
-        navigate('/'); }}
-        sx={{display:'flex',justifyContent:'center'}}>
-          Sign out
-      </MenuItem>*/}
     </Menu>
   );
 
@@ -181,7 +164,7 @@ function MailAppBar() {
               color="inherit"
               sx={{height:50, width:50, border:'solid', borderWidth:2, borderColor:'#EBF5FF',}}
             >
-              <Avatar src=""/>
+              <Avatar src={userInfo.avatar?`data:image/jpeg;base64,${userInfo.avatar}`:null}/>
             </IconButton>
           </Box>
           

@@ -14,8 +14,8 @@ function PasswordRow({update}) {
           <PasswordModal  edit={edit} closeModal={() => {setEdit(false)}} updatePassword={(newPassword) => {update(newPassword);} }/>
           <Typography   Typography sx={{fontWeight:'light', color:'colors.text', marginY:'auto'}}>*********</Typography>
           </Box> 
-          <Button type="button" 
-            sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }} 
+          <Button type="button" size="small"
+            sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:10, bgcolor:'colors.button', textTransform: 'none', marginY:'auto' }} 
             onClick={()=> {setEdit(true);}}> Edit 
           </Button>
       </Box>

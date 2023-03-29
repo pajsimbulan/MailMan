@@ -22,8 +22,8 @@ function LastNameRow({lastName, update}) {
         <LastNameModal  edit={edit} closeModal={() => {setEdit(false)} } oldValue={lastName} setLastName={(newLastName) =>{updateLastName(newLastName)} }/>
         <Typography sx={{fontWeight:'light', color:'colors.text'}}>{value}</Typography>
         </Box>  
-        <Button type="button" 
-        sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }} 
+        <Button type="button" size="small"
+        sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:10, bgcolor:'colors.button', textTransform: 'none', marginY:'auto' }} 
         onClick={()=> {setEdit(true);}}> Edit </Button>
       </Box>
     );

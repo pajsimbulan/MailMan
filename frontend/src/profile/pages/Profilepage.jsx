@@ -15,6 +15,7 @@ import LastNameRow from '../blocks/LastNameRow';
 import GenderRow from '../blocks/GenderRow';
 import PasswordRow from '../blocks/PasswordRow';
 import BirthDateRow from '../blocks/BirthDateRow';
+import ProfileBlock from '../blocks/ProfileBlock';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import useUpdateUser from '../../hooks/useUpdateUser';
  
@@ -98,10 +99,10 @@ function Profile() {
               }}>
               <Grid2 container sx={{marginX:5, mt:5, mb:'10%'}} >
                 <Grid2 item xs={12} lg={4}>
-                <Button 
+                <Button  
                   type="button" 
-                  sx={{bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:100, height:40,fontSize:'80%', marginBottom:2}} 
-                  startIcon={<ArrowBackIcon sx={{marginLeft:-2}}/>}
+                  sx={{color:'white', borderRadius:10, bgcolor:'colors.button', textTransform: 'none',  marginBottom:2,px:2, fontSize:12}} 
+                  startIcon={<ArrowBackIcon size="large"/>}
                   onClick={()=>{returnHandler()}}> 
                   Home 
                 </Button>
@@ -117,12 +118,10 @@ function Profile() {
                     </Box>
                 </Grid2>
                 <Grid2 lg={4} xs={12} item sx={{height:'full'}}>
-                    <Box sx={{display:'flex', justifyContent:'center'}}> 
-                    <Avatar sx={{height:150, width:150, border:'solid', borderWidth:'3px', borderColor:'colors.color2'}} src=""></Avatar>
-                    </Box>
-                    <Box sx={{display:'flex', justifyContent:'center', marginTop:2, marginBottom:10}}> 
-                    <Button variant="outlined" sx={{borderRadius:1, textTransform: 'none', height:30, fontSize:12,fontWeight:'bold', overflow:'hidden'}}> Change Profile Picture</Button>
-                    </Box>
+                    <ProfileBlock avatar={userInfo.avatar} update={(newAvatar) => {
+                      userInfo.avatar = newAvatar;
+                      setMadeChanges(true);
+                    }} />
                 </Grid2>
                   <Grid2 lg={8} xs={12} item>
                       <Typography   Typography sx={{fontWeight:'bold', color:'colors.text', marginY:'auto'}}>First Name</Typography>

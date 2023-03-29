@@ -98,7 +98,7 @@ function ComposeEmail ({closeComposeEmail}) {
                       }}>
                 <Box sx={{display:'flex', flexDirection:'row', flexWrap:'wrap', p:1,bgcolor:'#eceff1'}}>
                     <Box sx={{width:'33.33%', display:'flex', flexDirection:'row',}}>   
-                        <Avatar  sx={{mr:2, height:40, width:40}} />
+                        <Avatar  sx={{mr:2, height:40, width:40}} src={user.userInfo.avatar?`data:image/jpeg;base64,${user.userInfo.avatar}`:null}/>
                     <Box sx={{display:'flex', flexDirection:'column', my:'auto'}}>
                         <Typography variant="body2" sx={{fontSize: 12, fontWeight:'bold'}}>
                             {user.userInfo.firstName}
@@ -195,14 +195,3 @@ const arrayBufferToBase64 = (buffer) => {
   };
 
 export default ComposeEmail;
-
-/** 
-<IconButton component="label" sx={{width:50,height:50}}>
-                            <PhotoCamera type="file"/>
-                            <input
-                                    type="file"
-                                    onChange={handleFileChange}
-                                    style={{ display: "none" }}
-                                    multiple
-                            />
-                        </IconButton> */
