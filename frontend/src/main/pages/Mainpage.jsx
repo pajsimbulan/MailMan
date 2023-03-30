@@ -12,10 +12,10 @@ const theme = createTheme({
   breakpoints: {
     values: {
       xs: 0,
-      sm: 480, // custom breakpoint value
-      md: 800, // custom breakpoint value
-      lg: 1024, // custom breakpoint value
-      xl: 1280, // custom breakpoint value
+      sm: 480,
+      md: 800, 
+      lg: 1024, 
+      xl: 1280, 
     },
   },
 });
@@ -23,15 +23,16 @@ const theme = createTheme({
 function Mainpage() {
   const [inbox, setSelectedInbox] = React.useState("inbox");
   const isSmallScreen = useMediaQuery('(max-width:800px)');
+  console.log(`main page render inbpx: ${inbox}`);
   return ( 
     <ThemeProvider theme={theme}>
       <Box sx = {{width: "100%", minHeight: '100vh', background:'repeating-radial-gradient(#EBF5FF,#FCFDFE)'}}>
         <Grid2 container>
           <Grid2  xs={0} md={2} >
-            {isSmallScreen? null : <MailNavBar selectedInbox={(selectedInbox) => {setSelectedInbox(selectedInbox)}}/>}
+            {isSmallScreen? null : <MailNavBar currentInbox={inbox} selectedInbox={(selectedInbox) => {setSelectedInbox(selectedInbox)}}/>}
           </Grid2>
           <Grid2 xs={12} md={10}  >
-            <MailAppBar drawerNavigation={<MailNavBar selectedInbox={(selectedInbox) => {setSelectedInbox(selectedInbox)}}/>}/>
+            <MailAppBar currentInbox={inbox} selectedInbox={(selectedInbox) => {setSelectedInbox(selectedInbox)}}/>
             <MailBody selectedInbox={inbox}/>
           </Grid2>
         </Grid2>

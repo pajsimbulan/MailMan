@@ -18,9 +18,8 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import { useMediaQuery } from '@mui/material';
 import MailDrawerNavigation from './MailDrawerNavigation';
-import MailNavBar from './MailNavBar';
 
-function MailAppBar({drawerNavigation}) {
+function MailAppBar({currentInbox, selectedInbox}) {
   const {userInfo} = React.useContext(UserContext);
   const isSmallScreen = useMediaQuery('(max-width:800px)');
   const theme = useTheme();
@@ -31,7 +30,7 @@ function MailAppBar({drawerNavigation}) {
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  console.log('app bar render');
+  console.log(`app bar render inbpx: ${currentInbox}`);
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -98,48 +97,17 @@ function MailAppBar({drawerNavigation}) {
     </Menu>
   );
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
-  );
 
   return (
-    <Box sx={{  borderBottom: 'solid', borderWidth:'1px', borderColor:'#C6CED6', borderBottomLeftRadius:40, borderWidth:5, bgcolor:'white'}}>
+    <Box sx={{  borderBottom: 'solid', borderWidth:'1px', borderColor:'#C6CED6', borderBottomLeftRadius:40, borderWidth:5, bgcolor:'white',}}>
         <Toolbar >
           <Box sx={{flexGrow: 1, display:'flex', flexDirection:'row'}}>
-            {isSmallScreen? <MailDrawerNavigation drawerNavigationProps={<MailNavBar />}/> : null}
+            {isSmallScreen? <MailDrawerNavigation currentInbox={currentInbox} selectedInbox={selectedInbox}/> : null}
             <TextField
-            sx={{ my: 1.5, ml:5,width: '80%', borderRadius:3, bgcolor:'#EBF5FF', fieldset:{borderWidth:0, m:0}, input: { color: '#002159'},  "& .MuiOutlinedInput-root.Mui-focused": {
+            size={isSmallScreen?'small':'medium'}
+            sx={{ my: 1.5, ml:2,width: '80%', borderRadius:3, bgcolor:'#EBF5FF', mr:1, maxWidth:700 , fieldset:{borderWidth:0, m:0, }, input: { color: '#002159'},  "& .MuiOutlinedInput-root.Mui-focused": {
       "& > fieldset": {
-          borderRadius:3, borderColor:'#338FEB'
+          borderRadius:3, borderColor:'#338FEB',
       }
     }  }}
             InputProps={{
@@ -172,8 +140,7 @@ function MailAppBar({drawerNavigation}) {
             </IconButton>
           </Box>
           
-        </Toolbar>
-      {renderMobileMenu}
+        </Toolbar>  
       {renderMenu}
     </Box>
   );

@@ -16,20 +16,31 @@ import Avatar from '@mui/material/Avatar';
 import SuccessActionAlert from '../../components/SuccessAlert';
 import ErrorActionAlert from '../../components/ErrorAlert';
 
-const ListItemStyling = {m:2, mx:2, borderRadius:3, p:2, flexWrap:'wrap','@media (max-width: 1250px)':{display:'flex', flexDirection:'column', justifyContents:'center', alignContents:'center'}  };
+const ListItemStyling = {m:2, mx:2, borderRadius:3, p:2, flexWrap:'wrap',
+'@media (max-width: 1250px)':{display:'flex', flexDirection:'column', justifyContents:'center', alignContents:'center'},
+'@media (max-width: 800px)':{p:1}  };
 const TypographyStyling = {color:'#002159', fontWeight:'bold',my:1,'@media (max-width: 900px)':{fontSize:10,}  };
 
 const inboxes = ['inbox', 'sent', 'starred', 'drafts', 'all emails','trash', 'spam'];
 
-function MailNavBar({selectedInbox}) {
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+function MailNavBar({currentInbox, selectedInbox, onSelect=undefined}) {
+  const [selectedIndex, setSelectedIndex] = React.useState(inboxes.indexOf(currentInbox));
   const [composeEmail, setComposeEmail] = React.useState(false);
   const [openSuccess, setOpenSuccess] = React.useState(false);
   const [openError, setOpenError] = React.useState(false);
+    
+  React.useState(() => {
+    selectedInbox(inboxes[selectedIndex]);
+  }, [selectedIndex]);
 
   const handleListItemClick = (event, index) => {
+    event.preventDefault();
     setSelectedIndex(index);
     selectedInbox(inboxes[index]);
+    setTimeout(() => {
+    if(onSelect) {
+      onSelect();
+    }} , 200);
   };
 
 
@@ -52,7 +63,8 @@ function MailNavBar({selectedInbox}) {
   }
 
   return (
-    <Box sx={{ width: '90%',  display:'flex', flexDirection:'column',borderRight: 'solid',borderWidth:5, borderColor:'#C6CED6', borderTopRightRadius:75, borderBottomRightRadius:75, bgcolor:'white', py:2,pb:4}}>
+    <Box sx={{ width: '90%',  display:'flex', flexDirection:'column',borderRight: 'solid',borderWidth:5, borderColor:'#C6CED6', borderTopRightRadius:75, borderBottomRightRadius:75, bgcolor:'white', py:2,pb:4,
+    '@media (min-width: 800px)':{minHeight:'100vh'},}}>
       {composeEmail? <ComposeEmail closeComposeEmail={(status)=>{
         setComposeEmail(false);
         openAlert(status);
