@@ -22,7 +22,7 @@ function ComposeEmail ({closeComposeEmail}) {
     const contentsRef = React.useRef();
     const [binaryFiles, setBinaryFiles] = React.useState([]);
     console.log(`rendering ComposeEmail ${binaryFiles.length}`);
-    
+    console.log(`tempFiles: ${binaryFiles.forEach((file) => console.log(`${file.name} -> ${file.type}`))}`);
     const submitSend = () => {
         setOpen(false);
         closeComposeEmail('success');
@@ -52,7 +52,8 @@ function ComposeEmail ({closeComposeEmail}) {
             reader.onload = () => {
               const arrayBuffer = reader.result;
               const base64Data = arrayBufferToBase64(arrayBuffer);
-              resolve({ name: file.name, data: base64Data });
+              console.log(`file type: ${file.type}`);
+              resolve({ name: file.name, data: base64Data, type: file.type });
             };
             reader.onerror = (error) => {
               console.error(`Error reading file ${file.name}:`, error);
@@ -74,7 +75,7 @@ function ComposeEmail ({closeComposeEmail}) {
             })
             .map((file) => readFile(file))
         );
-      
+            
         setBinaryFiles([...binaryFiles, ...tempFiles]);
       };
       
@@ -147,7 +148,10 @@ function ComposeEmail ({closeComposeEmail}) {
                         <Box sx={{display:'flex', flexGrow:1, flexDirection:'column',bgcolor:'#ECEFF1', borderRadius:5,p:2 }}>
                             <TextField name="contents" id="contents" inputRef={contentsRef} fullWidth multiline rows={12} sx={{  "& fieldset": { border: 'none'}}}/>
                             {binaryFiles.length > 0 ?
-                        <FileChip fileNames={binaryFiles.map(file => file.name)} 
+                        <FileChip
+                            files={binaryFiles.map(file => {return {name:file.name, type:file.type}})}
+                            fileType={binaryFiles.map(file => file.type)}
+                            fileNames={binaryFiles.map(file => file.name)} 
                             onClick={(index) => {downloadFile(binaryFiles[index])}} 
                             onDelete={(index) => {setBinaryFiles(files => {
                                 const toRemove = files[index].name;
