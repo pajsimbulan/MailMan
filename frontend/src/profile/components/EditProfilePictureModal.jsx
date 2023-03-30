@@ -65,7 +65,6 @@ export default function ProfilePictureModal({edit, closeModal, oldAvatarValue, s
             top: '40%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: '30%',
             borderRadius: 10,
             bgcolor: 'background.paper',
             border: 'solid',
@@ -78,7 +77,7 @@ export default function ProfilePictureModal({edit, closeModal, oldAvatarValue, s
                     submitHandler();
             }}}>
           <Box sx={{display:'flex',justifyContent:'center',flexDirection:'column', alignItems:'center',flexWrap:'wrap'}}>
-            <Typography sx={{fontWeight:'bold', color:'colors.text', fontSize:25}}>
+            <Typography sx={{fontWeight:'bold', color:'colors.text', fontSize:25, mx:10}}>
               Edit Profile Picture
             </Typography>
             <Typography sx={{fontWeight:'light', color:'colors.text', fontSize:15, mb:0.5   }}>

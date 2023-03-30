@@ -18,7 +18,7 @@ import BirthDateRow from '../blocks/BirthDateRow';
 import ProfileBlock from '../blocks/ProfileBlock';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import useUpdateUser from '../../hooks/useUpdateUser';
- 
+
 const theme = createTheme({
   palette: {
     colors: {
@@ -78,24 +78,26 @@ function Profile() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{width: "100%", minHeight: '100vh',background:'repeating-radial-gradient(#CCE3FA,#EDF6FF)', m:-1}}>
+      <Box sx={{width: "100%", height: '100%',background:'repeating-radial-gradient(#CCE3FA,#EDF6FF)', }}>
         <ErrorActionAlert openAlert={openErrorAlert.current} message={alertMessage} closeAlert={() => {openErrorAlert.current = (!openErrorAlert.current)}}/>
         <SuccessActionAlert openAlert={openSuccessAlert.current} message={alertMessage} closeAlert={() => {openSuccessAlert.current = (!openSuccessAlert.current)}}/>
-          <Box sx={{display: 'flex', flexDirection:'row',  alignItems:'center', mt:1,ml:3}}>
+          <Box sx={{display: 'flex', flexDirection:'row',  alignItems:'center', mt:1,ml:3,}}>
               <Avatar onClick={() => {navigate('/main')}} src='postman.jpg' sx={{width:50, height:50, background:'transparent'}}/>
               <Typography onClick={() => {navigate('/main')}} sx={{fontWeight:'bold', fontSize:'15px', color:'colors.text', mx:2}}>Mailman</Typography>
         </Box>
-        <Box sx = {{width: "100%",display: 'flex', flexDirection:'column', alignItems:'center'}}>
+        <Box sx = {{width: "100%",display: 'flex', flexDirection:'column', alignItems:'center',mt:2}}>
             <Box sx={{
                 marginTop:'1%',
                 display: 'flex',
                 flexDirection: 'column',
-                width: '40%',
+                
                 borderRadius: 3,
                 border: 'solid',  
                 borderWidth:'1px',
                 borderColor: 'colors.color2',
                 bgcolor:'white',
+                mx:2,
+                mb:10
               }}>
               <Grid2 container sx={{marginX:5, mt:5, mb:'10%'}} >
                 <Grid2 item xs={12} lg={4}>
@@ -117,7 +119,7 @@ function Profile() {
                         <Typography sx={{fontWeight:'light', color:'colors.text', fontSize:20}}>{userInfo.email}</Typography> 
                     </Box>
                 </Grid2>
-                <Grid2 lg={4} xs={12} item sx={{height:'full'}}>
+                <Grid2 lg={4} xs={12} item sx={{height:'full', }}>
                     <ProfileBlock avatar={userInfo.avatar} update={(newAvatar) => {
                       userInfo.avatar = newAvatar;
                       setMadeChanges(true);

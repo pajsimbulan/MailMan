@@ -6,6 +6,7 @@ import Mainpage from "./main/pages/Mainpage"
 import Profilepage from "./profile/pages/Profilepage";
 import {Route, Routes, BrowserRouter} from 'react-router-dom';
 import {createContext} from 'react';
+import CssBaseline from '@mui/material/CssBaseline';
 
 export const UserContext = createContext();
 export default function App() {
@@ -22,8 +23,10 @@ export default function App() {
     return (
         <div>
             <UserContext.Provider value={{accessToken, userInfo}}>
+                <CssBaseline />
                 <BrowserRouter>
                     <Routes>
+                        
                         <Route exact="true" path="/" element={<Signinpage />}/>
                         <Route path="/forgot" element={<Forgotpage />}/>
                         <Route path="/signup" element={<Signuppage />}/>

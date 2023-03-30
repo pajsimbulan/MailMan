@@ -81,7 +81,7 @@ function Signuppage() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{width: "100%", minHeight: '100vh',background:'repeating-radial-gradient(#B3BDC9,#FCFDFE)', m:-1}}>
+      <Box sx={{width: "100%", minHeight: '100vh',background:'repeating-radial-gradient(#B3BDC9,#FCFDFE)', }}>
         <ErrorActionAlert openAlert={openErrorAlert} message={alertMessage} closeAlert={() => {setOpenErrorAlert(!openErrorAlert)}}/>
         <Box sx={{display: 'flex', flexDirection:'row',  alignItems:'center', mt:1,ml:3}}>
               <Avatar onClick={() => {navigate('/')}} src='postman.jpg' sx={{width:50, height:50, background:'transparent'}}/>
@@ -100,7 +100,8 @@ function Signuppage() {
                 border:'solid',
                 borderWidth:1,
                 borderColor:'colors.bc',
-                mx:4,
+                mx:2,
+                mb:10
                 }}>
                 {successful? <AccountCreationSuccessful onButtonPress={() => {navigate('/')}} /> : 
                 <Box sx={{marginX:7, mt:5 }} >

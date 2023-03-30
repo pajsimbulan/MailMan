@@ -133,7 +133,7 @@ function MailAppBar() {
         <Toolbar >
           <Box sx={{flexGrow: 1}}>
             <TextField
-            sx={{ my: 1.5, ml:5,width: '80ch', borderRadius:3, bgcolor:'#EBF5FF', fieldset:{borderWidth:0, m:0}, input: { color: '#002159'},  "& .MuiOutlinedInput-root.Mui-focused": {
+            sx={{ my: 1.5, ml:5,width: '80%', borderRadius:3, bgcolor:'#EBF5FF', fieldset:{borderWidth:0, m:0}, input: { color: '#002159'},  "& .MuiOutlinedInput-root.Mui-focused": {
       "& > fieldset": {
           borderRadius:3, borderColor:'#338FEB'
       }

@@ -11,7 +11,7 @@ function ProfileBlock ({avatar, update}) {
     return (
         <>
             <ProfilePictureModal edit={edit} closeModal={() => {setEdit(false);} } oldAvatarValue={avatarValue} setAvatar={(newAvatar) =>{updateAvatar(newAvatar)} }/>
-            <Box sx={{display:'flex', justifyContent:'center'}}> 
+            <Box sx={{display:'flex', justifyContent:'center', mr:2}}> 
                 <Avatar sx={{height:150, width:150, border:'solid', borderWidth:'3px', borderColor:'colors.color2'}} src={avatarValue?`data:image/jpeg;base64,${avatarValue}`:null} />
             </Box>
             <Box sx={{display:'flex', justifyContent:'center', marginTop:2, marginBottom:10}}> 

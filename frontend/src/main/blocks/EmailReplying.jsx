@@ -5,8 +5,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { Avatar, Divider, TextField } from '@mui/material';
-
+import { UserContext } from '../../App';
 function EmailReplying ({submitReply, exitReply}) {
+    const user = React.useContext(UserContext);
     const [value, setValue] = React.useState('');
     return (
     <Box>
@@ -14,7 +15,7 @@ function EmailReplying ({submitReply, exitReply}) {
         <Box component="form" onSubmit={() => {submitReply(value);}} sx={{ display:'flex', flexGrow:1, flexDirection:'column',bgcolor:'#ECEFF1',mx:5, p:2, borderRadius:5, gap:2}}>   
             <Box sx={{display:'flex', justifyContent:'space-between'}}>
                 <Box sx={{display:'flex', flexDirection:'row', gap:1}}>
-                    <Avatar />
+                    <Avatar src={user.userInfo.avatar?`data:image/jpeg;base64,${user.userInfo.avatar}`:null}/>
                     <Typography sx={{fontWeight:'bold', my:'auto'}}>
                         You
                     </Typography>

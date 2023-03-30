@@ -2,7 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
-import { ListItem, ListItemIcon} from '@mui/material';
+import { ListItem, ListItemIcon} from '@mui/material'
 import AllInboxRoundedIcon from '@mui/icons-material/AllInboxRounded';
 import InboxRoundedIcon from '@mui/icons-material/InboxRounded';
 import DraftsRoundedIcon from '@mui/icons-material/DraftsRounded';
@@ -16,8 +16,8 @@ import Avatar from '@mui/material/Avatar';
 import SuccessActionAlert from '../../components/SuccessAlert';
 import ErrorActionAlert from '../../components/ErrorAlert';
 
-const ListItemStyling = {m:2, mx:4, borderRadius:3, p:2, overflow:'hidden',    };
-const TypographyStyling = {color:'#002159', fontWeight:'bold'};
+const ListItemStyling = {m:2, mx:2, borderRadius:3, p:2, flexWrap:'wrap','@media (max-width: 900px)':{dispay:'flex', flexDirection:'column', justifyContents:'center', alignContents:'center'}  };
+const TypographyStyling = {color:'#002159', fontWeight:'bold',my:1,'@media (max-width: 900px)':{fontSize:10,}  };
 
 const inboxes = ['inbox', 'sent', 'starred', 'drafts', 'all emails','trash', 'spam'];
 
@@ -61,11 +61,11 @@ function MailNavBar({selectedInbox}) {
       <ErrorActionAlert openAlert={openError} message="Error sending email" closeAlert={() => {closeAlerts();}} />
       <Box sx={{display: 'flex', flexDirection:'row', flexWrap:'wrap', alignItems:'center', mt:2,  mx:3,  borderBottomColor:'#C6CED6', pb:2,}}>
               <Avatar src='postman.jpg' sx={{width:50, height:50, background:'transparent', my:'auto', mx:'auto', mb:2}}/>
-              <Typography  sx={{fontWeight:'bold', fontSize:'20px', color:'#2E3D54', letterSpacing:8, my:'auto', overflow:'hidden',mx:'auto'}}>MAILMAN</Typography>
+              <Typography  sx={{fontWeight:'bold', fontSize:'20px', color:'#2E3D54', letterSpacing:8, my:'auto', overflow:'hidden',mx:'auto','@media (max-width: 1300px)':{fontSize:14, letterSpacing:4}, '@media (max-width: 1000px)':{fontSize:12, letterSpacing:2} }}>MAILMAN</Typography>
         </Box>
       <List component="nav" aria-label="main mailbox folders" >
         <ListItemButton sx = {{ width: '80%', backgroundColor: '#338FEB', color:'white', borderRadius:3, mx:'auto', my:2}} onClick={()=>{setComposeEmail(true)}}>
-                <Typography variant="overline" sx={{overflow:'hidden', mx:'auto'}}>
+                <Typography variant="overline" sx={{overflow:'hidden', mx:'auto',  '@media (max-width: 900px)':{fontSize:10}}}>
                     Compose
                 </Typography>
         </ListItemButton>
@@ -74,9 +74,9 @@ function MailNavBar({selectedInbox}) {
           onClick={(event) => handleListItemClick(event, 0)}
           sx={ListItemStyling}
         >
-          <ListItemIcon>
-            <InboxRoundedIcon sx={{color:'#002159'}} />
-          </ListItemIcon>
+          
+            <InboxRoundedIcon sx={{mr:2, color:'#002159',  '@media (max-width: 900px)':{mr:0}}} />
+          
           <Typography sx={TypographyStyling}>Inbox</Typography>
         </ListItemButton>
         <ListItemButton
@@ -84,9 +84,7 @@ function MailNavBar({selectedInbox}) {
           onClick={(event) => handleListItemClick(event, 1)}
           sx={ListItemStyling}
         >
-          <ListItemIcon>
-            <SendRoundedIcon sx={{color:'#002159'}}/>
-          </ListItemIcon>
+            <SendRoundedIcon sx={{mr:2, color:'#002159',  '@media (max-width: 900px)':{mr:0}}}/>
           <Typography sx={TypographyStyling}>Sent</Typography>
         </ListItemButton>
         <ListItemButton
@@ -94,9 +92,9 @@ function MailNavBar({selectedInbox}) {
           onClick={(event) => handleListItemClick(event, 2)}
           sx={ListItemStyling}
         >
-          <ListItemIcon>
-            <StarRoundedIcon sx={{color:'#002159'}}/>
-          </ListItemIcon>
+          
+            <StarRoundedIcon sx={{mr:2, color:'#002159',  '@media (max-width: 900px)':{mr:0}}}/>
+          
           <Typography sx={TypographyStyling}>Starred</Typography>
         </ListItemButton>
         <ListItemButton
@@ -104,9 +102,9 @@ function MailNavBar({selectedInbox}) {
           onClick={(event) => handleListItemClick(event, 3)}
           sx={ListItemStyling}
         >
-          <ListItemIcon>
-            <DraftsRoundedIcon sx={{color:'#002159'}}/>
-          </ListItemIcon>
+          
+            <DraftsRoundedIcon sx={{mr:2, color:'#002159',  '@media (max-width: 900px)':{mr:0}}}/>
+          
           <Typography sx={TypographyStyling}>Drafts</Typography>
         </ListItemButton>
         <ListItem>
@@ -117,9 +115,9 @@ function MailNavBar({selectedInbox}) {
           onClick={(event) => handleListItemClick(event, 4)}
           sx={ListItemStyling}
         >
-            <ListItemIcon>
-                <AllInboxRoundedIcon sx={{color:'#002159'}}/>
-            </ListItemIcon>
+            
+                <AllInboxRoundedIcon sx={{mr:2, color:'#002159',  '@media (max-width: 900px)':{mr:0}}}/>
+            
           <Typography sx={TypographyStyling}>All Emails</Typography>
         </ListItemButton>
         <ListItemButton
@@ -127,9 +125,9 @@ function MailNavBar({selectedInbox}) {
           onClick={(event) => handleListItemClick(event, 5)}
           sx={ListItemStyling}
         >
-            <ListItemIcon>
-                <DeleteRoundedIcon sx={{color:'#002159'}}/>
-            </ListItemIcon>
+            
+                <DeleteRoundedIcon sx={{mr:2, color:'#002159',  '@media (max-width: 900px)':{mr:0}}}/>
+            
           <Typography sx={TypographyStyling}>Trash</Typography>
         </ListItemButton>
         <ListItemButton
@@ -137,9 +135,9 @@ function MailNavBar({selectedInbox}) {
           onClick={(event) => handleListItemClick(event, 6)}
           sx={ListItemStyling}
         >
-          <ListItemIcon>
-                <ReportRoundedIcon sx={{color:'#002159'}}/>
-          </ListItemIcon>
+          
+                <ReportRoundedIcon sx={{mr:2, color:'#002159',  '@media (max-width: 900px)':{mr:0}}}/>
+          
           <Typography sx={TypographyStyling}>Spam</Typography>
         </  ListItemButton>
       </List>

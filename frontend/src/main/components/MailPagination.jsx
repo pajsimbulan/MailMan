@@ -26,7 +26,7 @@ const MailPagination = ({ range, totalCount }) => {
   const endRow = Math.min(page * rowsPerPage, totalCount);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', }}>
+    <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', m:1}}>
       <Typography sx={{my:'auto', color:'grey', fontSize:14}}>{`${startRow}-${endRow} of ${totalCount}`}</Typography>
       <IconButton onClick={handlePreviousClick} disabled={page === 1}>
         <ChevronLeftIcon />

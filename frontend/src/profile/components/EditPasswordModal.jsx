@@ -44,7 +44,6 @@ export default function PasswordModal({edit, closeModal, updatePassword}) {
             top: '40%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: '30%',
             borderRadius:10,
             bgcolor: 'background.paper',
             border: 'solid',
@@ -53,7 +52,7 @@ export default function PasswordModal({edit, closeModal, updatePassword}) {
             p: 4,
         }}>
         <Box component="form" sx={{display:'flex',justifyContent:'center', width:'100%'}}>
-            <Typography sx={{fontWeight:'bold', color:'colors.text', fontSize:25}}>
+            <Typography sx={{fontWeight:'bold', color:'colors.text', fontSize:25, mx:10}}>
               Change Password
             </Typography>
           </Box>

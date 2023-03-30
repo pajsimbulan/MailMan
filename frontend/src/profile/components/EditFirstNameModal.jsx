@@ -51,26 +51,25 @@ export default function FirstNameModal({edit, closeModal, oldValue, setFirstName
             top: '40%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: '30%',
             borderRadius: 10,
-            bgcolor: 'background.paper',
+            bgcolor: 'background.paper',  
             border: 'solid',
             borderWidth:'16px',
             borderColor: '#deedfd',
             p: 4,
             }}
             onSubmit={()=> {submitHandler();}}>
-          <Box sx={{display:'flex',justifyContent:'center', width:'100%'}}>
-            <Typography sx={{fontWeight:'bold', color:'colors.text', fontSize:25}}>
+          <Box sx={{display:'flex',justifyContent:'center'}}>
+            <Typography sx={{fontWeight:'bold', color:'colors.text', fontSize:25, mx:10}}>
               Edit First Name
             </Typography>
           </Box>
-          <Box sx={{display:'flex',justifyContent:'center', width:'100%', marginY:2}}>
+          <Box sx={{display:'flex',justifyContent:'center',  marginY:2}}>
             <Typography sx={{fontWeight:'light', color:'colors.text', fontSize:15}}>
               Enter first name and submit
             </Typography>
           </Box>
-          <Typography sx={{mt:2, mb:2, fontWeight:'bold', color:'colors.text'}}>New First Name</Typography>
+          <Typography sx={{mt:2, mb:2, fontWeight:'bold', color:'colors.text',}}>New First Name</Typography>
           <TextField defaultValue={value}  onChange={(event) => {setValue(event.target.value);}} type="text" name="firstName" id="firstName"/>
           <Box sx={{display:'flex', flexDirection:'row', flexGrow:1, justifyContent:'end', marginTop:5}}>
             <Button type="button" 
