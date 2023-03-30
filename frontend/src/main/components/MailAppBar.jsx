@@ -16,10 +16,13 @@ import { Avatar, Divider } from '@mui/material';
 import { UserContext } from '../../App';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
+import { useMediaQuery } from '@mui/material';
+import MailDrawerNavigation from './MailDrawerNavigation';
+import MailNavBar from './MailNavBar';
 
-function MailAppBar() {
+function MailAppBar({drawerNavigation}) {
   const {userInfo} = React.useContext(UserContext);
-  console.log(userInfo);
+  const isSmallScreen = useMediaQuery('(max-width:800px)');
   const theme = useTheme();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -131,7 +134,8 @@ function MailAppBar() {
   return (
     <Box sx={{  borderBottom: 'solid', borderWidth:'1px', borderColor:'#C6CED6', borderBottomLeftRadius:40, borderWidth:5, bgcolor:'white'}}>
         <Toolbar >
-          <Box sx={{flexGrow: 1}}>
+          <Box sx={{flexGrow: 1, display:'flex', flexDirection:'row'}}>
+            {isSmallScreen? <MailDrawerNavigation drawerNavigationProps={<MailNavBar />}/> : null}
             <TextField
             sx={{ my: 1.5, ml:5,width: '80%', borderRadius:3, bgcolor:'#EBF5FF', fieldset:{borderWidth:0, m:0}, input: { color: '#002159'},  "& .MuiOutlinedInput-root.Mui-focused": {
       "& > fieldset": {
