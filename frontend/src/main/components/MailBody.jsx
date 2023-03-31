@@ -87,10 +87,10 @@ function MailBody({selectedInbox}) {
   return (
     <Box sx = {{width: "100%", maxHeight:'100%', display:'flex', margin:0, borderRadius:10, alignItems:'stretch', justifyContent:'center', overflow:'scroll'}} >
        {openEmail? <EmailContentWindow closeEmail={() => {setOpenEmail(false)}} email={openedEmail}/> : null}
-    <List sx={{ width:'100%', maxWidth: "95%", borderRadius:10, bgcolor:'transparent',boxShadow:'1', mt:2, px:2, }}>
-      <ListItem sx={{display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'space-between','@media (max-width: 500px)':{flexDirection:'column', alignItems:'center'} }}>
-        <Box sx={{ my:'auto',bgcolor:'#dceaf7', borderRadius:10, px:0.5, m:1, mr:3,  }}>
-            <Checkbox edge="start"  sx={{color:'grey',transform: "scale(0.8)", ml:0.5}} onChange={(event) => {
+    <List sx={{ width:'100%', maxWidth: "95%", borderRadius:10, bgcolor:'transparent',boxShadow:'3', mt:2, px:2, }}>
+      <ListItem sx={{display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'space-between','@media (max-width: 400px)':{flexDirection:'column', justifyContent:'center'} }}>
+        <Box sx={{ my:'auto',bgcolor:'#dceaf7', borderRadius:10, px:0.5, m:1, mr:1, '@media (max-width: 800px)':{m:0,mr:0.5}}}>
+            <Checkbox edge="start"  sx={{color:'grey',transform: "scale(0.8)", ml:0.5,'@media (max-width: 800px)':{transform: "scale(0.65)"}}} onChange={(event) => {
               setCheckBoxArray(new Array(size.current).fill(event.target.checked));
               setSelected(selected => { selected.push(1);console.log(selected); return selected;});
               }}/>

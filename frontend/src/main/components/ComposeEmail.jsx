@@ -21,12 +21,12 @@ function ComposeEmail ({closeComposeEmail}) {
     const subjectRef = React.useRef();
     const contentsRef = React.useRef();
     const [binaryFiles, setBinaryFiles] = React.useState([]);
-    console.log(`rendering ComposeEmail ${binaryFiles.length}`);
-    console.log(`tempFiles: ${binaryFiles.forEach((file) => console.log(`${file.name} -> ${file.type}`))}`);
+
     const submitSend = () => {
         setOpen(false);
         closeComposeEmail('success');
     }
+
     const handleClose = () => {
         setOpen(false);
         closeComposeEmail('none');
@@ -52,7 +52,6 @@ function ComposeEmail ({closeComposeEmail}) {
             reader.onload = () => {
               const arrayBuffer = reader.result;
               const base64Data = arrayBufferToBase64(arrayBuffer);
-              console.log(`file type: ${file.type}`);
               resolve({ name: file.name, data: base64Data, type: file.type });
             };
             reader.onerror = (error) => {
@@ -94,7 +93,6 @@ function ComposeEmail ({closeComposeEmail}) {
                         borderColor:'#edf4fb'
                         
                     }}}  open={open} onClose={() => {
-                        console.log('Modal closed');
                         handleClose();
                       }}>
                 <Box sx={{display:'flex', flexDirection:'row', flexWrap:'wrap', p:1,bgcolor:'#eceff1'}}>

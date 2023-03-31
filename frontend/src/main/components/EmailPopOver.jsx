@@ -17,8 +17,12 @@ export default function EmailPopOvers({item,name}) {
   const open = Boolean(anchorEl);
 
   return (
-    <IconButton onMouseEnter={handlePopoverOpen}
+    <IconButton 
+    sx={{height:25,
+          width:25, mx:0.5}}
+    onMouseEnter={handlePopoverOpen}
     onMouseLeave={handlePopoverClose}>
+      
       {item()}
       <Popover
         PaperProps={{

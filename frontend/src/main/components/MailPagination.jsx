@@ -25,14 +25,18 @@ const MailPagination = ({ range, totalCount }) => {
   const startRow = (page - 1) * rowsPerPage + 1;
   const endRow = Math.min(page * rowsPerPage, totalCount);
 
+  const arrowStyling = {'@media (max-width: 800px)':{height:20, width:20}};
+
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', m:1}}>
-      <Typography sx={{my:'auto', color:'grey', fontSize:14}}>{`${startRow}-${endRow} of ${totalCount}`}</Typography>
+    <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', m:1, '@media (max-width: 400px)':{m:0.5}}}>
+      <Typography sx={{my:'auto', color:'grey', fontSize:14,
+    '@media (max-width: 800px)':{fontSize:12},
+    '@media (max-width: 500px)':{fontSize:10}}}>{`${startRow}-${endRow} of ${totalCount}`}</Typography>
       <IconButton onClick={handlePreviousClick} disabled={page === 1}>
-        <ChevronLeftIcon />
+        <ChevronLeftIcon sx={arrowStyling}/>
       </IconButton>
       <IconButton onClick={handleNextClick} disabled={page === totalPages}>
-        <ChevronRightIcon />
+        <ChevronRightIcon sx={arrowStyling}/>
       </IconButton>
     </Box>
   );
