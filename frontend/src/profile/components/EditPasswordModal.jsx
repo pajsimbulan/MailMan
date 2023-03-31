@@ -6,78 +6,100 @@ import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-
 const theme = createTheme({
   palette: {
     colors: {
-      bg_default:'#FFFFFF',
-      color2:'#F1F5F9',
+      bg_default: '#FFFFFF',
+      color2: '#F1F5F9',
       text: '#334155',
-      button: '#0F172A'
-    }
+      button: '#0F172A',
+    },
   },
 });
 
-export default function PasswordModal({edit, closeModal, updatePassword}) {
-  const [value, setValue]= React.useState("");
+export default function PasswordModal({ edit, closeModal, updatePassword }) {
+  const [value, setValue] = React.useState('');
 
-  const handleClose = () => { 
-    closeModal();};
-  
+  const handleClose = () => {
+    closeModal();
+  };
+
   const submitHandler = () => {
     updatePassword(value);
     closeModal();
-  }
+  };
   return (
     <ThemeProvider theme={theme}>
       <Modal
         open={edit}
         onClose={handleClose}
       >
-        <Box 
+        <Box
           component="form"
-          onSubmit={()=> {submitHandler();}}
+          onSubmit={() => { submitHandler(); }}
           sx={{
-            display:'flex',
-            flexDirection:'column',
+            display: 'flex',
+            flexDirection: 'column',
             position: 'absolute',
             top: '40%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            borderRadius:10,
+            borderRadius: 10,
             bgcolor: 'background.paper',
             border: 'solid',
-            borderWidth:'16px',
+            borderWidth: '16px',
             borderColor: '#deedfd',
             p: 4,
-        }}>
-        <Box component="form" sx={{display:'flex',justifyContent:'center', width:'100%'}}>
-            <Typography sx={{fontWeight:'bold', color:'colors.text', fontSize:25, mx:10}}>
+          }}
+        >
+          <Box component="form" sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+            <Typography sx={{
+              fontWeight: 'bold', color: 'colors.text', fontSize: 25, mx: 10,
+            }}
+            >
               Change Password
             </Typography>
           </Box>
-          <Box sx={{display:'flex',justifyContent:'center', width:'100%', marginY:2}}>
-            <Typography sx={{fontWeight:'light', color:'colors.text', fontSize:15}}>
+          <Box sx={{
+            display: 'flex', justifyContent: 'center', width: '100%', marginY: 2,
+          }}
+          >
+            <Typography sx={{ fontWeight: 'light', color: 'colors.text', fontSize: 15 }}>
               Enter a new password
             </Typography>
           </Box>
-              <Typography sx={{mt:2, fontWeight:'bold', color:'colors.text'}}>New Password</Typography>
-              <TextField
-                margin="normal"
-                name="password"
-                type="password"
-                id="password"
-                onChange={(event) => {setValue(event.target.value);}}
-              />
-             <Box sx={{display:'flex', flexDirection:'row', flexGrow:1, justifyContent:'end', marginTop:5}}>
-            <Button type="button" 
-              sx={{marginTop:3, bgcolor:'grey', color:'black', borderRadius:1, bgcolor:'whitesmoke', textTransform: 'none', width:'20%', height:'20%',marginY:'auto',marginRight:4 }} 
-              onClick={handleClose}> Cancel
+          <Typography sx={{ mt: 2, fontWeight: 'bold', color: 'colors.text' }}>New Password</Typography>
+          <TextField
+            margin="normal"
+            name="password"
+            type="password"
+            id="password"
+            onChange={(event) => { setValue(event.target.value); }}
+          />
+          <Box sx={{
+            display: 'flex', flexDirection: 'row', flexGrow: 1, justifyContent: 'end', marginTop: 5,
+          }}
+          >
+            <Button
+              type="button"
+              sx={{
+                marginTop: 3, bgcolor: 'grey', color: 'black', borderRadius: 1, bgcolor: 'whitesmoke', textTransform: 'none', width: '20%', height: '20%', marginY: 'auto', marginRight: 4,
+              }}
+              onClick={handleClose}
+            >
+              {' '}
+              Cancel
             </Button>
-              <Button type="submit"
-              sx={{marginTop:3, bgcolor:'grey', color:'white', borderRadius:1, bgcolor:'colors.button', textTransform: 'none', width:'20%', height:'20%',marginY:'auto' }} 
-              onSubmit={()=> {submitHandler();}}> Submit 
-              </Button>
+            <Button
+              type="submit"
+              sx={{
+                marginTop: 3, bgcolor: 'grey', color: 'white', borderRadius: 1, bgcolor: 'colors.button', textTransform: 'none', width: '20%', height: '20%', marginY: 'auto',
+              }}
+              onSubmit={() => { submitHandler(); }}
+            >
+              {' '}
+              Submit
+            </Button>
           </Box>
         </Box>
       </Modal>

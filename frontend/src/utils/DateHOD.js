@@ -4,15 +4,14 @@
  * @returns {string} - The formatted time string
  */
 function hourOfDay(dateString) {
-    const date = new Date(dateString);
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const ampm = hours >= 12 ? 'pm' : 'am';
-    const formattedHours = hours % 12 || 12;
-    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-    const formattedTime = `${formattedHours}:${formattedMinutes} ${ampm}`;
-    return formattedTime;
-  }
-  
-  export default hourOfDay;
-  
+  const date = new Date(dateString);
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const ampm = hours >= 12 ? 'pm' : 'am';
+  const formattedHours = hours % 12 || 12;
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+  const formattedTime = `${formattedHours}:${formattedMinutes} ${ampm}`;
+  return formattedTime;
+}
+
+export default hourOfDay;

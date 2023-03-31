@@ -6,20 +6,20 @@
 function formatDate(dateString) {
   // Create a Date object from the input string
   const date = new Date(dateString);
-  
+
   // Define options for formatting the date string
-  const options = { 
+  const options = {
     year: 'numeric',
-    month: 'short', 
-    day: 'numeric', 
-    hour: 'numeric', 
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
     minute: 'numeric',
-    hour12: true 
+    hour12: true,
   };
-  
+
   // Use the toLocaleDateString method to format the date string
   const formattedDate = date.toLocaleDateString('en-US', options);
-  
+
   // Return the formatted date string
   return formattedDate;
 }

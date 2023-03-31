@@ -3,9 +3,12 @@ import { Box, Chip } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import getFileIcon from '../../utils/FileIcons';
 
-function FileChip({files, onClick, onDelete }) {
+function FileChip({ files, onClick, onDelete }) {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', p: 1 }}>
+    <Box sx={{
+      display: 'flex', flexDirection: 'row', flexWrap: 'wrap', p: 1,
+    }}
+    >
       {files.map((file, index) => (
         <Chip
           icon={getFileIcon(file.type)}

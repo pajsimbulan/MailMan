@@ -3,7 +3,7 @@ import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import { IconButton } from '@mui/material';
 
-export default function EmailPopOvers({item,name}) {
+export default function EmailPopOvers({ item, name }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handlePopoverOpen = (event) => {
@@ -17,25 +17,29 @@ export default function EmailPopOvers({item,name}) {
   const open = Boolean(anchorEl);
 
   return (
-    <IconButton 
-    sx={{height:25,
-          width:25, mx:0.5}}
-    onMouseEnter={handlePopoverOpen}
-    onMouseLeave={handlePopoverClose}>
-      
+    <IconButton
+      sx={{
+        height: 25,
+        width: 25,
+        mx: 0.5,
+      }}
+      onMouseEnter={handlePopoverOpen}
+      onMouseLeave={handlePopoverClose}
+    >
+
       {item()}
       <Popover
         PaperProps={{
-          style:{
-            backgroundColor:'#1e1e1e',
-            borderRadius:10,
-            p:5
-          }
+          style: {
+            backgroundColor: '#1e1e1e',
+            borderRadius: 10,
+            p: 5,
+          },
         }}
         id="mouse-over-popover"
         sx={{
           pointerEvents: 'none',
-          p:4,
+          p: 4,
         }}
         open={open}
         anchorEl={anchorEl}
@@ -50,7 +54,7 @@ export default function EmailPopOvers({item,name}) {
         onClose={handlePopoverClose}
         disableRestoreFocus
       >
-        <Typography variant="caption" sx={{'m':2, color:'white'}}>{name}</Typography>
+        <Typography variant="caption" sx={{ m: 2, color: 'white' }}>{name}</Typography>
       </Popover>
     </IconButton>
   );

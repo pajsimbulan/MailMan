@@ -4,22 +4,26 @@ import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from '@mui/material/IconButton';
 import MailNavBar from './MailNavBar';
 
-function MailDrawerNavigation({currentInbox, selectedInbox}) {
+function MailDrawerNavigation({ currentInbox, selectedInbox }) {
   const [openDrawer, setOpenDrawer] = React.useState(false);
 
   return (
     <>
-          <IconButton onClick={() => setOpenDrawer(true)}><MenuIcon/></IconButton>
-          <Drawer
-            anchor='left'
-            open={openDrawer}
-            onClose={() => setOpenDrawer(false)}
-            PaperProps={{sx:{display:'flex', bgcolor:'transparent', boxShadow:0, border:'none',}}}
-          >
-            <MailNavBar currentInbox={currentInbox} selectedInbox={selectedInbox} onSelect={() => setOpenDrawer(false)}/>
-          </Drawer>
-   </>
+      <IconButton onClick={() => setOpenDrawer(true)}><MenuIcon /></IconButton>
+      <Drawer
+        anchor="left"
+        open={openDrawer}
+        onClose={() => setOpenDrawer(false)}
+        PaperProps={{
+          sx: {
+            display: 'flex', bgcolor: 'transparent', boxShadow: 0, border: 'none',
+          },
+        }}
+      >
+        <MailNavBar currentInbox={currentInbox} selectedInbox={selectedInbox} onSelect={() => setOpenDrawer(false)} />
+      </Drawer>
+    </>
   );
 }
 
-export default MailDrawerNavigation
+export default MailDrawerNavigation;

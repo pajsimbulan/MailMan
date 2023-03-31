@@ -6,32 +6,50 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { Avatar, Divider, TextField } from '@mui/material';
 import { UserContext } from '../../App';
-function EmailReplying ({submitReply, exitReply}) {
-    const user = React.useContext(UserContext);
-    const [value, setValue] = React.useState('');
-    return (
+
+function EmailReplying({ submitReply, exitReply }) {
+  const user = React.useContext(UserContext);
+  const [value, setValue] = React.useState('');
+  return (
     <Box>
-        <Divider  sx={{my:2}}/>
-        <Box component="form" onSubmit={() => {submitReply(value);}} sx={{ display:'flex', flexGrow:1, flexDirection:'column',bgcolor:'#ECEFF1',mx:5, p:2, borderRadius:5, gap:2}}>   
-            <Box sx={{display:'flex', justifyContent:'space-between'}}>
-                <Box sx={{display:'flex', flexDirection:'row', gap:1}}>
-                    <Avatar src={user.userInfo.avatar?`data:image/jpeg;base64,${user.userInfo.avatar}`:null}/>
-                    <Typography sx={{fontWeight:'bold', my:'auto'}}>
-                        You
-                    </Typography>
-                </Box>
-                <IconButton onClick={() => {exitReply();}}>
-                    <CloseIcon/>
-                </IconButton>
-            </Box>
-            <TextField onChange={(event) => {setValue(event.target.value)}} autoFocus sx={{"& fieldset": { border: 'none' }}}/>
+      <Divider sx={{ my: 2 }} />
+      <Box
+        component="form"
+        onSubmit={() => { submitReply(value); }}
+        sx={{
+          display: 'flex', flexGrow: 1, flexDirection: 'column', bgcolor: '#ECEFF1', mx: 5, p: 2, borderRadius: 5, gap: 2,
+        }}
+      >
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
+            <Avatar src={user.userInfo.avatar ? `data:image/jpeg;base64,${user.userInfo.avatar}` : null} />
+            <Typography sx={{ fontWeight: 'bold', my: 'auto' }}>
+              You
+            </Typography>
+          </Box>
+          <IconButton onClick={() => { exitReply(); }}>
+            <CloseIcon />
+          </IconButton>
         </Box>
-        <Box sx={{display:'flex', justifyContent:'end', my:1, mx:5,}}>
-            <Button type="submit" variant='contained' onClick={() => {submitReply(value);}} sx={{border:'solid', borderRadius:4, borderWidth:0,textTransform: 'none', }}>
-                Send
-            </Button>
-        </Box> 
-    </Box>);
+        <TextField onChange={(event) => { setValue(event.target.value); }} autoFocus sx={{ '& fieldset': { border: 'none' } }} />
+      </Box>
+      <Box sx={{
+        display: 'flex', justifyContent: 'end', my: 1, mx: 5,
+      }}
+      >
+        <Button
+          type="submit"
+          variant="contained"
+          onClick={() => { submitReply(value); }}
+          sx={{
+            border: 'solid', borderRadius: 4, borderWidth: 0, textTransform: 'none',
+          }}
+        >
+          Send
+        </Button>
+      </Box>
+    </Box>
+  );
 }
 
 export default EmailReplying;
