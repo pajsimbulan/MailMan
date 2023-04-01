@@ -16,13 +16,14 @@ function EmailReplying({ submitReply, exitReply }) {
   const user = React.useContext(UserContext);
   const [value, setValue] = React.useState('');
   return (
-    <Box>
+    <Box sx={{width:'100%'}}>
       <Divider sx={{ my: 2 }} />
       <Box
         component="form"
         onSubmit={() => { submitReply(value); }}
         sx={{
-          display: 'flex', flexGrow: 1, flexDirection: 'column', bgcolor: '#ECEFF1', mx: 5, p: 2, borderRadius: 5, gap: 2,
+          display: 'flex', flexGrow: 1, flexDirection: 'column', bgcolor: '#ECEFF1', mx: 5, p: 2, borderRadius: 5, 
+          '@media (max-width: 500px)': { mx:3}
         }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -37,10 +38,11 @@ function EmailReplying({ submitReply, exitReply }) {
           </IconButton>
         </Box>
         <TextField 
+          multiline
           inputProps={{
             style: { fontSize: isLessThan800 ? '10px' : (isLessThan1000 ? '12px' : '14px') },
           }}
-          onChange={(event) => { setValue(event.target.value); }} autoFocus sx={{ '& fieldset': { border: 'none' } }} />
+          onChange={(event) => { setValue(event.target.value); }} autoFocus sx={{ '& fieldset': { border: 'none' },  }} />
       </Box>
       <Box sx={{
         display: 'flex', justifyContent: 'end', my: 1, mx: 5,

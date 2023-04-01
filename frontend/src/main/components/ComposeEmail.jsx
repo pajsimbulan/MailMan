@@ -12,9 +12,15 @@ import { Avatar, Divider } from '@mui/material';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { UserContext } from '../../App';
 import FileChip from './FileChip';
+import { useMediaQuery } from '@mui/material';
+
 
 const MAX_FILE_SIZE = 13000000;
+const iconButtonStyling = { height:25, width:25, '@media (max-width: 800px)': { height:20, width:20}};
+
 function ComposeEmail({ closeComposeEmail }) {
+  const isLessThan800 = useMediaQuery('(max-width:800px)');
+  const isLessThan1000 = useMediaQuery('(max-width:1000px)');
   const user = React.useContext(UserContext);
   const [open, setOpen] = React.useState(true);
   const toRef = React.useRef();
@@ -80,10 +86,10 @@ function ComposeEmail({ closeComposeEmail }) {
       <Dialog
         PaperProps={{
           style: {
-            minHeight: '70%',
-            maxHeight: '70%',
-            minWidth: '70%',
-            maxWidth: '70%',
+            minHeight: '80%',
+            maxHeight: '80%',
+            minWidth: '90%',
+            maxWidth: '90%',
             border: 'solid',
             borderWidth: 5,
             borderRadius: 10,
@@ -101,23 +107,31 @@ function ComposeEmail({ closeComposeEmail }) {
         }}
         >
           <Box sx={{ width: '33.33%', display: 'flex', flexDirection: 'row' }}>
-            <Avatar sx={{ mr: 2, height: 40, width: 40 }} src={user.userInfo.avatar ? `data:image/jpeg;base64,${user.userInfo.avatar}` : null} />
-            <Box sx={{ display: 'flex', flexDirection: 'column', my: 'auto' }}>
-              <Typography variant="body2" sx={{ fontSize: 12, fontWeight: 'bold' }}>
-                {user.userInfo.firstName}
+            <Avatar sx={{ mr: 1, height: 40, width: 40, my:'auto' }} src={user.userInfo.avatar ? `data:image/jpeg;base64,${user.userInfo.avatar}` : null} />
+            <Box sx={{ display: 'flex', flexDirection: 'column', my: 'auto', overflow:'auto', py:1, pr:1 }}>
+              <Typography sx={{
+              fontSize: '14px',
+              fontWeight: 'bold',
+              '@media (max-width: 800px)': { fontSize: '12px' },
+            }}>
+                {"Zaheer"}
               </Typography>
-              <Typography variant="body2" sx={{ fontSize: 10 }}>
-                {`<${user.userInfo.email}>`}
+              <Typography sx={{
+              fontSize: '12px',
+              '@media (max-width: 800px)': { fontSize: '10px' },
+            }}>
+                {`<zaheer@avatar.com>`}
               </Typography>
             </Box>
           </Box>
           <Box sx={{ width: '33.33%', display: 'flex', justifyContent: 'center' }}>
-            <Typography sx={{ fontWeight: 'bold', my: 'auto' }}>
+            <Typography sx={{ fontWeight: 'bold', my: 'auto', '@media (max-width: 800px)': { fontSize: '12px' }, '@media (max-width: 500px)': { fontSize: '10px' }, textAlign: 'center', }}>
               New Email
             </Typography>
           </Box>
           <Box sx={{ width: '33.33%', display: 'flex', justifyContent: 'end' }}>
             <IconButton
+              sx={iconButtonStyling}
               edge="start"
               color="inherit"
               onClick={() => {
@@ -126,14 +140,15 @@ function ComposeEmail({ closeComposeEmail }) {
               }}
               aria-label="close"
             >
-              <CloseIcon sx={{ color: '#002159' }} />
+              <CloseIcon sx={{ color: '#002159', height:25, width:25, '@media (max-width: 800px)': { height:20, width:20} }} />
             </IconButton>
           </Box>
         </Box>
         <Box component="form" onSubmit={submitSend} noValidate sx={{ width: '100%' }}>
           {/** Text Fields */}
           <Box sx={{
-            display: 'flex', flexGrow: 1, flexDirection: 'column', mx: 5, px: 5, py: 2, borderRadius: 5, gap: 1,
+            display: 'flex', flexGrow: 1, flexDirection: 'column', mx: 5, px: 2, py: 2, borderRadius: 5, gap: 1,
+            '@media (max-width: 500px)': { mx:1, px:0, py:1 }
           }}
           >
             <Box sx={{
@@ -142,11 +157,16 @@ function ComposeEmail({ closeComposeEmail }) {
             >
               <Typography sx={{
                 my: 'auto', mx: 1, width: 60, color: 'grey', fontSize: 14,
+                '@media (max-width: 800px)': { fontSize: '12px' }, '@media (max-width: 500px)': { fontSize: '10px' }
               }}
               >
                 To:
               </Typography>
-              <TextField name="to" id="to" fullWidth inputRef={toRef} sx={{ '& fieldset': { border: 'none' } }} />
+              <TextField name="to" id="to" fullWidth inputRef={toRef} 
+                inputProps={{
+                  style: { fontSize: isLessThan800 ? '10px' : (isLessThan1000 ? '12px' : '14px') },
+                }}
+                sx={{ '& fieldset': { border: 'none' }}} />
             </Box>
             <Divider />
             <Box sx={{
@@ -155,18 +175,25 @@ function ComposeEmail({ closeComposeEmail }) {
             >
               <Typography sx={{
                 my: 'auto', mx: 1, width: 60, color: 'grey', fontSize: 14,
+                '@media (max-width: 800px)': { fontSize: '12px' }, '@media (max-width: 500px)': { fontSize: '10px' }
               }}
               >
                 Subject:
               </Typography>
-              <TextField name="subject" id="subject" fullWidth inputRef={subjectRef} sx={{ '& fieldset': { border: 'none' } }} />
+              <TextField inputProps={{
+                  style: { fontSize: isLessThan800 ? '10px' : (isLessThan1000 ? '12px' : '14px') },
+                }}
+                name="subject" id="subject" fullWidth inputRef={subjectRef} sx={{ '& fieldset': { border: 'none' } }} />
             </Box>
             <Divider />
             <Box sx={{
               display: 'flex', flexGrow: 1, flexDirection: 'column', bgcolor: '#ECEFF1', borderRadius: 5, p: 2,
             }}
             >
-              <TextField name="contents" id="contents" inputRef={contentsRef} fullWidth multiline rows={12} sx={{ '& fieldset': { border: 'none' } }} />
+              <TextField inputProps={{
+                  style: { fontSize: isLessThan800 ? '10px' : (isLessThan1000 ? '12px' : '14px') },
+                }}
+                name="contents" id="contents" inputRef={contentsRef} fullWidth multiline rows={12} sx={{ '& fieldset': { border: 'none' } }} />
               {binaryFiles.length > 0
                 ? (
                   <FileChip
@@ -186,7 +213,7 @@ function ComposeEmail({ closeComposeEmail }) {
             </Box>
 
             <Box sx={{
-              display: 'flex', flexGrow: 1, justifyContent: 'space-between', my: 1,
+              display: 'flex', flexGrow: 1, justifyContent: 'space-between', my: 1, '@media (max-width: 300px)': { flexDirection:'column' },
             }}
             >
               <Button
@@ -207,7 +234,7 @@ function ComposeEmail({ closeComposeEmail }) {
                 />
               </Button>
               <Box sx={{
-                display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 1,
+                display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 1, '@media (max-width: 500px)': { flexDirection:'column' }, m:1
               }}
               >
                 <Button
@@ -235,9 +262,7 @@ function ComposeEmail({ closeComposeEmail }) {
               </Box>
             </Box>
           </Box>
-
           {/** END Text Fields */}
-
         </Box>
       </Dialog>
     </Box>

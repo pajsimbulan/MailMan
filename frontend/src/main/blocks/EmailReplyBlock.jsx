@@ -1,38 +1,37 @@
 import * as React from 'react';
 import { Box } from '@mui/system';
-import Button from '@mui/material/Button';
-import CloseIcon from '@mui/icons-material/Close';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { Avatar, Divider, TextField } from '@mui/material';
+import { Avatar, Divider } from '@mui/material';
 import parseDate from '../../utils/DateParser';
 import formatDate from '../../utils/DateFormat';
 
 function EmailReplyBlock({ contents }) {
   const [value, setValue] = React.useState('');
   return (
-    <Box>
+    <Box sx={{width:'100%'}}>
       <Divider sx={{ my: 2 }} />
       <Box
         component="form"
         sx={{
-          display: 'flex', flexGrow: 1, flexDirection: 'column', bgcolor: '#ECEFF1', mx: 5, p: 2, borderRadius: 5, gap: 2, overflow:'auto'
+         bgcolor: '#ECEFF1', mx: 5, p: 2, borderRadius: 5,
+          '@media (max-width: 500px)': { mx:3},
+          overflow: 'auto',
         }}
       >
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1, px:1 }}>
-            <Avatar />
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:2}}>
+          <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1, mr:1}}>
+            <Avatar sx={{my:'auto'}}/>
             <Typography sx={{ fontWeight: 'bold', my: 'auto','@media (max-width: 1000px)': { fontSize: '12px' } }}>
               You
             </Typography>
           </Box>
-          <Typography sx={{ color: '#8e8080', fontSize: '13px', '@media (max-width: 1000px)': { fontSize: '10px' }  }}>
+          <Typography sx={{ my:'auto', color: '#8e8080', fontSize: '13px', '@media (max-width: 1000px)': { fontSize: '10px' }  }}>
             { `${formatDate(new Date())} (${parseDate(new Date())})`}
           </Typography>
         </Box>
-        <Typography sx={{ '@media (max-width: 1000px)': { fontSize: '12px' },  '@media (max-width: 800px)': { fontSize: '10px' }}}>
-          {contents}
-        </Typography>
+          <Typography sx={{ '@media (max-width: 1000px)': { fontSize: '12px' },  '@media (max-width: 800px)': { fontSize: '10px' }, wordWrap:'break-word'}}>
+            {contents}
+          </Typography>
       </Box>
     </Box>
   );

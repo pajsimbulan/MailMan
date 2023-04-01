@@ -222,11 +222,12 @@ function EmailContentWindow({ closeEmail, email, onCLose }) {
           {isLessThan800 ? mobileHeader : pcHeader}
           {/** Main Email */}
           <Box sx={{
-            display: 'flex', flexGrow: 1, flexDirection: 'column', bgcolor: '#ECEFF1', mx: 5, p: 2, borderRadius: 5, gap: 2, overflow: 'auto',
+            display: 'flex', flexGrow: 1, flexDirection: 'column', bgcolor: '#ECEFF1', mx: 5, p:2, borderRadius: 5, gap: 2, overflow: 'auto',
+            '@media (max-width: 500px)': { mx:3}
           }}
           >
             <Typography sx={{ '@media (max-width: 1000px)': { fontSize: '12px' },  '@media (max-width: 800px)': { fontSize: '10px' }}}>
-              {email.contents}
+              {email.contents + email.contents + email.contents + email.contents}
             </Typography>
             <Avatar sx={{ width: 200, height: 200 }} />
           </Box>
