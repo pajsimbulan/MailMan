@@ -16,21 +16,21 @@ function EmailReplyBlock({ contents }) {
       <Box
         component="form"
         sx={{
-          display: 'flex', flexGrow: 1, flexDirection: 'column', bgcolor: '#ECEFF1', mx: 5, p: 2, borderRadius: 5, gap: 2,
+          display: 'flex', flexGrow: 1, flexDirection: 'column', bgcolor: '#ECEFF1', mx: 5, p: 2, borderRadius: 5, gap: 2, overflow:'auto'
         }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1, px:1 }}>
             <Avatar />
-            <Typography sx={{ fontWeight: 'bold', my: 'auto' }}>
+            <Typography sx={{ fontWeight: 'bold', my: 'auto','@media (max-width: 1000px)': { fontSize: '12px' } }}>
               You
             </Typography>
           </Box>
-          <Typography sx={{ color: '#8e8080', fontSize: 13 }}>
+          <Typography sx={{ color: '#8e8080', fontSize: '13px', '@media (max-width: 1000px)': { fontSize: '10px' }  }}>
             { `${formatDate(new Date())} (${parseDate(new Date())})`}
           </Typography>
         </Box>
-        <Typography>
+        <Typography sx={{ '@media (max-width: 1000px)': { fontSize: '12px' },  '@media (max-width: 800px)': { fontSize: '10px' }}}>
           {contents}
         </Typography>
       </Box>

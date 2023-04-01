@@ -59,11 +59,11 @@ function EmailContentWindow({ closeEmail, email, onCLose }) {
           fontWeight: 'bold',
           my: 'auto',
           fontSize: '12px',
-
+          textAlign: 'center',
           '@media (max-width: 500px)': { fontSize: '10px' },
         }}
         >
-          {lorem}
+          {email.subject}
         </Typography>
       </Box>
       <Box sx={{
@@ -78,10 +78,10 @@ function EmailContentWindow({ closeEmail, email, onCLose }) {
           display: 'flex', flexDirection: 'column', my: 'auto', '@media (max-width: 500px)': { whiteSpace: 'none', overflow: 'auto' },
         }}
         >
-          <Typography variant="body2" sx={{ fontSize: '12px', fontWeight: 'bold' }}>
+          <Typography sx={{ fontSize: '12px', fontWeight: 'bold' }}>
             Zaheer
           </Typography>
-          <Typography variant="body2" sx={{ fontSize: '10px' }}>
+          <Typography sx={{ fontSize: '10px' }}>
             {`<${email.from}>`}
           </Typography>
         </Box>
@@ -146,16 +146,17 @@ function EmailContentWindow({ closeEmail, email, onCLose }) {
         </Box>
       </Box>
       <Box sx={{
-        width: '33.33%', display: 'flex', justifyContent: 'center', flexDirection: 'column', px: 1, maxHeight: '20vh', whiteSpace: 'nowrap', overflow: 'auto', px: 1,
+        width: '33.33%', display: 'flex', justifyContent: 'center', flexDirection: 'column', px: 1, px: 1,
       }}
       >
         <Typography sx={{
           fontWeight: 'bold',
           my: 'auto',
           '@media (max-width: 1000px)': { fontSize: '12px' },
+          textAlign: 'center',
         }}
         >
-          {lorem}
+          {email.subject}
         </Typography>
       </Box>
       <Box sx={{
@@ -221,7 +222,7 @@ function EmailContentWindow({ closeEmail, email, onCLose }) {
           {isLessThan800 ? mobileHeader : pcHeader}
           {/** Main Email */}
           <Box sx={{
-            display: 'flex', flexGrow: 1, flexDirection: 'column', bgcolor: '#ECEFF1', mx: 5, p: 2, borderRadius: 5, gap: 2,
+            display: 'flex', flexGrow: 1, flexDirection: 'column', bgcolor: '#ECEFF1', mx: 5, p: 2, borderRadius: 5, gap: 2, overflow: 'auto',
           }}
           >
             <Typography sx={{ '@media (max-width: 1000px)': { fontSize: '12px' },  '@media (max-width: 800px)': { fontSize: '10px' }}}>

@@ -6,8 +6,13 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { Avatar, Divider, TextField } from '@mui/material';
 import { UserContext } from '../../App';
+import { useMediaQuery } from '@mui/material';
+
+const iconButtonStyling = { height:25, width:25, '@media (max-width: 800px)': { height:20, width:20}}
 
 function EmailReplying({ submitReply, exitReply }) {
+  const isLessThan800 = useMediaQuery('(max-width:800px)');
+  const isLessThan1000 = useMediaQuery('(max-width:1000px)');
   const user = React.useContext(UserContext);
   const [value, setValue] = React.useState('');
   return (
@@ -23,21 +28,26 @@ function EmailReplying({ submitReply, exitReply }) {
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
             <Avatar src={user.userInfo.avatar ? `data:image/jpeg;base64,${user.userInfo.avatar}` : null} />
-            <Typography sx={{ fontWeight: 'bold', my: 'auto' }}>
+            <Typography sx={{ fontWeight: 'bold', my: 'auto', '@media (max-width: 1000px)': { fontSize: '12px' } }}>
               You
             </Typography>
           </Box>
-          <IconButton onClick={() => { exitReply(); }}>
-            <CloseIcon />
+          <IconButton sx={iconButtonStyling} onClick={() => { exitReply(); }}>
+            <CloseIcon sx={iconButtonStyling}/>
           </IconButton>
         </Box>
-        <TextField onChange={(event) => { setValue(event.target.value); }} autoFocus sx={{ '& fieldset': { border: 'none' } }} />
+        <TextField 
+          inputProps={{
+            style: { fontSize: isLessThan800 ? '10px' : (isLessThan1000 ? '12px' : '14px') },
+          }}
+          onChange={(event) => { setValue(event.target.value); }} autoFocus sx={{ '& fieldset': { border: 'none' } }} />
       </Box>
       <Box sx={{
         display: 'flex', justifyContent: 'end', my: 1, mx: 5,
       }}
       >
         <Button
+          size={isLessThan800 ? 'small' : 'medium'}
           type="submit"
           variant="contained"
           onClick={() => { submitReply(value); }}
