@@ -39,14 +39,33 @@ function BirthDateRow({ birthDate, update }) {
           oldValue={birthDate}
           setBirthDate={(newValue) => { setValue(newValue); }}
         />
-        {invalidBirthDate ? <Typography sx={{ fonweight: 'light', fontSize: 15, color: 'red' }}>*Invalid Birthdate*</Typography> : null}
+        {invalidBirthDate ? (
+          <Typography sx={{
+            fonweight: 'light',
+            fontSize: 15,
+            color: 'red',
+            '@media (max-width: 800px)': { fontSize: '12px' },
+            '@media (max-width: 500px)': { fontSize: '10px' },
+          }}
+          >
+            *Invalid Birthdate*
+          </Typography>
+        ) : null}
       </Box>
       <Button
         type="button"
         disabled={invalidBirthDate}
         size="small"
         sx={{
-          marginTop: 3, bgcolor: 'grey', color: 'white', borderRadius: 10, bgcolor: 'colors.button', textTransform: 'none', marginY: 'auto',
+          my: 'auto',
+          bgcolor: 'grey',
+          color: 'white',
+          borderRadius: 10,
+          bgcolor: 'colors.button',
+          textTransform: 'none',
+          marginY: 'auto',
+          '@media (max-width: 800px)': { fontSize: '12px' },
+          '@media (max-width: 500px)': { fontSize: '10px' },
         }}
         onClick={() => { updateBirthDate(); }}
       >

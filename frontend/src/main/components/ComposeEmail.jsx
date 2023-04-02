@@ -8,15 +8,13 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { Avatar, Divider } from '@mui/material';
+import { Avatar, Divider, useMediaQuery } from '@mui/material';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { UserContext } from '../../App';
 import FileChip from './FileChip';
-import { useMediaQuery } from '@mui/material';
-
 
 const MAX_FILE_SIZE = 13000000;
-const iconButtonStyling = { height:25, width:25, '@media (max-width: 800px)': { height:20, width:20}};
+const iconButtonStyling = { height: 25, width: 25, '@media (max-width: 800px)': { height: 20, width: 20 } };
 
 function ComposeEmail({ closeComposeEmail }) {
   const isLessThan800 = useMediaQuery('(max-width:800px)');
@@ -107,25 +105,38 @@ function ComposeEmail({ closeComposeEmail }) {
         }}
         >
           <Box sx={{ width: '33.33%', display: 'flex', flexDirection: 'row' }}>
-            <Avatar sx={{ mr: 1, height: 40, width: 40, my:'auto' }} src={user.userInfo.avatar ? `data:image/jpeg;base64,${user.userInfo.avatar}` : null} />
-            <Box sx={{ display: 'flex', flexDirection: 'column', my: 'auto', overflow:'auto', py:1, pr:1 }}>
+            <Avatar
+              sx={{
+                mr: 1, height: 40, width: 40, my: 'auto',
+              }}
+              src={user.userInfo.avatar ? `data:image/jpeg;base64,${user.userInfo.avatar}` : null}
+            />
+            <Box sx={{
+              display: 'flex', flexDirection: 'column', my: 'auto', overflow: 'auto', py: 1, pr: 1,
+            }}
+            >
               <Typography sx={{
-              fontSize: '14px',
-              fontWeight: 'bold',
-              '@media (max-width: 800px)': { fontSize: '12px' },
-            }}>
-                {"Zaheer"}
+                fontSize: '14px',
+                fontWeight: 'bold',
+                '@media (max-width: 800px)': { fontSize: '12px' },
+              }}
+              >
+                Zaheer
               </Typography>
               <Typography sx={{
-              fontSize: '12px',
-              '@media (max-width: 800px)': { fontSize: '10px' },
-            }}>
-                {`<zaheer@avatar.com>`}
+                fontSize: '12px',
+                '@media (max-width: 800px)': { fontSize: '10px' },
+              }}
+              >
+                {'<zaheer@avatar.com>'}
               </Typography>
             </Box>
           </Box>
           <Box sx={{ width: '33.33%', display: 'flex', justifyContent: 'center' }}>
-            <Typography sx={{ fontWeight: 'bold', my: 'auto', '@media (max-width: 800px)': { fontSize: '12px' }, '@media (max-width: 500px)': { fontSize: '10px' }, textAlign: 'center', }}>
+            <Typography sx={{
+              fontWeight: 'bold', my: 'auto', '@media (max-width: 800px)': { fontSize: '12px' }, '@media (max-width: 500px)': { fontSize: '10px' }, textAlign: 'center',
+            }}
+            >
               New Email
             </Typography>
           </Box>
@@ -140,15 +151,25 @@ function ComposeEmail({ closeComposeEmail }) {
               }}
               aria-label="close"
             >
-              <CloseIcon sx={{ color: '#002159', height:25, width:25, '@media (max-width: 800px)': { height:20, width:20} }} />
+              <CloseIcon sx={{
+                color: '#002159', height: 25, width: 25, '@media (max-width: 800px)': { height: 20, width: 20 },
+              }}
+              />
             </IconButton>
           </Box>
         </Box>
         <Box component="form" onSubmit={submitSend} noValidate sx={{ width: '100%' }}>
           {/** Text Fields */}
           <Box sx={{
-            display: 'flex', flexGrow: 1, flexDirection: 'column', mx: 5, px: 2, py: 2, borderRadius: 5, gap: 1,
-            '@media (max-width: 500px)': { mx:1, px:0, py:1 }
+            display: 'flex',
+            flexGrow: 1,
+            flexDirection: 'column',
+            mx: 5,
+            px: 2,
+            py: 2,
+            borderRadius: 5,
+            gap: 1,
+            '@media (max-width: 500px)': { mx: 1, px: 0, py: 1 },
           }}
           >
             <Box sx={{
@@ -156,17 +177,27 @@ function ComposeEmail({ closeComposeEmail }) {
             }}
             >
               <Typography sx={{
-                my: 'auto', mx: 1, width: 60, color: 'grey', fontSize: 14,
-                '@media (max-width: 800px)': { fontSize: '12px' }, '@media (max-width: 500px)': { fontSize: '10px' }
+                my: 'auto',
+                mx: 1,
+                width: 60,
+                color: 'grey',
+                fontSize: 14,
+                '@media (max-width: 800px)': { fontSize: '12px' },
+                '@media (max-width: 500px)': { fontSize: '10px' },
               }}
               >
                 To:
               </Typography>
-              <TextField name="to" id="to" fullWidth inputRef={toRef} 
+              <TextField
+                name="to"
+                id="to"
+                fullWidth
+                inputRef={toRef}
                 inputProps={{
                   style: { fontSize: isLessThan800 ? '10px' : (isLessThan1000 ? '12px' : '14px') },
                 }}
-                sx={{ '& fieldset': { border: 'none' }}} />
+                sx={{ '& fieldset': { border: 'none' } }}
+              />
             </Box>
             <Divider />
             <Box sx={{
@@ -174,46 +205,65 @@ function ComposeEmail({ closeComposeEmail }) {
             }}
             >
               <Typography sx={{
-                my: 'auto', mx: 1, width: 60, color: 'grey', fontSize: 14,
-                '@media (max-width: 800px)': { fontSize: '12px' }, '@media (max-width: 500px)': { fontSize: '10px' }
+                my: 'auto',
+                mx: 1,
+                width: 60,
+                color: 'grey',
+                fontSize: 14,
+                '@media (max-width: 800px)': { fontSize: '12px' },
+                '@media (max-width: 500px)': { fontSize: '10px' },
               }}
               >
                 Subject:
               </Typography>
-              <TextField inputProps={{
+              <TextField
+                inputProps={{
                   style: { fontSize: isLessThan800 ? '10px' : (isLessThan1000 ? '12px' : '14px') },
                 }}
-                name="subject" id="subject" fullWidth inputRef={subjectRef} sx={{ '& fieldset': { border: 'none' } }} />
+                name="subject"
+                id="subject"
+                fullWidth
+                inputRef={subjectRef}
+                sx={{ '& fieldset': { border: 'none' } }}
+              />
             </Box>
             <Divider />
             <Box sx={{
               display: 'flex', flexGrow: 1, flexDirection: 'column', bgcolor: '#ECEFF1', borderRadius: 5, p: 2,
             }}
             >
-              <TextField inputProps={{
+              <TextField
+                inputProps={{
                   style: { fontSize: isLessThan800 ? '10px' : (isLessThan1000 ? '12px' : '14px') },
                 }}
-                name="contents" id="contents" inputRef={contentsRef} fullWidth multiline rows={12} sx={{ '& fieldset': { border: 'none' } }} />
+                name="contents"
+                id="contents"
+                inputRef={contentsRef}
+                fullWidth
+                multiline
+                rows={12}
+                sx={{ '& fieldset': { border: 'none' } }}
+              />
               {binaryFiles.length > 0
                 ? (
                   <FileChip
-                      files={binaryFiles.map((file) => ({ name: file.name, type: file.type }))}
-                      fileType={binaryFiles.map((file) => file.type)}
-                      fileNames={binaryFiles.map((file) => file.name)}
-                      onClick={(index) => { downloadFile(binaryFiles[index]); }}
-                      onDelete={(index) => {
-                        setBinaryFiles((files) => {
-                          const toRemove = files[index].name;
-                          const newFiles = files.filter((files) => files.name !== toRemove);
-                          return newFiles;
-                        });
-                      }}
-                    />
+                    files={binaryFiles.map((file) => ({ name: file.name, type: file.type }))}
+                    fileType={binaryFiles.map((file) => file.type)}
+                    fileNames={binaryFiles.map((file) => file.name)}
+                    onClick={(index) => { downloadFile(binaryFiles[index]); }}
+                    onDelete={(index) => {
+                      setBinaryFiles((files) => {
+                        const toRemove = files[index].name;
+                        const newFiles = files.filter((files) => files.name !== toRemove);
+                        return newFiles;
+                      });
+                    }}
+                  />
                 ) : null}
             </Box>
 
             <Box sx={{
-              display: 'flex', flexGrow: 1, justifyContent: 'space-between', my: 1, '@media (max-width: 300px)': { flexDirection:'column' },
+              display: 'flex', flexGrow: 1, justifyContent: 'space-between', my: 1, '@media (max-width: 300px)': { flexDirection: 'column' },
             }}
             >
               <Button
@@ -234,7 +284,7 @@ function ComposeEmail({ closeComposeEmail }) {
                 />
               </Button>
               <Box sx={{
-                display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 1, '@media (max-width: 500px)': { flexDirection:'column' }, m:1
+                display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 1, '@media (max-width: 500px)': { flexDirection: 'column' }, m: 1,
               }}
               >
                 <Button
@@ -243,10 +293,10 @@ function ComposeEmail({ closeComposeEmail }) {
                   onClick={handleClose}
                   startIcon={<DeleteOutlineIcon />}
                   sx={{
-                      border: 'solid', borderRadius: 4, borderWidth: 2, textTransform: 'none', color: '#002159', '&:hover': { borderColor: '#002159' },
-                    }}
+                    border: 'solid', borderRadius: 4, borderWidth: 2, textTransform: 'none', color: '#002159', '&:hover': { borderColor: '#002159' },
+                  }}
                 >
-                    Discard
+                  Discard
                 </Button>
                 <Button
                   variant="outlined"
@@ -254,10 +304,10 @@ function ComposeEmail({ closeComposeEmail }) {
                   onClick={submitSend}
                   endIcon={<SendOutlinedIcon />}
                   sx={{
-                      border: 'solid', borderRadius: 4, borderWidth: 2, textTransform: 'none', color: '#338feb',
-                    }}
+                    border: 'solid', borderRadius: 4, borderWidth: 2, textTransform: 'none', color: '#338feb',
+                  }}
                 >
-                    Send
+                  Send
                 </Button>
               </Box>
             </Box>

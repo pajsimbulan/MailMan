@@ -84,20 +84,40 @@ export default function ProfilePictureModal({
         }}
         >
           <Typography sx={{
-            fontWeight: 'bold', color: 'colors.text', fontSize: 25, mx: 10,
+            fontWeight: 'bold',
+            color: 'colors.text',
+            fontSize: '25px',
+            mx: 10,
+            textAlign: 'center',
+            mb: 0.5,
+            '@media (max-width: 800px)': { fontSize: '20px' },
+            '@media (max-width: 500px)': { fontSize: '16px' },
           }}
           >
             Edit Profile Picture
           </Typography>
           <Typography sx={{
-            fontWeight: 'light', color: 'colors.text', fontSize: 15, mb: 0.5,
+            fontWeight: 'light',
+            color: 'colors.text',
+            fontSize: '15px',
+            mb: 1,
+            textAlign: 'center',
+            '@media (max-width: 800px)': { fontSize: '12px' },
+            '@media (max-width: 500px)': { fontSize: '10px' },
           }}
           >
             Help people recognize your account by uploading a profile picture.
           </Typography>
           <Avatar
             sx={{
-              my: 1, height: 150, width: 150, border: 'solid', borderWidth: '3px', borderColor: 'colors.color2',
+              my: 1,
+              height: 150,
+              width: 150,
+              border: 'solid',
+              borderWidth: '3px',
+              borderColor: 'colors.color2',
+              '@media (max-width: 800px)': { height: 135, width: 135 },
+              '@media (max-width: 500px)': { height: 120, width: 120 },
             }}
             src={`data:image/jpeg;base64,${avatarValue}`}
           />
@@ -105,9 +125,19 @@ export default function ProfilePictureModal({
             component="label"
             size="small"
             variant="outlined"
-            endIcon={<UploadIcon />}
+            endIcon={(
+              <UploadIcon sx={{ height: 20, width: 20, '@media (max-width: 800px)': { height: 16, width: 16 } }} />
+)}
             sx={{
-              my: 1, border: 'solid', borderRadius: 2, borderWidth: 2, textTransform: 'none', color: '#0f172a', '&:hover': { borderColor: '#0f172a' },
+              my: 1,
+              border: 'solid',
+              borderRadius: 2,
+              borderWidth: 2,
+              textTransform: 'none',
+              color: '#0f172a',
+              '&:hover': { borderColor: '#0f172a' },
+              '@media (max-width: 800px)': { fontSize: '12px' },
+              '@media (max-width: 500px)': { fontSize: '10px' },
             }}
           >
             {' '}
@@ -127,7 +157,17 @@ export default function ProfilePictureModal({
             type="button"
             size="small"
             sx={{
-              marginTop: 3, color: 'black', borderRadius: 1, bgcolor: 'whitesmoke', textTransform: 'none', width: '20%', height: '20%', marginY: 'auto', marginRight: 4,
+              marginTop: 3,
+              color: 'black',
+              borderRadius: 1,
+              bgcolor: 'whitesmoke',
+              textTransform: 'none',
+              width: '20%',
+              height: '20%',
+              marginY: 'auto',
+              marginRight: 4,
+              '@media (max-width: 800px)': { fontSize: '12px' },
+              '@media (max-width: 500px)': { fontSize: '10px' },
             }}
             onClick={() => { handleClose(); }}
           >
@@ -138,7 +178,16 @@ export default function ProfilePictureModal({
             type="submit"
             size="small"
             sx={{
-              marginTop: 3, color: 'white', borderRadius: 1, bgcolor: '#0f172a', textTransform: 'none', width: '20%', height: '20%', marginY: 'auto',
+              marginTop: 3,
+              color: 'white',
+              borderRadius: 1,
+              bgcolor: '#0f172a',
+              textTransform: 'none',
+              width: '20%',
+              height: '20%',
+              marginY: 'auto',
+              '@media (max-width: 800px)': { fontSize: '12px' },
+              '@media (max-width: 500px)': { fontSize: '10px' },
             }}
             onClick={() => { submitHandler(); }}
           >

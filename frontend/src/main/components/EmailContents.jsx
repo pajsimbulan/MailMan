@@ -46,9 +46,11 @@ function EmailContentWindow({ closeEmail, email, onCLose }) {
             handleClose();
           }}
           aria-label="close"
-          sx={{ mr: 1, height:20, width:20, my:'auto' }}
+          sx={{
+            mr: 1, height: 20, width: 20, my: 'auto',
+          }}
         >
-          <CloseIcon sx={{height:20, width:20}}/>
+          <CloseIcon sx={{ height: 20, width: 20 }} />
         </IconButton>
       </Box>
       <Box sx={{
@@ -222,11 +224,19 @@ function EmailContentWindow({ closeEmail, email, onCLose }) {
           {isLessThan800 ? mobileHeader : pcHeader}
           {/** Main Email */}
           <Box sx={{
-            display: 'flex', flexGrow: 1, flexDirection: 'column', bgcolor: '#ECEFF1', mx: 5, p:2, borderRadius: 5, gap: 2, overflow: 'auto',
-            '@media (max-width: 500px)': { mx:3}
+            display: 'flex',
+            flexGrow: 1,
+            flexDirection: 'column',
+            bgcolor: '#ECEFF1',
+            mx: 5,
+            p: 2,
+            borderRadius: 5,
+            gap: 2,
+            overflow: 'auto',
+            '@media (max-width: 500px)': { mx: 3 },
           }}
           >
-            <Typography sx={{ '@media (max-width: 1000px)': { fontSize: '12px' },  '@media (max-width: 800px)': { fontSize: '10px' }}}>
+            <Typography sx={{ '@media (max-width: 1000px)': { fontSize: '12px' }, '@media (max-width: 800px)': { fontSize: '10px' } }}>
               {email.contents + email.contents + email.contents + email.contents}
             </Typography>
             <Avatar sx={{ width: 200, height: 200 }} />
@@ -244,10 +254,10 @@ function EmailContentWindow({ closeEmail, email, onCLose }) {
                   onClick={() => { setReply(true); }}
                   endIcon={<ReplyIcon />}
                   sx={{
-                      border: 'solid', borderRadius: 4, borderWidth: 2, textTransform: 'none', color: '#338feb',
-                    }}
+                    border: 'solid', borderRadius: 4, borderWidth: 2, textTransform: 'none', color: '#338feb',
+                  }}
                 >
-                    Reply
+                  Reply
                 </Button>
               </Box>
             ) }

@@ -28,7 +28,15 @@ export default function Birthdatepicker({
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
-        slotProp={<TextField size="small" />}
+        slotProp={(
+          <TextField
+            size="small"
+            sx={{
+              '@media (max-width: 800px)': { fontSize: '12px' },
+              '@media (max-width: 500px)': { fontSize: '10px' },
+            }}
+          />
+)}
         disabled={!edit}
         label="mm/dd/yyyy"
         value={value}

@@ -12,10 +12,17 @@ function ProfileBlock({ avatar, update }) {
   return (
     <>
       <ProfilePictureModal edit={edit} closeModal={() => { setEdit(false); }} oldAvatarValue={avatarValue} setAvatar={(newAvatar) => { updateAvatar(newAvatar); }} />
-      <Box sx={{ display: 'flex', justifyContent: 'center', mr: 2 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
         <Avatar
           sx={{
-            height: 150, width: 150, border: 'solid', borderWidth: '3px', borderColor: 'colors.color2',
+            height: 150,
+            width: 150,
+            border: 'solid',
+            borderWidth: '3px',
+            borderColor: 'colors.color2',
+            mx: 'auto',
+            '@media (max-width: 800px)': { height: 135, width: 135 },
+            '@media (max-width: 500px)': { height: 120, width: 120 },
           }}
           src={avatarValue ? `data:image/jpeg;base64,${avatarValue}` : null}
         />
@@ -28,12 +35,20 @@ function ProfileBlock({ avatar, update }) {
           variant="outlined"
           size="small"
           sx={{
-            border: 'solid', borderRadius: 10, borderWidth: 2, textTransform: 'none', overflow: 'hidden', color: '#338feb', '&:hover': { borderColor: '#338feb' },
+            border: 'solid',
+            borderRadius: 10,
+            borderWidth: 2,
+            textTransform: 'none',
+            overflow: 'hidden',
+            color: '#338feb',
+            '&:hover': { borderColor: '#338feb' },
+            mx: 'auto',
+            '@media (max-width: 800px)': { fontSize: '12px' },
+            '@media (max-width: 500px)': { fontSize: '10px' },
           }}
 
           onClick={() => { setEdit(true); }}
         >
-          {' '}
           Change Profile Picture
         </Button>
       </Box>

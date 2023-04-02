@@ -25,7 +25,15 @@ function GenderRow({ gender, update }) {
         type="button"
         size="small"
         sx={{
-          marginTop: 3, bgcolor: 'grey', color: 'white', borderRadius: 10, bgcolor: 'colors.button', textTransform: 'none', marginY: 'auto',
+          my: 'auto',
+          bgcolor: 'grey',
+          color: 'white',
+          borderRadius: 10,
+          bgcolor: 'colors.button',
+          textTransform: 'none',
+          marginY: 'auto',
+          '@media (max-width: 800px)': { fontSize: '12px' },
+          '@media (max-width: 500px)': { fontSize: '10px' },
         }}
         onClick={() => { updateGender(); }}
       >

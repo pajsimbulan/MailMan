@@ -102,7 +102,6 @@ function Profile() {
             marginTop: '1%',
             display: 'flex',
             flexDirection: 'column',
-
             borderRadius: 3,
             border: 'solid',
             borderWidth: '1px',
@@ -117,9 +116,17 @@ function Profile() {
                 <Button
                   type="button"
                   sx={{
-                    color: 'white', borderRadius: 10, bgcolor: 'colors.button', textTransform: 'none', marginBottom: 2, px: 2, fontSize: 12,
+                    color: 'white',
+                    borderRadius: 10,
+                    bgcolor: 'colors.button',
+                    textTransform: 'none',
+                    marginBottom: 2,
+                    px: 2,
+                    fontSize: 12,
+                    '@media (max-width: 800px)': { fontSize: '11px', mt: 2 },
+                    '@media (max-width: 500px)': { fontSize: '10px' },
                   }}
-                  startIcon={<ArrowBackIcon size="large" />}
+                  startIcon={<ArrowBackIcon size="large" sx={{ height: 25, width: 25, '@media (max-width: 800px)': { height: 20, width: 20 } }} />}
                   onClick={() => { returnHandler(); }}
                 >
                   Home
@@ -128,19 +135,41 @@ function Profile() {
               <Grid2 item lg={4} xs={12}>
                 <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
                   <Typography sx={{
-                    position: 'relative', fontWeight: 'bold', color: 'colors.text', fontSize: 30,
+                    position: 'relative',
+                    fontWeight: 'bold',
+                    color: 'colors.text',
+                    fontSize: '30px',
+                    '@media (max-width: 800px)': { fontSize: '26px' },
+                    '@media (max-width: 500px)': { fontSize: '22px' },
                   }}
                   >
                     Edit Profile
                   </Typography>
                 </Box>
               </Grid2>
-              <Grid2 item xs={12} sx={{ marginBottom: 5 }}>
+              <Grid2
+                item
+                xs={12}
+                sx={{
+                  marginBottom: 5,
+                  '@media (max-width: 800px)': { mb: 3 },
+                  '@media (max-width: 500px)': { mb: 0 },
+                }}
+              >
                 <Box sx={{
                   display: 'flex', justifyContent: 'center', width: '100%', mb: 2,
                 }}
                 >
-                  <Typography sx={{ fontWeight: 'light', color: 'colors.text', fontSize: 20 }}>{userInfo.email}</Typography>
+                  <Typography sx={{
+                    fontWeight: 'light',
+                    color: 'colors.text',
+                    fontSize: '20px',
+                    '@media (max-width: 800px)': { fontSize: '17px' },
+                    '@media (max-width: 500px)': { fontSize: '14px' },
+                  }}
+                  >
+                    {userInfo.email}
+                  </Typography>
                 </Box>
               </Grid2>
               <Grid2 lg={4} xs={12} item sx={{ height: 'full' }}>
@@ -153,7 +182,18 @@ function Profile() {
                 />
               </Grid2>
               <Grid2 lg={8} xs={12} item>
-                <Typography Typography sx={{ fontWeight: 'bold', color: 'colors.text', marginY: 'auto' }}>First Name</Typography>
+                <Typography
+                  Typography
+                  sx={{
+                    fontWeight: 'bold',
+                    color: 'colors.text',
+                    marginY: 'auto',
+                    '@media (max-width: 800px)': { fontSize: '13px', mt: 3.5 },
+                    '@media (max-width: 500px)': { fontSize: '11px', mt: 2 },
+                  }}
+                >
+                  First Name
+                </Typography>
                 <FirstNameRow
                   firstName={userInfo.firstName}
                   update={(newValue) => {
@@ -162,7 +202,18 @@ function Profile() {
                   }}
                 />
                 <Divider sx={{ marginTop: 1 }} />
-                <Typography Typography sx={{ fontWeight: 'bold', color: 'colors.text', marginTop: 5 }}>Last Name</Typography>
+                <Typography
+                  Typography
+                  sx={{
+                    fontWeight: 'bold',
+                    color: 'colors.text',
+                    marginTop: 5,
+                    '@media (max-width: 800px)': { fontSize: '13px', mt: 3.5 },
+                    '@media (max-width: 500px)': { fontSize: '11px', mt: 2 },
+                  }}
+                >
+                  Last Name
+                </Typography>
                 <LastNameRow
                   lastName={userInfo.lastName}
                   update={(newValue) => {
@@ -171,7 +222,18 @@ function Profile() {
                   }}
                 />
                 <Divider sx={{ marginTop: 1 }} />
-                <Typography Typography sx={{ fontWeight: 'bold', color: 'colors.text', marginTop: 5 }}>Password</Typography>
+                <Typography
+                  Typography
+                  sx={{
+                    fontWeight: 'bold',
+                    color: 'colors.text',
+                    marginTop: 5,
+                    '@media (max-width: 800px)': { fontSize: '13px', mt: 3.5 },
+                    '@media (max-width: 500px)': { fontSize: '11px', mt: 2 },
+                  }}
+                >
+                  Password
+                </Typography>
                 <PasswordRow update={(newValue) => { password.current = newValue; }} />
                 <Divider sx={{ marginTop: 1 }} />
                 <GenderRow
@@ -182,7 +244,18 @@ function Profile() {
                   }}
                 />
                 <Divider sx={{ marginTop: 1 }} />
-                <Typography Typography sx={{ fontWeight: 'bold', color: 'colors.text', marginTop: 5 }}>Birthdate</Typography>
+                <Typography
+                  Typography
+                  sx={{
+                    fontWeight: 'bold',
+                    color: 'colors.text',
+                    marginTop: 5,
+                    '@media (max-width: 800px)': { fontSize: '13px', mt: 3.5 },
+                    '@media (max-width: 500px)': { fontSize: '11px', mt: 2 },
+                  }}
+                >
+                  Birthdate
+                </Typography>
                 <BirthDateRow
                   birthDate={userInfo.birthDate}
                   update={(newValue) => {
