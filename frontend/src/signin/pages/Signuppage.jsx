@@ -16,6 +16,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import ErrorActionAlert from '../../components/ErrorAlert';
 import AccountCreationSuccessful from '../components/AccountCreationSuccessful';
 import { emailRegex } from '../../utils/MailRegex';
+import { useMediaQuery } from '@mui/material';
 
 const theme = createTheme({
   palette: {
@@ -118,17 +119,28 @@ function Signuppage() {
           >
             {successful ? <AccountCreationSuccessful onButtonPress={() => { navigate('/'); }} />
               : (
-                <Box sx={{ marginX: 7, mt: 5 }}>
-                  <Typography sx={{ fontSize: 30 }}>Create Account</Typography>
-                  <Divider sx={{ marginY: 3 }} />
+                <Box sx={{ marginX: 10, mt: 5,
+                  '@media (max-width: 800px)': { mx:8 },
+                  '@media (max-width: 500px)': { mx:6 } }}>
+                  <Typography sx={{ fontSize: '30px',
+                 '@media (max-width: 800px)': { fontSize: '26px', },
+                 '@media (max-width: 500px)': { fontSize: '22px' }}}>Create Account</Typography>
+                  <Divider sx={{ marginY: 3,
+                  '@media (max-width: 800px)': { my:2.5 },
+                  '@media (max-width: 500px)': { my:2, } }} />
                   <Box sx={{
                     display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 2, flexWrap: 'wrap',
                   }}
                   >
-                    <Box sx={{ marginY: 'auto' }}>
+                    <Box sx={{ marginY: 'auto', mt:1 }}>
                       <Box>
-                        <Typography sx={{ color: 'colors.text' }}>First Name</Typography>
+                        <Typography sx={{ color: 'colors.text',
+                      '@media (max-width: 800px)': { fontSize: '14px' },
+                      '@media (max-width: 500px)': { fontSize: '12px' } }}>First Name</Typography>
                         <TextField
+                          inputProps={{
+                            style: { fontSize: useMediaQuery('(max-width:500)') ? '10px' : (useMediaQuery('(max-width:800px)') ? '12px' : '14px') },
+                          }}
                           sx={{ width: 180 }}
                           required
                           id="firstName"
@@ -137,10 +149,15 @@ function Signuppage() {
                         />
                       </Box>
                     </Box>
-                    <Box sx={{ marginY: 'auto', display: 'flex', justifyContent: 'end' }}>
+                    <Box sx={{ marginY: 'auto', display: 'flex', justifyContent: 'end', mt:1 }}>
                       <Box>
-                        <Typography sx={{ color: 'colors.text' }}>Last Name</Typography>
+                        <Typography sx={{ color: 'colors.text',
+                      '@media (max-width: 800px)': { fontSize: '14px' },
+                      '@media (max-width: 500px)': { fontSize: '12px' } }}>Last Name</Typography>
                         <TextField
+                          inputProps={{
+                            style: { fontSize: useMediaQuery('(max-width:500)') ? '10px' : (useMediaQuery('(max-width:800px)') ? '12px' : '14px') },
+                          }}
                           sx={{ width: 180 }}
                           name="lastName"
                           type="text"
@@ -149,16 +166,26 @@ function Signuppage() {
                       </Box>
                     </Box>
                   </Box>
-                  <Typography sx={{ color: 'colors.text' }}>Email Address*</Typography>
+                  <Typography sx={{ mt:2, color: 'colors.text',
+                '@media (max-width: 800px)': { fontSize: '14px', mt:1.5 },
+                '@media (max-width: 500px)': { fontSize: '12px', mt:1 } }}>Email Address*</Typography>
                   <TextField
+                    inputProps={{
+                      style: { fontSize: useMediaQuery('(max-width:500)') ? '10px' : (useMediaQuery('(max-width:800px)') ? '12px' : '14px') },
+                    }}
                     required
                     fullWidth
                     id="email"
                     name="email"
                     autoComplete="email"
                   />
-                  <Typography sx={{ mt: 2, color: 'colors.text' }}>Password*</Typography>
+                  <Typography sx={{ mt: 2, color: 'colors.text',
+                '@media (max-width: 800px)': { fontSize: '14px', mt:1.5 },
+                '@media (max-width: 500px)': { fontSize: '12px', mt:1 } }}>Password*</Typography>
                   <OutlinedInput
+                    inputProps={{
+                      style: { fontSize: useMediaQuery('(max-width:500)') ? '10px' : (useMediaQuery('(max-width:800px)') ? '12px' : '14px') },
+                    }}
                     required
                     fullWidth
                     name="password"
@@ -180,24 +207,33 @@ function Signuppage() {
                     type="submit"
                     sx={{
                       marginY: 3, marginTop: 6, color: 'white', borderRadius: 1, bgcolor: '#338FEB', textTransform: 'none', width: '100%', height: 55, fontWeight: 'bold',
+                      '@media (max-width: 800px)': { fontSize: '14px', my:2.5, height: 50 },
+            '@media (max-width: 500px)': { fontSize: '12px', my:2, height: 45 }
                     }}
                     onSubmit={(event) => { submitSignUp(event); }}
                   >
                     Create Account
                   </Button>
-                  <Divider sx={{ marginY: 4 }} />
+                  <Divider sx={{ marginY: 4,
+                  '@media (max-width: 800px)': { my:3 },
+                  '@media (max-width: 500px)': { my:2.5 } }} />
                   <Box sx={{
-                    display: 'flex', flexDirection: 'row', width: '100%', marginTop: 2, marginBottom: 10, justifyContent: 'center',
+                    display: 'flex', flexDirection: 'row', width: '100%', marginBottom: 10, justifyContent: 'center',
+                   
                   }}
                   >
                     <Typography sx={{
                       marginY: 'auto', color: 'grey', fontWeight: 'light', mb: 1,
+                      '@media (max-width: 800px)': { fontSize: '14px' },
+                 '@media (max-width: 500px)': { fontSize: '12px' }
                     }}
                     >
                       {' '}
                       Already have an Account?
                     </Typography>
-                    <Link sx={{ color: 'colors.text', fontSize: 18, ml: 1 }} onClick={() => { navigate('/'); }}> Sign In</Link>
+                    <Link sx={{ color: 'colors.text', fontSize: 18, ml: 1,
+                  '@media (max-width: 800px)': { fontSize: '16px',mb:1 },
+                  '@media (max-width: 500px)': { fontSize: '15px' } }} onClick={() => { navigate('/'); }}> Sign In</Link>
                   </Box>
                 </Box>
               ) }
