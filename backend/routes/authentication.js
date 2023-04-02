@@ -40,6 +40,7 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
+    console.log(`Login request: ${req.body.email} ${req.body.password}`);
     const {email, password} = req.body;
     const user = await userdb.findOne({email: email});
     if(user == null) {
@@ -47,6 +48,7 @@ exports.login = async (req, res) => {
       return;
     }
     if(! (await bcrypt.compare(password, user.password))) {
+      console.log(`Invalid password: ${password} ${user.password}`);
       res.status(400).send("Invalid Credential");
       return;
     }

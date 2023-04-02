@@ -1,6 +1,8 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
-import { Button, Divider, OutlinedInput } from '@mui/material';
+import {
+  Button, Divider, OutlinedInput, useMediaQuery,
+} from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -15,7 +17,6 @@ import InputAdornment from '@mui/material/InputAdornment';
 import ErrorActionAlert from '../../components/ErrorAlert';
 import { UserContext } from '../../App';
 import { emailRegex } from '../../utils/MailRegex';
-import { useMediaQuery } from '@mui/material';
 
 const theme = createTheme({
   palette: {
@@ -30,6 +31,8 @@ const theme = createTheme({
   },
 });
 function Signinpage() {
+  const isLessThan500 = useMediaQuery('(max-width:500px)');
+  const isLessThan800 = useMediaQuery('(max-width:800px)');
   const navigate = useNavigate();
   const user = useContext(UserContext);
   const [openErrorAlert, setOpenErrorAlert] = useState(false);
@@ -44,10 +47,12 @@ function Signinpage() {
   const submitLogin = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    if (emailRegex.test(data.get('password'))) {
+    if (!emailRegex.test(data.get('email'))) {
       openError('Error: Invalid Email Address.  Make sure the email consists of at least 1 alphabet and ends with *@mailman.com*');
       return;
     }
+    console.log(`Email: ${data.get('email')}`);
+    console.log(`Password: ${data.get('password')}`);
     let statusCode;
     fetch('http://localhost:4000/v0/login', {
       method: 'POST',
@@ -95,25 +100,47 @@ function Signinpage() {
           }}
         >
           <Box sx={{
-            display: 'flex', flexDirection: 'row', alignItems: 'center', marginY: 8,
-            '@media (max-width: 800px)': { my:6 },
-          '@media (max-width: 500px)': { my:3 }
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginY: 8,
+            '@media (max-width: 800px)': { my: 6 },
+            '@media (max-width: 500px)': { my: 3 },
           }}
           >
-            <Typography sx={{ fontWeight: 'bold', fontSize: '25px', color: 'colors.text',
-          '@media (max-width: 800px)': { fontSize: '23px' },
-          '@media (max-width: 500px)': { fontSize: '20px' } }}>MAIL</Typography>
+            <Typography sx={{
+              fontWeight: 'bold',
+              fontSize: '25px',
+              color: 'colors.text',
+              '@media (max-width: 800px)': { fontSize: '23px' },
+              '@media (max-width: 500px)': { fontSize: '20px' },
+            }}
+            >
+              MAIL
+            </Typography>
             <Avatar
               src="postman.jpg"
               sx={{
-                width: 150, height: 150, border: 'solid', borderWidth: '3px', borderColor: 'colors.bc', background: 'transparent',
+                width: 150,
+                height: 150,
+                border: 'solid',
+                borderWidth: '3px',
+                borderColor: 'colors.bc',
+                background: 'transparent',
                 '@media (max-width: 800px)': { width: 135, height: 135 },
-                '@media (max-width: 500px)': { width: 120, height: 120 }
+                '@media (max-width: 500px)': { width: 120, height: 120 },
               }}
             />
-            <Typography sx={{ fontWeight: 'bold', fontSize: '25px', color: 'colors.text',
-          '@media (max-width: 800px)': { fontSize: '23px' },
-          '@media (max-width: 500px)': { fontSize: '20px' } }}>MAN</Typography>
+            <Typography sx={{
+              fontWeight: 'bold',
+              fontSize: '25px',
+              color: 'colors.text',
+              '@media (max-width: 800px)': { fontSize: '23px' },
+              '@media (max-width: 500px)': { fontSize: '20px' },
+            }}
+            >
+              MAN
+            </Typography>
           </Box>
           <Box sx={{
             width: 'auto',
@@ -127,18 +154,36 @@ function Signinpage() {
             mb: 10,
           }}
           >
-            <Box sx={{ marginX: 10, mt: 5, mb: 10,
-            '@media (max-width: 800px)': { mx:8 },
-            '@media (max-width: 500px)': { mx:6 } }}>
-              <Typography sx={{ fontSize: '30px',
-            '@media (max-width: 800px)': { fontSize: '26px', },
-            '@media (max-width: 500px)': { fontSize: '22px' }}}>Sign In</Typography>
-              <Divider sx={{ marginY: 3,
-              '@media (max-width: 800px)': { my:2.5 },
-              '@media (max-width: 500px)': { my:2 } }} />
-              <Typography sx={{ color: 'colors.text',
-            '@media (max-width: 800px)': { fontSize: '14px' },
-            '@media (max-width: 500px)': { fontSize: '12px' }  }}>Email Address</Typography>
+            <Box sx={{
+              marginX: 10,
+              mt: 5,
+              mb: 10,
+              '@media (max-width: 800px)': { mx: 8 },
+              '@media (max-width: 500px)': { mx: 6 },
+            }}
+            >
+              <Typography sx={{
+                fontSize: '30px',
+                '@media (max-width: 800px)': { fontSize: '26px' },
+                '@media (max-width: 500px)': { fontSize: '22px' },
+              }}
+              >
+                Sign In
+              </Typography>
+              <Divider sx={{
+                marginY: 3,
+                '@media (max-width: 800px)': { my: 2.5 },
+                '@media (max-width: 500px)': { my: 2 },
+              }}
+              />
+              <Typography sx={{
+                color: 'colors.text',
+                '@media (max-width: 800px)': { fontSize: '14px' },
+                '@media (max-width: 500px)': { fontSize: '12px' },
+              }}
+              >
+                Email Address
+              </Typography>
               <TextField
                 sx={{ bgcolor: 'white' }}
                 required
@@ -147,18 +192,24 @@ function Signinpage() {
                 name="email"
                 autoComplete="email"
                 inputProps={{
-                  style: { fontSize: useMediaQuery('(max-width:500)') ? '10px' : (useMediaQuery('(max-width:800px)') ? '12px' : '14px') },
+                  style: { fontSize: isLessThan500 ? '10px' : (isLessThan800 ? '12px' : '14px') },
                 }}
               />
-              <Typography sx={{ mt: 2, color: 'colors.text',
-            '@media (max-width: 800px)': { fontSize: '14px', mt:1.5 },
-            '@media (max-width: 500px)': { fontSize: '12px', mt:1 } }}>Password</Typography>
+              <Typography sx={{
+                mt: 2,
+                color: 'colors.text',
+                '@media (max-width: 800px)': { fontSize: '14px', mt: 1.5 },
+                '@media (max-width: 500px)': { fontSize: '12px', mt: 1 },
+              }}
+              >
+                Password
+              </Typography>
               <OutlinedInput
                 sx={{ bgcolor: 'white' }}
                 required
                 fullWidth
                 inputProps={{
-                  style: { fontSize: useMediaQuery('(max-width:500)') ? '10px' : (useMediaQuery('(max-width:800px)') ? '12px' : '14px') },
+                  style: { fontSize: isLessThan500 ? '10px' : (isLessThan800 ? '12px' : '14px') },
                 }}
                 name="password"
                 id="password"
@@ -178,9 +229,17 @@ function Signinpage() {
               <Button
                 type="submit"
                 sx={{
-                  marginY: 3, marginTop: 6, color: 'white', borderRadius: 1, bgcolor: '#338FEB', textTransform: 'none', width: '100%', height: 55, fontWeight: 'bold',
-                  '@media (max-width: 800px)': { fontSize: '14px', my:2.5, height: 50 },
-            '@media (max-width: 500px)': { fontSize: '12px', my:2, height: 45 }
+                  marginY: 3,
+                  marginTop: 6,
+                  color: 'white',
+                  borderRadius: 1,
+                  bgcolor: '#338FEB',
+                  textTransform: 'none',
+                  width: '100%',
+                  height: 55,
+                  fontWeight: 'bold',
+                  '@media (max-width: 800px)': { fontSize: '14px', my: 2.5, height: 50 },
+                  '@media (max-width: 500px)': { fontSize: '12px', my: 2, height: 45 },
                 }}
                 onSubmit={(event) => { submitLogin(event); }}
               >
@@ -191,21 +250,34 @@ function Signinpage() {
                 display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'end',
               }}
               >
-                <Link sx={{ color: 'colors.text',
-              '@media (max-width: 800px)': { fontSize: '14px' },
-              '@media (max-width: 500px)': { fontSize: '12px' } }} onClick={() => { navigate('/forgot'); }}>Forgot Password?</Link>
+                <Link
+                  sx={{
+                    color: 'colors.text',
+                    '@media (max-width: 800px)': { fontSize: '14px' },
+                    '@media (max-width: 500px)': { fontSize: '12px' },
+                  }}
+                  onClick={() => { navigate('/forgot'); }}
+                >
+                  Forgot Password?
+                </Link>
               </Box>
-              <Divider sx={{ marginY: 4,
-              '@media (max-width: 800px)': { my:3 },
-              '@media (max-width: 500px)': { my:2.5 } }} />
+              <Divider sx={{
+                marginY: 4,
+                '@media (max-width: 800px)': { my: 3 },
+                '@media (max-width: 500px)': { my: 2.5 },
+              }}
+              />
               <Box sx={{
                 display: 'flex', flexDirection: 'column', width: '100%', justifyContent: 'center',
               }}
               >
                 <Typography sx={{
-                  marginY: 'auto', color: 'grey', fontWeight: 'light', mb: 1,
+                  marginY: 'auto',
+                  color: 'grey',
+                  fontWeight: 'light',
+                  mb: 1,
                   '@media (max-width: 800px)': { fontSize: '14px' },
-                 '@media (max-width: 500px)': { fontSize: '12px' }
+                  '@media (max-width: 500px)': { fontSize: '12px' },
                 }}
                 >
                   {' '}
@@ -215,9 +287,13 @@ function Signinpage() {
                   type="button"
                   variant="outlined"
                   sx={{
-                    borderRadius: 1, textTransform: 'none', width: '100%', height: 55, fontWeight: 'bold',
+                    borderRadius: 1,
+                    textTransform: 'none',
+                    width: '100%',
+                    height: 55,
+                    fontWeight: 'bold',
                     '@media (max-width: 800px)': { fontSize: '14px', height: 50 },
-            '@media (max-width: 500px)': { fontSize: '12px', height: 45 }
+                    '@media (max-width: 500px)': { fontSize: '12px', height: 45 },
                   }}
                   onClick={() => { navigate('/signup'); }}
                 >

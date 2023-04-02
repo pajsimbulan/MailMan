@@ -74,6 +74,7 @@ export default function ProfilePictureModal({
           p: 4,
         }}
         onKeyPress={(event) => {
+          event.preventDefault();
           if (event.key == 'Enter') {
             submitHandler();
           }
@@ -175,7 +176,7 @@ export default function ProfilePictureModal({
             Cancel
           </Button>
           <Button
-            type="submit"
+            type="button"
             size="small"
             sx={{
               marginTop: 3,

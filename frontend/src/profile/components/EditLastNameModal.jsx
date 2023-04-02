@@ -22,6 +22,8 @@ const theme = createTheme({
 export default function LastNameModal({
   edit, closeModal, oldValue, setLastName,
 }) {
+  const islessThan500 = useMediaQuery('(max-width:500px)');
+  const isLessThan800 = useMediaQuery('(max-width:800px)');
   const [value, setValue] = React.useState(oldValue);
 
   React.useEffect(() => { setValue(oldValue); }, [oldValue]);
@@ -46,7 +48,8 @@ export default function LastNameModal({
         onClose={handleClose}
       >
         <Box
-          component="form"
+          onKeyDown={(event) => {if(event.key === 'Enter') {event.preventDefault();
+            submitHandler();}}}
           onSubmit={() => { submitHandler(); }}
           sx={{
             display: 'flex',
@@ -110,7 +113,7 @@ export default function LastNameModal({
             name="lastName"
             id="lastName"
             inputProps={{
-              style: { fontSize: useMediaQuery('(max-width:500)') ? '10px' : (useMediaQuery('(max-width:800px)') ? '12px' : '14px') },
+              style: { fontSize: islessThan500 ? '10px' : (isLessThan800 ? '12px' : '14px') },
             }}
           />
           <Box sx={{
@@ -135,7 +138,6 @@ export default function LastNameModal({
               }}
               onClick={() => { handleClose(); }}
             >
-              {' '}
               Cancel
             </Button>
             <Button
@@ -153,9 +155,8 @@ export default function LastNameModal({
                 '@media (max-width: 800px)': { fontSize: '12px' },
                 '@media (max-width: 500px)': { fontSize: '10px' },
               }}
-              onSubmit={() => { submitHandler(); }}
+              onClick={() => { submitHandler(); }}
             >
-              {' '}
               Submit
             </Button>
           </Box>

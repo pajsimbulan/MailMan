@@ -49,7 +49,6 @@ function FirstNameRow({ firstName, update }) {
         }}
         onClick={() => { setEdit(true); }}
       >
-        {' '}
         Edit
       </Button>
     </Box>

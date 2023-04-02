@@ -1,11 +1,13 @@
 import React, { createContext } from 'react';
-import { Route, Routes, BrowserRouter } from 'react-router-dom';
+import { Route, Routes, BrowserRouter, Outlet, useLocation } from 'react-router-dom';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import CssBaseline from '@mui/material/CssBaseline';
 import Signinpage from './signin/pages/Signinpage';
 import Forgotpage from './signin/pages/Forgotpage';
 import Signuppage from './signin/pages/Signuppage';
 import Mainpage from './main/pages/Mainpage';
 import Profilepage from './profile/pages/Profilepage';
+import './App.css'; 
 
 export const UserContext = createContext();
 export default function App() {
@@ -24,16 +26,38 @@ export default function App() {
       <UserContext.Provider value={{ accessToken, userInfo }}>
         <CssBaseline />
         <BrowserRouter>
-          <Routes>
-
-            <Route exact="true" path="/" element={<Signinpage />} />
-            <Route path="/forgot" element={<Forgotpage />} />
-            <Route path="/signup" element={<Signuppage />} />
-            <Route path="/main" element={<Mainpage />} />
-            <Route path="/profile" element={<Profilepage />} />
-          </Routes>
+          <AnimatedRoutes />
         </BrowserRouter>
       </UserContext.Provider>
     </div>
+  );
+}
+
+function AnimatedRoutes() {
+  const location = useLocation();
+
+  return (
+    <TransitionGroup>
+      <CSSTransition
+        key={location.key}
+        timeout={500} // Duration of the animation in milliseconds
+        classNames="fade" // CSS class prefix for the animation
+      >
+        <RoutesSwitch />
+      </CSSTransition>
+    </TransitionGroup>
+  );
+}
+
+function RoutesSwitch() {
+  return (
+    <Routes>
+      <Route index path="/" element={<Signinpage />} />
+      <Route path="/forgot" element={<Forgotpage />} />
+      <Route path="/signup" element={<Signuppage />} />
+      <Route path="/main" element={<Mainpage />} />
+      <Route path="/profile" element={<Profilepage />} />
+      <Route path="*" element={<Signinpage />} />
+    </Routes>
   );
 }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
-import { Button, Divider } from '@mui/material';
+import { Button, Divider, useMediaQuery } from '@mui/material';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -15,7 +15,6 @@ import InputAdornment from '@mui/material/InputAdornment';
 import ErrorActionAlert from '../../components/ErrorAlert';
 import PasswordChangedSuccesful from '../components/PasswordChangeSuccessful';
 import { emailRegex } from '../../utils/MailRegex';
-import { useMediaQuery } from '@mui/material';
 
 const theme = createTheme({
   palette: {
@@ -30,6 +29,8 @@ const theme = createTheme({
   },
 });
 function Signuppage() {
+  const isLessThan500 = useMediaQuery('(max-width:500px)');
+  const isLessThan800 = useMediaQuery('(max-width:800px)');
   const navigate = useNavigate();
   const [openErrorAlert, setOpenErrorAlert] = useState(false);
   const [successful, setSuccessful] = useState(false);
@@ -116,18 +117,36 @@ function Signuppage() {
           >
             {successful ? <PasswordChangedSuccesful onButtonPress={() => { navigate('/'); }} />
               : (
-                <Box sx={{ marginX: 10, mt: 5, mb: 10,
-                  '@media (max-width: 800px)': { mx:8 },
-                  '@media (max-width: 500px)': { mx:6 } }}>
-                  <Typography sx={{ fontSize: '30px',
-                '@media (max-width: 800px)': { fontSize: '26px', },
-                '@media (max-width: 500px)': { fontSize: '22px' } }}>Forgot Password</Typography>
-                  <Divider sx={{ marginY: 3,
-                  '@media (max-width: 800px)': { my:2.5 },
-                  '@media (max-width: 500px)': { my:2, } }} />
-                  <Typography sx={{ color: 'colors.text',
-                '@media (max-width: 800px)': { fontSize: '14px', mt:1.5 },
-                '@media (max-width: 500px)': { fontSize: '12px', mt:1 } }}>First Name*</Typography>
+                <Box sx={{
+                  marginX: 10,
+                  mt: 5,
+                  mb: 10,
+                  '@media (max-width: 800px)': { mx: 8 },
+                  '@media (max-width: 500px)': { mx: 6 },
+                }}
+                >
+                  <Typography sx={{
+                    fontSize: '30px',
+                    '@media (max-width: 800px)': { fontSize: '26px' },
+                    '@media (max-width: 500px)': { fontSize: '22px' },
+                  }}
+                  >
+                    Forgot Password
+                  </Typography>
+                  <Divider sx={{
+                    marginY: 3,
+                    '@media (max-width: 800px)': { my: 2.5 },
+                    '@media (max-width: 500px)': { my: 2 },
+                  }}
+                  />
+                  <Typography sx={{
+                    color: 'colors.text',
+                    '@media (max-width: 800px)': { fontSize: '14px', mt: 1.5 },
+                    '@media (max-width: 500px)': { fontSize: '12px', mt: 1 },
+                  }}
+                  >
+                    First Name*
+                  </Typography>
                   <TextField
                     sx={{ width: 180 }}
                     required
@@ -135,12 +154,18 @@ function Signuppage() {
                     name="firstName"
                     type="text"
                     inputProps={{
-                      style: { fontSize: useMediaQuery('(max-width:500)') ? '10px' : (useMediaQuery('(max-width:800px)') ? '12px' : '14px') },
+                      style: { fontSize: isLessThan500 ? '10px' : (isLessThan800 ? '12px' : '14px') },
                     }}
                   />
-                  <Typography sx={{ mt: 2, color: 'colors.text',
-                '@media (max-width: 800px)': { fontSize: '14px',mt:1.5 },
-            '@media (max-width: 500px)': { fontSize: '12px', mt:1 } }}>Email Address*</Typography>
+                  <Typography sx={{
+                    mt: 2,
+                    color: 'colors.text',
+                    '@media (max-width: 800px)': { fontSize: '14px', mt: 1.5 },
+                    '@media (max-width: 500px)': { fontSize: '12px', mt: 1 },
+                  }}
+                  >
+                    Email Address*
+                  </Typography>
                   <TextField
                     required
                     fullWidth
@@ -148,17 +173,22 @@ function Signuppage() {
                     name="email"
                     autoComplete="email"
                     inputProps={{
-                      style: { fontSize: useMediaQuery('(max-width:500)') ? '10px' : (useMediaQuery('(max-width:800px)') ? '12px' : '14px') },
+                      style: { fontSize: isLessThan500 ? '10px' : (isLessThan800 ? '12px' : '14px') },
                     }}
                   />
-                  <Typography sx={{ mt: 2, color: 'colors.text',
-                  '@media (max-width: 800px)': { fontSize: '14px',mt:1.5 },
-                  '@media (max-width: 500px)': { fontSize: '12px', mt:1 }
-                 }}>New Password*</Typography>
-                  <OutlinedInput
-                  inputProps={{
-                    style: { fontSize: useMediaQuery('(max-width:500)') ? '10px' : (useMediaQuery('(max-width:800px)') ? '12px' : '14px') },
+                  <Typography sx={{
+                    mt: 2,
+                    color: 'colors.text',
+                    '@media (max-width: 800px)': { fontSize: '14px', mt: 1.5 },
+                    '@media (max-width: 500px)': { fontSize: '12px', mt: 1 },
                   }}
+                  >
+                    New Password*
+                  </Typography>
+                  <OutlinedInput
+                    inputProps={{
+                      style: { fontSize: isLessThan500 ? '10px' : (isLessThan800 ? '12px' : '14px') },
+                    }}
                     required
                     fullWidth
                     name="password"
@@ -176,13 +206,19 @@ function Signuppage() {
                       </InputAdornment>
                   )}
                   />
-                  <Typography sx={{ mt: 2, color: 'colors.text',
-                '@media (max-width: 800px)': { fontSize: '14px',mt:1.5 },
-                '@media (max-width: 500px)': { fontSize: '12px', mt:1 } }}>Confirm Password*</Typography>
-                  <OutlinedInput
-                  inputProps={{
-                    style: { fontSize: useMediaQuery('(max-width:500)') ? '10px' : (useMediaQuery('(max-width:800px)') ? '12px' : '14px') },
+                  <Typography sx={{
+                    mt: 2,
+                    color: 'colors.text',
+                    '@media (max-width: 800px)': { fontSize: '14px', mt: 1.5 },
+                    '@media (max-width: 500px)': { fontSize: '12px', mt: 1 },
                   }}
+                  >
+                    Confirm Password*
+                  </Typography>
+                  <OutlinedInput
+                    inputProps={{
+                      style: { fontSize: isLessThan500 ? '10px' : (isLessThan800 ? '12px' : '14px') },
+                    }}
                     required
                     fullWidth
                     name="confirmPassword"
@@ -203,9 +239,21 @@ function Signuppage() {
                   <Button
                     type="submit"
                     sx={{
-                      marginY: 3, marginTop: 6, color: 'white', borderRadius: 1, bgcolor: '#338FEB', textTransform: 'none', width: '100%', height: 55, fontWeight: 'bold',
-                      '@media (max-width: 800px)': { fontSize: '14px', height: 50, my: 2.5, mt:4.5 },
-            '@media (max-width: 500px)': { fontSize: '12px', height: 45, my: 1.5, mt:3 }
+                      marginY: 3,
+                      marginTop: 6,
+                      color: 'white',
+                      borderRadius: 1,
+                      bgcolor: '#338FEB',
+                      textTransform: 'none',
+                      width: '100%',
+                      height: 55,
+                      fontWeight: 'bold',
+                      '@media (max-width: 800px)': {
+                        fontSize: '14px', height: 50, my: 2.5, mt: 4.5,
+                      },
+                      '@media (max-width: 500px)': {
+                        fontSize: '12px', height: 45, my: 1.5, mt: 3,
+                      },
                     }}
                     onSubmit={(event) => { submitForgot(event); }}
                   >
@@ -215,9 +263,14 @@ function Signuppage() {
                     type="button"
                     variant="outlined"
                     sx={{
-                      borderRadius: 1, textTransform: 'none', width: '100%', height: 55, fontWeight: 'bold', width: '100%',
+                      borderRadius: 1,
+                      textTransform: 'none',
+                      width: '100%',
+                      height: 55,
+                      fontWeight: 'bold',
+                      width: '100%',
                       '@media (max-width: 800px)': { fontSize: '14px', height: 50 },
-            '@media (max-width: 500px)': { fontSize: '12px', height: 45 }
+                      '@media (max-width: 500px)': { fontSize: '12px', height: 45 },
                     }}
                     onClick={() => { navigate('/'); }}
                   >

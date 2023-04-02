@@ -22,6 +22,7 @@ import MailDrawerNavigation from './MailDrawerNavigation';
 function MailAppBar({ currentInbox, selectedInbox }) {
   const { userInfo } = React.useContext(UserContext);
   const isSmallScreen = useMediaQuery('(max-width:800px)');
+  const isLessThan500 = useMediaQuery('(max-width:500px)');
   const theme = useTheme();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -126,7 +127,7 @@ function MailAppBar({ currentInbox, selectedInbox }) {
           <TextField
             size={isSmallScreen ? 'small' : 'medium'}
             inputProps={{
-              style: (useMediaQuery('(max-width:500px)') ? { fontSize: 10 } : { fontSize: 14 }),
+              style: (isLessThan500 ? { fontSize: 10 } : { fontSize: 14 }),
             }}
             sx={{
               my: 1.5,

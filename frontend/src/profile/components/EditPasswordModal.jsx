@@ -19,6 +19,8 @@ const theme = createTheme({
 });
 
 export default function PasswordModal({ edit, closeModal, updatePassword }) {
+  const isLessThan500 = useMediaQuery('(max-width:500px)');
+  const isLessThan800 = useMediaQuery('(max-width:800px)');
   const [value, setValue] = React.useState('');
 
   const handleClose = () => {
@@ -36,7 +38,7 @@ export default function PasswordModal({ edit, closeModal, updatePassword }) {
         onClose={handleClose}
       >
         <Box
-          component="form"
+          onKeyDown={(event) => { if (event.key === 'Enter') { event.preventDefault(); submitHandler(); } }}
           onSubmit={() => { submitHandler(); }}
           sx={{
             display: 'flex',
@@ -99,7 +101,7 @@ export default function PasswordModal({ edit, closeModal, updatePassword }) {
             id="password"
             onChange={(event) => { setValue(event.target.value); }}
             inputProps={{
-              style: { fontSize: useMediaQuery('(max-width:500)') ? '10px' : (useMediaQuery('(max-width:800px)') ? '12px' : '14px') },
+              style: { fontSize: isLessThan500 ? '10px' : (isLessThan800 ? '12px' : '14px') },
             }}
 
           />
@@ -125,11 +127,10 @@ export default function PasswordModal({ edit, closeModal, updatePassword }) {
               }}
               onClick={handleClose}
             >
-              {' '}
               Cancel
             </Button>
             <Button
-              type="submit"
+              type="button"
               sx={{
                 marginTop: 3,
                 bgcolor: 'grey',
@@ -143,9 +144,8 @@ export default function PasswordModal({ edit, closeModal, updatePassword }) {
                 '@media (max-width: 800px)': { fontSize: '12px' },
                 '@media (max-width: 500px)': { fontSize: '10px' },
               }}
-              onSubmit={() => { submitHandler(); }}
+              onClick={() => { submitHandler(); }}
             >
-              {' '}
               Submit
             </Button>
           </Box>
