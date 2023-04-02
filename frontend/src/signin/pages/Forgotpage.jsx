@@ -15,6 +15,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import ErrorActionAlert from '../../components/ErrorAlert';
 import PasswordChangedSuccesful from '../components/PasswordChangeSuccessful';
 import { emailRegex } from '../../utils/MailRegex';
+import { useMediaQuery } from '@mui/material';
 
 const theme = createTheme({
   palette: {
@@ -115,28 +116,49 @@ function Signuppage() {
           >
             {successful ? <PasswordChangedSuccesful onButtonPress={() => { navigate('/'); }} />
               : (
-                <Box sx={{ marginX: 10, mt: 5, mb: 10 }}>
-                  <Typography sx={{ fontSize: 30 }}>Forgot Password</Typography>
-                  <Divider sx={{ marginY: 3 }} />
-                  <Typography sx={{ color: 'colors.text' }}>First Name*</Typography>
+                <Box sx={{ marginX: 10, mt: 5, mb: 10,
+                  '@media (max-width: 800px)': { mx:8 },
+                  '@media (max-width: 500px)': { mx:6 } }}>
+                  <Typography sx={{ fontSize: '30px',
+                '@media (max-width: 800px)': { fontSize: '26px', },
+                '@media (max-width: 500px)': { fontSize: '22px' } }}>Forgot Password</Typography>
+                  <Divider sx={{ marginY: 3,
+                  '@media (max-width: 800px)': { my:2.5 },
+                  '@media (max-width: 500px)': { my:2, } }} />
+                  <Typography sx={{ color: 'colors.text',
+                '@media (max-width: 800px)': { fontSize: '14px', mt:1.5 },
+                '@media (max-width: 500px)': { fontSize: '12px', mt:1 } }}>First Name*</Typography>
                   <TextField
                     sx={{ width: 180 }}
-
                     required
                     id="firstName"
                     name="firstName"
                     type="text"
+                    inputProps={{
+                      style: { fontSize: useMediaQuery('(max-width:500)') ? '10px' : (useMediaQuery('(max-width:800px)') ? '12px' : '14px') },
+                    }}
                   />
-                  <Typography sx={{ mt: 2, color: 'colors.text' }}>Email Address*</Typography>
+                  <Typography sx={{ mt: 2, color: 'colors.text',
+                '@media (max-width: 800px)': { fontSize: '14px',mt:1.5 },
+            '@media (max-width: 500px)': { fontSize: '12px', mt:1 } }}>Email Address*</Typography>
                   <TextField
                     required
                     fullWidth
                     id="email"
                     name="email"
                     autoComplete="email"
+                    inputProps={{
+                      style: { fontSize: useMediaQuery('(max-width:500)') ? '10px' : (useMediaQuery('(max-width:800px)') ? '12px' : '14px') },
+                    }}
                   />
-                  <Typography sx={{ mt: 2, color: 'colors.text' }}>New Password*</Typography>
+                  <Typography sx={{ mt: 2, color: 'colors.text',
+                  '@media (max-width: 800px)': { fontSize: '14px',mt:1.5 },
+                  '@media (max-width: 500px)': { fontSize: '12px', mt:1 }
+                 }}>New Password*</Typography>
                   <OutlinedInput
+                  inputProps={{
+                    style: { fontSize: useMediaQuery('(max-width:500)') ? '10px' : (useMediaQuery('(max-width:800px)') ? '12px' : '14px') },
+                  }}
                     required
                     fullWidth
                     name="password"
@@ -154,8 +176,13 @@ function Signuppage() {
                       </InputAdornment>
                   )}
                   />
-                  <Typography sx={{ mt: 2, color: 'colors.text' }}>Confirm Password*</Typography>
+                  <Typography sx={{ mt: 2, color: 'colors.text',
+                '@media (max-width: 800px)': { fontSize: '14px',mt:1.5 },
+                '@media (max-width: 500px)': { fontSize: '12px', mt:1 } }}>Confirm Password*</Typography>
                   <OutlinedInput
+                  inputProps={{
+                    style: { fontSize: useMediaQuery('(max-width:500)') ? '10px' : (useMediaQuery('(max-width:800px)') ? '12px' : '14px') },
+                  }}
                     required
                     fullWidth
                     name="confirmPassword"
@@ -177,6 +204,8 @@ function Signuppage() {
                     type="submit"
                     sx={{
                       marginY: 3, marginTop: 6, color: 'white', borderRadius: 1, bgcolor: '#338FEB', textTransform: 'none', width: '100%', height: 55, fontWeight: 'bold',
+                      '@media (max-width: 800px)': { fontSize: '14px', height: 50, my: 2.5, mt:4.5 },
+            '@media (max-width: 500px)': { fontSize: '12px', height: 45, my: 1.5, mt:3 }
                     }}
                     onSubmit={(event) => { submitForgot(event); }}
                   >
@@ -187,6 +216,8 @@ function Signuppage() {
                     variant="outlined"
                     sx={{
                       borderRadius: 1, textTransform: 'none', width: '100%', height: 55, fontWeight: 'bold', width: '100%',
+                      '@media (max-width: 800px)': { fontSize: '14px', height: 50 },
+            '@media (max-width: 500px)': { fontSize: '12px', height: 45 }
                     }}
                     onClick={() => { navigate('/'); }}
                   >
