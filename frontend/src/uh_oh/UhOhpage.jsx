@@ -7,18 +7,9 @@ import CircularProgress from '@mui/material/CircularProgress';
 function UhOh() {
   const navigate = useNavigate();
 
-
-  React.useEffect(() => {
-    // start the hand wave animation after 3 seconds (adjust as needed)
-    setTimeout(() => {
-     
-    }, 3000);
-  }, []);
-
-  const handleAnimationEnd = () => {
-    // display the greetingText2 text after the fadeIn animation has completed
-    setShowGreeting2(true);
-  };
+ setTimeout(() => {
+  navigate('/');
+ }, 5500);
 
   return (
     <Box
