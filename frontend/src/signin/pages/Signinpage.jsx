@@ -69,7 +69,7 @@ function Signinpage() {
       .then((jsondata) => {
         user.userInfo = jsondata.user;
         user.accessToken = jsondata.accessToken;
-        navigate('/main');
+        navigate('/greet');
       }).catch((error) => {
         console.log(error);
         if (statusCode === 404) {

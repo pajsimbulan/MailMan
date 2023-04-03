@@ -15,10 +15,6 @@ import Avatar from '@mui/material/Avatar';
 import ComposeEmail from './ComposeEmail';
 import SuccessActionAlert from '../../components/SuccessAlert';
 import ErrorActionAlert from '../../components/ErrorAlert';
-import  Zoom from '@mui/material/Zoom';
-import { Fade } from '@mui/material'; 
-import { CSSTransition } from 'react-transition-group';
-import '../../App.css';
 
 const ListItemStyling = {
   m: 2,
@@ -37,9 +33,6 @@ const TypographyStyling = {
 
 const inboxes = ['inbox', 'sent', 'starred', 'drafts', 'all emails', 'trash', 'spam'];
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Zoom ref={ref} {...props} />;
-});
 
 function MailNavBar({ currentInbox, selectedInbox, onSelect = undefined }) {
   const [selectedIndex, setSelectedIndex] = React.useState(inboxes.indexOf(currentInbox));

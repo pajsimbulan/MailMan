@@ -1,0 +1,58 @@
+
+  .greeting-text {
+    position: relative;
+    opacity: 0;
+  }
+  .greeting-text-font {
+    font-size: 60px;
+    letter-spacing: 10px;
+  }
+  .greeting-text-font2 {
+    font-size: 25px;
+    letter-spacing: 5px;
+  }
+
+  .fadeIn {
+    animation: fadeIn 1s linear forwards;
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    25% {
+      opacity: 0.25;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    75% {
+      opacity: 0.75;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @media screen and (max-width: 900px) {
+    .greeting-text {
+      font-size: 45px;
+      letter-spacing: 8px;
+    }
+    .greeting-text-font2 {
+      font-size: 20px;
+      letter-spacing: 3px;
+    }
+  }
+    
+  @media screen and (max-width: 500px) {
+    .greeting-text-font {
+      font-size: 35px;
+      letter-spacing: 6px;
+    }
+    .greeting-text-font2 {
+      font-size: 15px;
+      letter-spacing: 2px;
+    }
+  }
+ 

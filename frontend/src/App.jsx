@@ -7,6 +7,7 @@ import Forgotpage from './signin/pages/Forgotpage';
 import Signuppage from './signin/pages/Signuppage';
 import Mainpage from './main/pages/Mainpage';
 import Profilepage from './profile/pages/Profilepage';
+import Greet from './greet/Greetpage';
 import './App.css'; 
 
 export const UserContext = createContext();
@@ -53,6 +54,7 @@ function RoutesSwitch() {
   return (
     <Routes>
       <Route index path="/" element={<Signinpage />} />
+      <Route path="/greet" element={<Greet />} />
       <Route path="/forgot" element={<Forgotpage />} />
       <Route path="/signup" element={<Signuppage />} />
       <Route path="/main" element={<Mainpage />} />
