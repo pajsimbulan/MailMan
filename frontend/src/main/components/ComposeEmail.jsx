@@ -12,19 +12,24 @@ import { Avatar, Divider, useMediaQuery } from '@mui/material';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { UserContext } from '../../App';
 import FileChip from './FileChip';
+import { Zoom } from '@mui/material';
 
 const MAX_FILE_SIZE = 13000000;
 const iconButtonStyling = { height: 25, width: 25, '@media (max-width: 800px)': { height: 20, width: 20 } };
 
-function ComposeEmail({ closeComposeEmail }) {
+function ComposeEmail({ openComposeEmail, closeComposeEmail  }) {
   const isLessThan800 = useMediaQuery('(max-width:800px)');
   const isLessThan1000 = useMediaQuery('(max-width:1000px)');
   const user = React.useContext(UserContext);
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(openComposeEmail);
   const toRef = React.useRef();
   const subjectRef = React.useRef();
   const contentsRef = React.useRef();
   const [binaryFiles, setBinaryFiles] = React.useState([]);
+
+  React.useEffect(() => {
+    setOpen(openComposeEmail);
+  }, [openComposeEmail]);
 
   const submitSend = () => {
     setOpen(false);
@@ -77,11 +82,13 @@ function ComposeEmail({ closeComposeEmail }) {
     );
 
     setBinaryFiles([...binaryFiles, ...tempFiles]);
-  };
+  };  
 
   return (
     <Box>
       <Dialog
+       TransitionComponent={Zoom}
+       transitionDuration={1000}
         PaperProps={{
           style: {
             minHeight: '80%',
@@ -92,13 +99,14 @@ function ComposeEmail({ closeComposeEmail }) {
             borderWidth: 5,
             borderRadius: 10,
             borderColor: '#edf4fb',
-
+            
           },
         }}
         open={open}
         onClose={() => {
           handleClose();
         }}
+        
       >
         <Box sx={{
           display: 'flex', flexDirection: 'row', flexWrap: 'wrap', p: 1, bgcolor: '#eceff1',

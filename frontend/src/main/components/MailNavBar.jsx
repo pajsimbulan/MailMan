@@ -2,7 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
-import { ListItem, ListItemIcon } from '@mui/material';
+import { ListItem, ListItemIcon, Slide } from '@mui/material';
 import AllInboxRoundedIcon from '@mui/icons-material/AllInboxRounded';
 import InboxRoundedIcon from '@mui/icons-material/InboxRounded';
 import DraftsRoundedIcon from '@mui/icons-material/DraftsRounded';
@@ -15,6 +15,10 @@ import Avatar from '@mui/material/Avatar';
 import ComposeEmail from './ComposeEmail';
 import SuccessActionAlert from '../../components/SuccessAlert';
 import ErrorActionAlert from '../../components/ErrorAlert';
+import  Zoom from '@mui/material/Zoom';
+import { Fade } from '@mui/material'; 
+import { CSSTransition } from 'react-transition-group';
+import '../../App.css';
 
 const ListItemStyling = {
   m: 2,
@@ -32,6 +36,10 @@ const TypographyStyling = {
 };
 
 const inboxes = ['inbox', 'sent', 'starred', 'drafts', 'all emails', 'trash', 'spam'];
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Zoom ref={ref} {...props} />;
+});
 
 function MailNavBar({ currentInbox, selectedInbox, onSelect = undefined }) {
   const [selectedIndex, setSelectedIndex] = React.useState(inboxes.indexOf(currentInbox));
@@ -88,13 +96,16 @@ function MailNavBar({ currentInbox, selectedInbox, onSelect = undefined }) {
       '@media (min-width: 800px)': { minHeight: '100vh' },
     }}
     >
-      {composeEmail ? (
-        <ComposeEmail closeComposeEmail={(status) => {
-          setComposeEmail(false);
-          openAlert(status);
-        }}
-        />
-      ) : null}
+      
+    {composeEmail?
+            <ComposeEmail 
+            openComposeEmail={composeEmail}
+            closeComposeEmail={(status) => {
+              setComposeEmail(false);
+              openAlert(status);
+            }}
+            /> : null}
+
       <SuccessActionAlert openAlert={openSuccess} message="Email sent successfully" closeAlert={() => { closeAlerts(); }} />
       <ErrorActionAlert openAlert={openError} message="Error sending email" closeAlert={() => { closeAlerts(); }} />
       <Box sx={{

@@ -12,7 +12,7 @@ import ReplyIcon from '@mui/icons-material/Reply';
 import formatDate from '../../utils/DateFormat';
 import EmailReplying from '../blocks/EmailReplying';
 import EmailReplyBlock from '../blocks/EmailReplyBlock';
-
+import { Zoom } from '@mui/material';
 const lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempus non quam vitae euismod. Sed ut purus eu ante ornare gravida. Duis pellentesque velit sit amet massa pharetra tempus. Curabitur sit amet ante fermentum, sollicitudin tortor nec, lobortis turpis. Aliquam molestie elit a nisi viverra viverra. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Interdum et malesuada fames ac ante ipsum primis in faucibus.\
 Donec sit amet metus quis enim';
 function EmailContentWindow({ closeEmail, email, onCLose }) {
@@ -201,6 +201,8 @@ function EmailContentWindow({ closeEmail, email, onCLose }) {
   return (
     <Box>
       <Dialog
+      TransitionComponent={Zoom}
+      transitionDuration={1000}
         PaperProps={{
           style: {
             minHeight: '90%',
