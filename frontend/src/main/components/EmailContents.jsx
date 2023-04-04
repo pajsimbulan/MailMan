@@ -10,11 +10,12 @@ import {
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import ReplyIcon from '@mui/icons-material/Reply';
+import PropTypes from 'prop-types';
 import formatDate from '../../utils/DateFormat';
 import EmailReplying from '../blocks/EmailReplying';
 import EmailReplyBlock from '../blocks/EmailReplyBlock';
 
-function EmailContentWindow({ closeEmail, email, onCLose }) {
+function EmailContentWindow({ closeEmail, email, onClose }) {
   const [open, setOpen] = React.useState(true);
   const [starred, setStarred] = React.useState(false);
   const [reply, setReply] = React.useState(false);
@@ -288,5 +289,11 @@ function EmailContentWindow({ closeEmail, email, onCLose }) {
     </Box>
   );
 }
+
+EmailContentWindow.propTypes = {
+  closeEmail: PropTypes.func.isRequired,
+  onClose: PropTypes.func,
+  email: PropTypes.objectOf(PropTypes.any).isRequired,
+};
 
 export default EmailContentWindow;

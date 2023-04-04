@@ -12,6 +12,7 @@ import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import ReportRoundedIcon from '@mui/icons-material/ReportRounded';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
+import PropTypes from 'prop-types';
 import ComposeEmail from './ComposeEmail';
 import SuccessActionAlert from '../../components/SuccessAlert';
 import ErrorActionAlert from '../../components/ErrorAlert';
@@ -198,5 +199,11 @@ function MailNavBar({ currentInbox, selectedInbox, onSelect = undefined }) {
     </Box>
   );
 }
+
+MailNavBar.propTypes = {
+  currentInbox: PropTypes.string.isRequired,
+  selectedInbox: PropTypes.string.isRequired,
+  onSelect: PropTypes.func.isRequired,
+};
 
 export default MailNavBar;

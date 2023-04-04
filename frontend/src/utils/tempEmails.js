@@ -118,6 +118,6 @@ const data11 = {
 };
 
 export const tempEmails = [data0, data1, data2, data3, data4];
-tempEmails.push([...tempEmails, data5, data6, data7, data8, data9, data10, data11]);
+tempEmails.push(data5, data6, data7, data8, data9, data10, data11);
 
 export default tempEmails;

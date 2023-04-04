@@ -1,11 +1,11 @@
 import * as React from 'react';
-
 import TextField from '@mui/material/TextField';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import PropTypes from 'prop-types';
 
-export default function Birthdatepicker({
+function Birthdatepicker({
   editProp, valid, invalid, oldValue, setBirthDate,
 }) {
   const [value, setValue] = React.useState(new Date(oldValue));
@@ -42,3 +42,13 @@ export default function Birthdatepicker({
     </LocalizationProvider>
   );
 }
+
+Birthdatepicker.propTypes = {
+  editProp: PropTypes.bool.isRequired,
+  valid: PropTypes.func.isRequired,
+  invalid: PropTypes.func.isRequired,
+  oldValue: PropTypes.string.isRequired,
+  setBirthDate: PropTypes.func.isRequired,
+};
+
+export default Birthdatepicker;

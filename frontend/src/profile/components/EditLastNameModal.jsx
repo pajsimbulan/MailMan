@@ -5,10 +5,11 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
+import PropTypes from 'prop-types';
 
 const { useMediaQuery } = require('@mui/material');
 
-export default function LastNameModal({
+function LastNameModal({
   edit, closeModal, oldValue, setLastName,
 }) {
   const islessThan500 = useMediaQuery('(max-width:500px)');
@@ -137,7 +138,7 @@ export default function LastNameModal({
               marginTop: 3,
               color: 'white',
               borderRadius: 1,
-              bgcolor: 'colors.button',
+              bgcolor: '#0F172A',
               textTransform: 'none',
               width: '20%',
               height: '20%',
@@ -154,3 +155,12 @@ export default function LastNameModal({
     </Modal>
   );
 }
+
+LastNameModal.propTypes = {
+  edit: PropTypes.bool.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  oldValue: PropTypes.string.isRequired,
+  setLastName: PropTypes.func.isRequired,
+};
+
+export default LastNameModal;

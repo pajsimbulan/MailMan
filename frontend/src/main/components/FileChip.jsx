@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Box, Chip } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import PropTypes from 'prop-types';
 import getFileIcon from '../../utils/FileIcons';
 
 function FileChip({ files, onClick, onDelete }) {
@@ -31,5 +32,11 @@ function FileChip({ files, onClick, onDelete }) {
     </Box>
   );
 }
+
+FileChip.propTypes = {
+  files: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onClick: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+};
 
 export default FileChip;

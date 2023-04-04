@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import { Avatar, Divider, Box } from '@mui/material';
+import PropTypes from 'prop-types';
 import parseDate from '../../utils/DateParser';
 import formatDate from '../../utils/DateFormat';
 
@@ -43,5 +44,9 @@ function EmailReplyBlock({ contents }) {
     </Box>
   );
 }
+
+EmailReplyBlock.propTypes = {
+  contents: PropTypes.string.isRequired,
+};
 
 export default EmailReplyBlock;

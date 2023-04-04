@@ -3,6 +3,7 @@ import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import PasswordModal from '../components/EditPasswordModal';
 
 function PasswordRow({ update }) {
@@ -39,7 +40,7 @@ function PasswordRow({ update }) {
           my: 'auto',
           color: 'white',
           borderRadius: 10,
-          bgcolor: 'colors.button',
+          bgcolor: '#338feb',
           textTransform: 'none',
           marginY: 'auto',
           '@media (max-width: 800px)': { fontSize: '12px' },
@@ -53,5 +54,9 @@ function PasswordRow({ update }) {
     </Box>
   );
 }
+
+PasswordRow.propTypes = {
+  update: PropTypes.func.isRequired,
+};
 
 export default PasswordRow;

@@ -11,8 +11,8 @@ import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import { Avatar, useMediaQuery } from '@mui/material';
 import Typography from '@mui/material/Typography';
+import PropTypes from 'prop-types';
 import { UserContext } from '../../App';
-
 import MailDrawerNavigation from './MailDrawerNavigation';
 
 function MailAppBar({ currentInbox, selectedInbox }) {
@@ -21,7 +21,6 @@ function MailAppBar({ currentInbox, selectedInbox }) {
   const isLessThan500 = useMediaQuery('(max-width:500px)');
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [darkMode, setDarkMode] = React.useState(false);
 
   const isMenuOpen = Boolean(anchorEl);
@@ -30,13 +29,8 @@ function MailAppBar({ currentInbox, selectedInbox }) {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
   const handleMenuClose = () => {
     setAnchorEl(null);
-    handleMobileMenuClose();
   };
 
   const menuId = 'primary-search-account-menu';
@@ -193,5 +187,10 @@ function MailAppBar({ currentInbox, selectedInbox }) {
     </Box>
   );
 }
+
+MailAppBar.propTypes = {
+  currentInbox: PropTypes.string.isRequired,
+  selectedInbox: PropTypes.string.isRequired,
+};
 
 export default MailAppBar;

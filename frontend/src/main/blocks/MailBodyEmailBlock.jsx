@@ -5,6 +5,7 @@ import Avatar from '@mui/material/Avatar';
 import { IconButton, Typography } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
+import PropTypes from 'prop-types';
 import hourOfDay from '../../utils/DateHOD';
 import parseDate from '../../utils/DateParser';
 
@@ -81,5 +82,10 @@ function EmailBlock({ email, avatarUrl, selected }) {
     </Box>
   );
 }
+EmailBlock.propTypes = {
+  email: PropTypes.object.isRequired,
+  avatarUrl: PropTypes.string.isRequired,
+  selected: PropTypes.func.isRequired,
+};
 
 export default EmailBlock;

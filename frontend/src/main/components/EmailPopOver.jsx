@@ -2,8 +2,9 @@ import * as React from 'react';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import { IconButton } from '@mui/material';
+import PropTypes from 'prop-types';
 
-export default function EmailPopOvers({ item, name }) {
+function EmailPopOvers({ item, name }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handlePopoverOpen = (event) => {
@@ -59,3 +60,10 @@ export default function EmailPopOvers({ item, name }) {
     </IconButton>
   );
 }
+
+EmailPopOvers.propTypes = {
+  item: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+};
+
+export default EmailPopOvers;

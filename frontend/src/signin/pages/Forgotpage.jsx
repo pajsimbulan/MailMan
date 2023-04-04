@@ -23,15 +23,14 @@ function Signuppage() {
   const [successful, setSuccessful] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const getFontSize = React.useMemo(() => {
-    return ( ()=> {
+  const getFontSize = React.useMemo(() => (() => {
     if (isLessThan500) {
       return '10px';
     } if (isLessThan800) {
       return '12px';
     }
     return '14px';
-})}, [isLessThan500, isLessThan800]);
+  }), [isLessThan500, isLessThan800]);
 
   function openError(message) {
     setOpenErrorAlert(true);
@@ -107,7 +106,7 @@ function Signuppage() {
             bgcolor: 'white',
             border: 'solid',
             borderWidth: 1,
-            borderColor: 'colors.bc',
+            borderColor: '#E9E9E9',
             mx: 2,
             mb: 10,
           }}

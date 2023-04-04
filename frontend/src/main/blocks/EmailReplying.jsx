@@ -4,6 +4,7 @@ import {
   Avatar, Divider, TextField, useMediaQuery,
   Box, Button, IconButton, Typography,
 } from '@mui/material';
+import PropTypes from 'prop-types';
 import { UserContext } from '../../App';
 
 const iconButtonStyling = { height: 25, width: 25, '@media (max-width: 800px)': { height: 20, width: 20 } };
@@ -70,5 +71,10 @@ function EmailReplying({ submitReply, exitReply }) {
     </Box>
   );
 }
+
+EmailReplying.propTypes = {
+  submitReply: PropTypes.func.isRequired,
+  exitReply: PropTypes.func.isRequired,
+};
 
 export default EmailReplying;

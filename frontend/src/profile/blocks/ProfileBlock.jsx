@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Button, Avatar, Box } from '@mui/material';
+import PropTypes from 'prop-types';
 import ProfilePictureModal from '../components/EditProfilePictureModal';
 
 function ProfileBlock({ avatar, update }) {
@@ -59,5 +60,10 @@ function ProfileBlock({ avatar, update }) {
     </>
   );
 }
+
+ProfileBlock.propTypes = {
+  avatar: PropTypes.string.isRequired,
+  update: PropTypes.func.isRequired,
+};
 
 export default ProfileBlock;

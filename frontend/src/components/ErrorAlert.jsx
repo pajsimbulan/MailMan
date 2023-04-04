@@ -3,8 +3,9 @@ import Alert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import CloseIcon from '@mui/icons-material/Close';
+import PropTypes from 'prop-types';
 
-export default function ErrorActionAlert({ openAlert, message, closeAlert }) {
+function ErrorActionAlert({ openAlert, message, closeAlert }) {
   const [open, setOpen] = React.useState(openAlert);
   React.useEffect(() => { setOpen(openAlert); }, [openAlert]);
   return (
@@ -33,3 +34,11 @@ export default function ErrorActionAlert({ openAlert, message, closeAlert }) {
     </Collapse>
   );
 }
+
+ErrorActionAlert.propTypes = {
+  openAlert: PropTypes.bool.isRequired,
+  message: PropTypes.string.isRequired,
+  closeAlert: PropTypes.func.isRequired,
+};
+
+export default ErrorActionAlert;

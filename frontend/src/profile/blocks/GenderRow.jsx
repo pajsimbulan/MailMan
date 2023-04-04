@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import GenderRadioButtons from '../components/GenderRadioButton';
 
 function GenderRow({ gender, update }) {
@@ -35,7 +36,7 @@ function GenderRow({ gender, update }) {
           my: 'auto',
           color: 'white',
           borderRadius: 10,
-          bgcolor: 'colors.button',
+          bgcolor: '#338feb',
           textTransform: 'none',
           marginY: 'auto',
           '@media (max-width: 800px)': { fontSize: '12px' },
@@ -50,5 +51,10 @@ function GenderRow({ gender, update }) {
     </Box>
   );
 }
+
+GenderRow.propTypes = {
+  gender: PropTypes.string.isRequired,
+  update: PropTypes.func.isRequired,
+};
 
 export default GenderRow;

@@ -5,20 +5,20 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import { useMediaQuery } from '@mui/material';
+import PropTypes from 'prop-types';
 
-export default function PasswordModal({ edit, closeModal, updatePassword }) {
+function PasswordModal({ edit, closeModal, updatePassword }) {
   const isLessThan500 = useMediaQuery('(max-width:500px)');
   const isLessThan800 = useMediaQuery('(max-width:800px)');
   const [value, setValue] = React.useState('');
-  const getFontSize = React.useMemo(() => {
-    return ( ()=> {
+  const getFontSize = React.useMemo(() => (() => {
     if (isLessThan500) {
       return '10px';
     } if (isLessThan800) {
       return '12px';
     }
     return '14px';
-})}, [isLessThan500, isLessThan800]);
+  }), [isLessThan500, isLessThan800]);
 
   const handleClose = () => {
     closeModal();
@@ -129,7 +129,7 @@ export default function PasswordModal({ edit, closeModal, updatePassword }) {
               marginTop: 3,
               color: 'white',
               borderRadius: 1,
-              bgcolor: 'colors.button',
+              bgcolor: '#0F172A',
               textTransform: 'none',
               width: '20%',
               height: '20%',
@@ -146,3 +146,11 @@ export default function PasswordModal({ edit, closeModal, updatePassword }) {
     </Modal>
   );
 }
+
+PasswordModal.propTypes = {
+  edit: PropTypes.bool.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  updatePassword: PropTypes.func.isRequired,
+};
+
+export default PasswordModal;

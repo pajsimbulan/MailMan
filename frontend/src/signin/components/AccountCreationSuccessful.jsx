@@ -3,6 +3,7 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { Button } from '@mui/material';
+import PropTypes from 'prop-types';
 
 function AccountCreationSuccessful({ onButtonPress }) {
   return (
@@ -32,4 +33,9 @@ function AccountCreationSuccessful({ onButtonPress }) {
     </Box>
   );
 }
+
+AccountCreationSuccessful.propTypes = {
+  onButtonPress: PropTypes.func.isRequired,
+};
+
 export default AccountCreationSuccessful;

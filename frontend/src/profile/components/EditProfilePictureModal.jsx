@@ -5,6 +5,7 @@ import {
   Box, Button, Typography, Modal, Avatar,
 } from '@mui/material';
 import UploadIcon from '@mui/icons-material/Upload';
+import PropTypes from 'prop-types';
 
 const MAX_FILE_SIZE = 13000000;
 
@@ -210,5 +211,12 @@ function ProfilePictureModal({
     </Modal>
   );
 }
+
+ProfilePictureModal.propTypes = {
+  edit: PropTypes.bool.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  setAvatar: PropTypes.func.isRequired,
+  oldAvatarValue: PropTypes.string.isRequired,
+};
 
 export default ProfilePictureModal;

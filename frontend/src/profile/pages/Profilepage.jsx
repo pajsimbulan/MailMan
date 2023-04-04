@@ -106,7 +106,7 @@ function Profile() {
                 sx={{
                   color: 'white',
                   borderRadius: 10,
-                  bgcolor: 'colors.button',
+                  bgcolor: '#338feb',
                   textTransform: 'none',
                   marginBottom: 2,
                   px: 2,

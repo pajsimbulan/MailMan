@@ -14,6 +14,7 @@ import {
   Avatar, Divider, useMediaQuery, Zoom, Box,
 } from '@mui/material';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import PropTypes from 'prop-types';
 import { UserContext } from '../../App';
 import FileChip from './FileChip';
 
@@ -336,5 +337,10 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail }) {
     </Box>
   );
 }
+
+ComposeEmail.propTypes = {
+  openComposeEmail: PropTypes.func.isRequired,
+  closeComposeEmail: PropTypes.func.isRequired,
+};
 
 export default ComposeEmail;

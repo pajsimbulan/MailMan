@@ -2,6 +2,7 @@ import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from '@mui/material/IconButton';
+import PropTypes from 'prop-types';
 import MailNavBar from './MailNavBar';
 
 function MailDrawerNavigation({ currentInbox, selectedInbox }) {
@@ -29,5 +30,10 @@ function MailDrawerNavigation({ currentInbox, selectedInbox }) {
     </>
   );
 }
+
+MailDrawerNavigation.propTypes = {
+  currentInbox: PropTypes.string.isRequired,
+  selectedInbox: PropTypes.func.isRequired,
+};
 
 export default MailDrawerNavigation;

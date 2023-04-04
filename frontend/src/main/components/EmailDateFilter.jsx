@@ -1,6 +1,7 @@
 import * as React from 'react';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import PropTypes from 'prop-types';
 
 const toggleButtonStyling = {
   border: 'solid',
@@ -39,5 +40,9 @@ function EmailDateFilterToggleButton({ setFilter }) {
     </ToggleButtonGroup>
   );
 }
+
+EmailDateFilterToggleButton.propTypes = {
+  setFilter: PropTypes.func.isRequired,
+};
 
 export default EmailDateFilterToggleButton;

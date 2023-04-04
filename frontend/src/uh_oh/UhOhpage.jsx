@@ -39,7 +39,7 @@ function UhOh() {
         </Typography>
         <Typography sx={{ '@media (max-width: 800px)': { fontSize: '14px' }, '@media (max-width: 500px)': { fontSize: '13px' } }}>
           Something went wrong.
-          <span style={{ fontWeight: 'bold', color: '#047481' }}>Handyman</span>
+          <span style={{ fontWeight: 'bold', color: '#047481' }}> Handyman </span>
           is on the way to fix it.
         </Typography>
         <Typography sx={{

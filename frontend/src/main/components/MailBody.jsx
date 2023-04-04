@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router';
 import {
   useContext, useState, useEffect, useRef,
 } from 'react';
+import PropTypes from 'prop-types';
 import { UserContext } from '../../App';
 import EmailPopOvers from './EmailPopOver';
 import EmailDateFilterToggleButton from './EmailDateFilter';
@@ -128,5 +129,9 @@ function MailBody({ selectedInbox }) {
     </Box>
   );
 }
+
+MailBody.propTypes = {
+  selectedInbox: PropTypes.string.isRequired,
+};
 
 export default MailBody;

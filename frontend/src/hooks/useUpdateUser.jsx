@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 
 function useUser({ accessToken, userInfo }) {
   const [data, setData] = useState(undefined);
@@ -68,4 +69,10 @@ function useUser({ accessToken, userInfo }) {
     data, statusCode, getUserInfo, updateUserInfo, updatePassword,
   };
 }
+
+useUser.propTypes = {
+  accessToken: PropTypes.string.isRequired,
+  userInfo: PropTypes.object.isRequired,
+};
+
 export default useUser;

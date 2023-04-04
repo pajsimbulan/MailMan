@@ -5,8 +5,9 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { useMediaQuery } from '@mui/material';
+import PropTypes from 'prop-types';
 
-export default function GenderRadioButtons({ oldValue, editProp, setGender }) {
+function GenderRadioButtons({ oldValue, editProp, setGender }) {
   const [value, setValue] = React.useState(oldValue);
   const [edit, setEdit] = React.useState(editProp);
   const isSmallScreen = useMediaQuery('(max-width:800px)');
@@ -62,3 +63,11 @@ export default function GenderRadioButtons({ oldValue, editProp, setGender }) {
     </FormControl>
   );
 }
+
+GenderRadioButtons.propTypes = {
+  oldValue: PropTypes.string.isRequired,
+  editProp: PropTypes.bool.isRequired,
+  setGender: PropTypes.func.isRequired,
+};
+
+export default GenderRadioButtons;

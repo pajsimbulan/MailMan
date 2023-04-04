@@ -6,8 +6,9 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import { useMediaQuery } from '@mui/material';
+import PropTypes from 'prop-types';
 
-export default function FirstNameModal({
+function FirstNameModal({
   edit, closeModal, oldValue, setFirstName,
 }) {
   const isLessThan500 = useMediaQuery('(max-width:500px)');
@@ -135,7 +136,7 @@ export default function FirstNameModal({
               marginTop: 3,
               color: 'white',
               borderRadius: 1,
-              bgcolor: 'colors.button',
+              bgcolor: '#0F172A',
               textTransform: 'none',
               width: '20%',
               height: '20%',
@@ -152,3 +153,12 @@ export default function FirstNameModal({
     </Modal>
   );
 }
+
+FirstNameModal.propTypes = {
+  edit: PropTypes.bool.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  oldValue: PropTypes.string.isRequired,
+  setFirstName: PropTypes.func.isRequired,
+};
+
+export default FirstNameModal;

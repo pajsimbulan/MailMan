@@ -2,6 +2,7 @@ import * as React from 'react';
 import { IconButton, Typography, Box } from '@mui/material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import PropTypes from 'prop-types';
 
 function MailPagination({ range, totalCount }) {
   const [page, setPage] = React.useState(1);
@@ -50,5 +51,10 @@ function MailPagination({ range, totalCount }) {
     </Box>
   );
 }
+
+MailPagination.propTypes = {
+  range: PropTypes.number.isRequired,
+  totalCount: PropTypes.number.isRequired,
+};
 
 export default MailPagination;
