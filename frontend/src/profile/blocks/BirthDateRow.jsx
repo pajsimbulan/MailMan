@@ -1,15 +1,11 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import { Button, Divider } from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
-import { useTheme } from '@mui/material/styles';
 import Birthdatepicker from '../components/BirthDatePicker';
 
 function BirthDateRow({ birthDate, update }) {
-  const theme = useTheme();
   const [edit, setEdit] = useState(false);
   const [invalidBirthDate, setInvalidBirthDate] = useState(false);
   const [value, setValue] = useState(birthDate);
@@ -25,7 +21,12 @@ function BirthDateRow({ birthDate, update }) {
 
   return (
     <Box sx={{
-      width: '100%', display: 'flex', justifyContent: 'space-between', marginTop: 1, flexWrap: 'wrap', alignContent: 'center',
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'space-between',
+      marginTop: 1,
+      flexWrap: 'wrap',
+      alignContent: 'center',
     }}
     >
       <Box sx={{
@@ -58,7 +59,6 @@ function BirthDateRow({ birthDate, update }) {
         size="small"
         sx={{
           my: 'auto',
-          bgcolor: 'grey',
           color: 'white',
           borderRadius: 10,
           bgcolor: 'colors.button',

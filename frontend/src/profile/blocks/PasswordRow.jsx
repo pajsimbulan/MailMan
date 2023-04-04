@@ -14,12 +14,16 @@ function PasswordRow({ update }) {
     }}
     >
       <Box sx={{ marginY: 'auto' }}>
-        <PasswordModal edit={edit} closeModal={() => { setEdit(false); }} updatePassword={(newPassword) => { update(newPassword); }} />
+        <PasswordModal
+          edit={edit}
+          closeModal={() => { setEdit(false); }}
+          updatePassword={(newPassword) => { update(newPassword); }}
+        />
         <Typography
           Typography
           sx={{
             fontWeight: 'light',
-            color: 'colors.text',
+            color: '#334155',
             marginY: 'auto',
             '@media (max-width: 800px)': { fontSize: '12px' },
             '@media (max-width: 500px)': { fontSize: '10px' },
@@ -33,7 +37,6 @@ function PasswordRow({ update }) {
         size="small"
         sx={{
           my: 'auto',
-          bgcolor: 'grey',
           color: 'white',
           borderRadius: 10,
           bgcolor: 'colors.button',

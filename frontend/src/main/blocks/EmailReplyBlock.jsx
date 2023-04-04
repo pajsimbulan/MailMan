@@ -1,12 +1,10 @@
 import * as React from 'react';
-import { Box } from '@mui/system';
 import Typography from '@mui/material/Typography';
-import { Avatar, Divider } from '@mui/material';
+import { Avatar, Divider, Box } from '@mui/material';
 import parseDate from '../../utils/DateParser';
 import formatDate from '../../utils/DateFormat';
 
 function EmailReplyBlock({ contents }) {
-  const [value, setValue] = React.useState('');
   return (
     <Box sx={{ width: '100%' }}>
       <Divider sx={{ my: 2 }} />

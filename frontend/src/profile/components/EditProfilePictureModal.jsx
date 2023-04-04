@@ -1,12 +1,22 @@
+/* global alert */
+/* global FileReader */
 import * as React from 'react';
 import {
-  Box, Button, Typography, Modal, TextField, Avatar, Divider,
+  Box, Button, Typography, Modal, Avatar,
 } from '@mui/material';
 import UploadIcon from '@mui/icons-material/Upload';
 
 const MAX_FILE_SIZE = 13000000;
 
-export default function ProfilePictureModal({
+const arrayBufferToBase64 = (buffer) => {
+  const binary = new Uint8Array(buffer).reduce(
+    (acc, byte) => acc + String.fromCharCode(byte),
+    '',
+  );
+  return btoa(binary);
+};
+
+function ProfilePictureModal({
   edit, closeModal, oldAvatarValue, setAvatar,
 }) {
   const [avatarValue, setAvatarValue] = React.useState(oldAvatarValue);
@@ -75,7 +85,7 @@ export default function ProfilePictureModal({
         }}
         onKeyPress={(event) => {
           event.preventDefault();
-          if (event.key == 'Enter') {
+          if (event.key === 'Enter') {
             submitHandler();
           }
         }}
@@ -86,7 +96,7 @@ export default function ProfilePictureModal({
         >
           <Typography sx={{
             fontWeight: 'bold',
-            color: 'colors.text',
+            color: '#334155',
             fontSize: '25px',
             mx: 10,
             textAlign: 'center',
@@ -99,7 +109,7 @@ export default function ProfilePictureModal({
           </Typography>
           <Typography sx={{
             fontWeight: 'light',
-            color: 'colors.text',
+            color: '#334155',
             fontSize: '15px',
             mb: 1,
             textAlign: 'center',
@@ -116,7 +126,7 @@ export default function ProfilePictureModal({
               width: 150,
               border: 'solid',
               borderWidth: '3px',
-              borderColor: 'colors.color2',
+              borderColor: '#F1F5F9',
               '@media (max-width: 800px)': { height: 135, width: 135 },
               '@media (max-width: 500px)': { height: 120, width: 120 },
             }}
@@ -201,10 +211,4 @@ export default function ProfilePictureModal({
   );
 }
 
-const arrayBufferToBase64 = (buffer) => {
-  const binary = new Uint8Array(buffer).reduce(
-    (acc, byte) => acc + String.fromCharCode(byte),
-    '',
-  );
-  return btoa(binary);
-};
+export default ProfilePictureModal;

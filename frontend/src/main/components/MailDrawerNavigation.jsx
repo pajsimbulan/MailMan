@@ -20,7 +20,11 @@ function MailDrawerNavigation({ currentInbox, selectedInbox }) {
           },
         }}
       >
-        <MailNavBar currentInbox={currentInbox} selectedInbox={selectedInbox} onSelect={() => setOpenDrawer(false)} />
+        <MailNavBar
+          currentInbox={currentInbox}
+          selectedInbox={selectedInbox}
+          onSelect={() => setOpenDrawer(false)}
+        />
       </Drawer>
     </>
   );

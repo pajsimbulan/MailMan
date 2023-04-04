@@ -1,5 +1,7 @@
+/* global document */
+/* global FileReader */
+/* global alert */
 import * as React from 'react';
-import { Box } from '@mui/system';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -8,16 +10,24 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { Avatar, Divider, useMediaQuery } from '@mui/material';
+import {
+  Avatar, Divider, useMediaQuery, Zoom, Box,
+} from '@mui/material';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { UserContext } from '../../App';
 import FileChip from './FileChip';
-import { Zoom } from '@mui/material';
 
 const MAX_FILE_SIZE = 13000000;
+const arrayBufferToBase64 = (buffer) => {
+  const binary = new Uint8Array(buffer).reduce(
+    (acc, byte) => acc + String.fromCharCode(byte),
+    '',
+  );
+  return btoa(binary);
+};
 const iconButtonStyling = { height: 25, width: 25, '@media (max-width: 800px)': { height: 20, width: 20 } };
 
-function ComposeEmail({ openComposeEmail, closeComposeEmail  }) {
+function ComposeEmail({ openComposeEmail, closeComposeEmail }) {
   const isLessThan800 = useMediaQuery('(max-width:800px)');
   const isLessThan1000 = useMediaQuery('(max-width:1000px)');
   const user = React.useContext(UserContext);
@@ -82,13 +92,13 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail  }) {
     );
 
     setBinaryFiles([...binaryFiles, ...tempFiles]);
-  };  
+  };
 
   return (
     <Box>
       <Dialog
-       TransitionComponent={Zoom}
-       transitionDuration={1000}
+        TransitionComponent={Zoom}
+        transitionDuration={1000}
         PaperProps={{
           style: {
             minHeight: '80%',
@@ -99,14 +109,14 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail  }) {
             borderWidth: 5,
             borderRadius: 10,
             borderColor: '#edf4fb',
-            
+
           },
         }}
         open={open}
         onClose={() => {
           handleClose();
         }}
-        
+
       >
         <Box sx={{
           display: 'flex', flexDirection: 'row', flexWrap: 'wrap', p: 1, bgcolor: '#eceff1',
@@ -326,13 +336,5 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail  }) {
     </Box>
   );
 }
-
-const arrayBufferToBase64 = (buffer) => {
-  const binary = new Uint8Array(buffer).reduce(
-    (acc, byte) => acc + String.fromCharCode(byte),
-    '',
-  );
-  return btoa(binary);
-};
 
 export default ComposeEmail;

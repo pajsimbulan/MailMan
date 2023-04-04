@@ -1,20 +1,16 @@
 import * as React from 'react';
-import { styled, alpha, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import MenuItem from '@mui/material/MenuItem';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import Menu from '@mui/material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import AccountCircle from '@mui/icons-material/AccountCircle';
 import { useNavigate } from 'react-router';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
-import { Avatar, Divider, useMediaQuery } from '@mui/material';
+import { Avatar, useMediaQuery } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
 import { UserContext } from '../../App';
 
 import MailDrawerNavigation from './MailDrawerNavigation';
@@ -23,14 +19,12 @@ function MailAppBar({ currentInbox, selectedInbox }) {
   const { userInfo } = React.useContext(UserContext);
   const isSmallScreen = useMediaQuery('(max-width:800px)');
   const isLessThan500 = useMediaQuery('(max-width:500px)');
-  const theme = useTheme();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [darkMode, setDarkMode] = React.useState(false);
 
   const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   console.log(`app bar render inbpx: ${currentInbox}`);
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -118,12 +112,22 @@ function MailAppBar({ currentInbox, selectedInbox }) {
 
   return (
     <Box sx={{
-      borderBottom: 'solid', borderWidth: '1px', borderColor: '#C6CED6', borderBottomLeftRadius: 40, borderWidth: 5, bgcolor: 'white',
+      borderBottom: 'solid',
+      borderColor: '#C6CED6',
+      borderBottomLeftRadius: 40,
+      borderWidth: 5,
+      bgcolor: 'white',
     }}
     >
       <Toolbar>
         <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'row' }}>
-          {isSmallScreen ? <MailDrawerNavigation currentInbox={currentInbox} selectedInbox={selectedInbox} /> : null}
+          {isSmallScreen ? (
+            <MailDrawerNavigation
+              currentInbox={currentInbox}
+              selectedInbox={selectedInbox}
+            />
+          )
+            : null}
           <TextField
             size={isSmallScreen ? 'small' : 'medium'}
             inputProps={{
@@ -146,11 +150,12 @@ function MailAppBar({ currentInbox, selectedInbox }) {
               },
             }}
             InputProps={{
-              startAdornment: <InputAdornment position="start">
-                {' '}
-                <SearchIcon sx={{ color: '#002159' }} />
-                {' '}
-                              </InputAdornment>,
+              startAdornment:
+  <InputAdornment position="start">
+    {' '}
+    <SearchIcon sx={{ color: '#002159' }} />
+    {' '}
+  </InputAdornment>,
             }}
           />
         </Box>

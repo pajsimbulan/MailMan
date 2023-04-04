@@ -1,5 +1,7 @@
 import React, { createContext } from 'react';
-import { Route, Routes, BrowserRouter, Outlet, useLocation } from 'react-router-dom';
+import {
+  Route, Routes, BrowserRouter, useLocation,
+} from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import CssBaseline from '@mui/material/CssBaseline';
 import Signinpage from './signin/pages/Signinpage';
@@ -9,7 +11,7 @@ import Mainpage from './main/pages/Mainpage';
 import Profilepage from './profile/pages/Profilepage';
 import Greet from './greet/Greetpage';
 import UhOh from './uh_oh/UhOhpage';
-import './App.css'; 
+import './App.css';
 
 export const UserContext = createContext();
 export default function App() {

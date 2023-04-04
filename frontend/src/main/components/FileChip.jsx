@@ -11,6 +11,7 @@ function FileChip({ files, onClick, onDelete }) {
     >
       {files.map((file, index) => (
         <Chip
+          key={file.name}
           icon={getFileIcon(file.type)}
           label={file.name}
           deleteIcon={

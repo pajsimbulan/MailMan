@@ -4,12 +4,13 @@ import { useNavigate } from 'react-router';
 import { Typography } from '@mui/material';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import CircularProgress from '@mui/material/CircularProgress';
+
 function UhOh() {
   const navigate = useNavigate();
 
- setTimeout(() => {
-  navigate('/');
- }, 5500);
+  setTimeout(() => {
+    navigate('/');
+  }, 5500);
 
   return (
     <Box
@@ -21,21 +22,35 @@ function UhOh() {
         flexDirection: 'row',
         justifyContent: 'center',
       }}
-    >   
-      <Box sx={{ my: 'auto', position: 'absolute', top: '30%',textAlign:'center',  }}>
-      <EngineeringIcon sx={{fontSize:100, color:'#047481', height: 150, width: 150, ml:4, '@media (max-width: 800px)': { height: 135, width: 135, }, '@media (max-width: 500px)': { height: 120, width: 120, }}}/>
-        <Typography sx={{fontSize:'35px', fontWeight:'bold', '@media (max-width: 800px)': { fontSize: '30px' }, '@media (max-width: 500px)': { fontSize: '25px' }}}>
-            Uh oh! 
+    >
+      <Box sx={{
+        my: 'auto', position: 'absolute', top: '30%', textAlign: 'center',
+      }}
+      >
+        <EngineeringIcon sx={{
+          fontSize: 100, color: '#047481', height: 150, width: 150, ml: 4, '@media (max-width: 800px)': { height: 135, width: 135 }, '@media (max-width: 500px)': { height: 120, width: 120 },
+        }}
+        />
+        <Typography sx={{
+          fontSize: '35px', fontWeight: 'bold', '@media (max-width: 800px)': { fontSize: '30px' }, '@media (max-width: 500px)': { fontSize: '25px' },
+        }}
+        >
+          Uh oh!
         </Typography>
-        <Typography sx={{'@media (max-width: 800px)': { fontSize: '14px' }, '@media (max-width: 500px)': { fontSize: '13px' }}}>
-            Something went wrong. <span style={{fontWeight:'bold', color:'#047481'}}>Handyman</span> is on the way to fix it.
+        <Typography sx={{ '@media (max-width: 800px)': { fontSize: '14px' }, '@media (max-width: 500px)': { fontSize: '13px' } }}>
+          Something went wrong.
+          <span style={{ fontWeight: 'bold', color: '#047481' }}>Handyman</span>
+          is on the way to fix it.
         </Typography>
-        <Typography sx={{fontSize:'14px', fontWeight:'bold','@media (max-width: 800px)': { fontSize: '13px' }, '@media (max-width: 500px)': { fontSize: '12px' }}}>
-            You'll be redirected to the sign in page in 5 seconds.
+        <Typography sx={{
+          fontSize: '14px', fontWeight: 'bold', '@media (max-width: 800px)': { fontSize: '13px' }, '@media (max-width: 500px)': { fontSize: '12px' },
+        }}
+        >
+          {'You\'ll be redirected to the sign in page in 5 seconds.'}
         </Typography>
-        <CircularProgress sx={{color:'#047481', mt:2}}/>
-        </Box>
+        <CircularProgress sx={{ color: '#047481', mt: 2 }} />
       </Box>
+    </Box>
   );
 }
 

@@ -22,10 +22,15 @@ function LastNameRow({ lastName, update }) {
     }}
     >
       <Box sx={{ marginY: 'auto' }}>
-        <LastNameModal edit={edit} closeModal={() => { setEdit(false); }} oldValue={lastName} setLastName={(newLastName) => { updateLastName(newLastName); }} />
+        <LastNameModal
+          edit={edit}
+          closeModal={() => { setEdit(false); }}
+          oldValue={lastName}
+          setLastName={(newLastName) => { updateLastName(newLastName); }}
+        />
         <Typography sx={{
           fontWeight: 'light',
-          color: 'colors.text',
+          color: '#334155',
           '@media (max-width: 800px)': { fontSize: '12px' },
           '@media (max-width: 500px)': { fontSize: '10px' },
         }}
@@ -38,7 +43,6 @@ function LastNameRow({ lastName, update }) {
         size="small"
         sx={{
           my: 'auto',
-          bgcolor: 'grey',
           color: 'white',
           borderRadius: 10,
           bgcolor: 'colors.button',

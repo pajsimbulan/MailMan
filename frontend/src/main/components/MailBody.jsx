@@ -1,3 +1,4 @@
+/* global alert */
 import * as React from 'react';
 import List from '@mui/material/List';
 import Box from '@mui/material/Box';
@@ -7,7 +8,6 @@ import StarIcon from '@mui/icons-material/Star';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { Toolbar } from '@mui/material';
 import { useNavigate } from 'react-router';
 import {
   useContext, useState, useEffect, useRef,
@@ -66,16 +66,32 @@ function MailBody({ selectedInbox }) {
 
   return (
     <Box sx={{
-      width: '100%', maxHeight: '100%', display: 'flex', margin: 0, borderRadius: 10, alignItems: 'stretch', justifyContent: 'center', overflow: 'scroll',
+      width: '100%',
+      maxHeight: '100%',
+      display: 'flex',
+      margin: 0,
+      borderRadius: 10,
+      alignItems: 'stretch',
+      justifyContent: 'center',
+      overflow: 'scroll',
     }}
     >
-      {openEmail ? <EmailContentWindow closeEmail={() => { setOpenEmail(false); }} email={openedEmail} /> : null}
+      {openEmail ? (
+        <EmailContentWindow
+          closeEmail={() => { setOpenEmail(false); }}
+          email={openedEmail}
+        />
+      ) : null}
       <List sx={{
         width: '100%', maxWidth: '95%', borderRadius: 10, bgcolor: 'transparent', boxShadow: '3', mt: 2, px: 2,
       }}
       >
         <ListItem sx={{
-          display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', '@media (max-width: 400px)': { flexDirection: 'column', justifyContent: 'center' },
+          display: 'flex',
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          justifyContent: 'space-between',
+          '@media (max-width: 400px)': { flexDirection: 'column', justifyContent: 'center' },
         }}
         >
           <Box sx={{
@@ -89,7 +105,9 @@ function MailBody({ selectedInbox }) {
               }}
               onChange={(event) => {
                 setCheckBoxArray(new Array(size.current).fill(event.target.checked));
-                setSelected((selected) => { selected.push(1); console.log(selected); return selected; });
+                setSelected(
+                  (selected) => { selected.push(1); console.log(selected); return selected; },
+                );
               }}
             />
             <EmailPopOvers item={() => <RefreshIcon sx={EmailPopOversStyle} />} name="Refresh" />

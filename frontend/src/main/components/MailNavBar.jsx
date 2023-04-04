@@ -2,7 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
-import { ListItem, ListItemIcon, Slide } from '@mui/material';
+import { ListItem } from '@mui/material';
 import AllInboxRoundedIcon from '@mui/icons-material/AllInboxRounded';
 import InboxRoundedIcon from '@mui/icons-material/InboxRounded';
 import DraftsRoundedIcon from '@mui/icons-material/DraftsRounded';
@@ -33,7 +33,6 @@ const TypographyStyling = {
 
 const inboxes = ['inbox', 'sent', 'starred', 'drafts', 'all emails', 'trash', 'spam'];
 
-
 function MailNavBar({ currentInbox, selectedInbox, onSelect = undefined }) {
   const [selectedIndex, setSelectedIndex] = React.useState(inboxes.indexOf(currentInbox));
   const [composeEmail, setComposeEmail] = React.useState(false);
@@ -61,10 +60,10 @@ function MailNavBar({ currentInbox, selectedInbox, onSelect = undefined }) {
   };
 
   const openAlert = (status) => {
-    if (status == 'error') {
+    if (status === 'error') {
       setOpenError(true);
     }
-    if (status == 'success') {
+    if (status === 'success') {
       setOpenSuccess(true);
     }
 
@@ -89,15 +88,17 @@ function MailNavBar({ currentInbox, selectedInbox, onSelect = undefined }) {
       '@media (min-width: 800px)': { minHeight: '100vh' },
     }}
     >
-      
-    {composeEmail?
-            <ComposeEmail 
+
+      {composeEmail
+        ? (
+          <ComposeEmail
             openComposeEmail={composeEmail}
             closeComposeEmail={(status) => {
               setComposeEmail(false);
               openAlert(status);
             }}
-            /> : null}
+          />
+        ) : null}
 
       <SuccessActionAlert openAlert={openSuccess} message="Email sent successfully" closeAlert={() => { closeAlerts(); }} />
       <ErrorActionAlert openAlert={openError} message="Error sending email" closeAlert={() => { closeAlerts(); }} />

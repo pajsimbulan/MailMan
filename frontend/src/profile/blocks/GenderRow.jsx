@@ -17,16 +17,22 @@ function GenderRow({ gender, update }) {
 
   return (
     <Box sx={{
-      width: '100%', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap',
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'space-between',
+      flexWrap: 'wrap',
     }}
     >
-      <GenderRadioButtons oldValue={gender} editProp={edit} setGender={(newValue) => { setValue(newValue); }} />
+      <GenderRadioButtons
+        oldValue={gender}
+        editProp={edit}
+        setGender={(newValue) => { setValue(newValue); }}
+      />
       <Button
         type="button"
         size="small"
         sx={{
           my: 'auto',
-          bgcolor: 'grey',
           color: 'white',
           borderRadius: 10,
           bgcolor: 'colors.button',

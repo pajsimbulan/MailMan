@@ -10,7 +10,6 @@ import parseDate from '../../utils/DateParser';
 
 function EmailBlock({ email, avatarUrl, selected }) {
   const [starred, setStarred] = React.useState(false);
-  const [openEmail, setOpenEmail] = React.useState(false);
 
   return (
     <Box
@@ -76,7 +75,7 @@ function EmailBlock({ email, avatarUrl, selected }) {
           color: 'grey', fontWeight: 'bold', fontSize: '12px', '@media (max-width: 800px)': { fontSize: '10px' }, '@media (max-width: 500px)': { fontSize: '8px' },
         }}
         >
-          {parseDate(email.createdAt).toLowerCase() == 'today' ? hourOfDay(email.createdAt) : parseDate(email.createdAt)}
+          {parseDate(email.createdAt).toLowerCase() === 'today' ? hourOfDay(email.createdAt) : parseDate(email.createdAt)}
         </Typography>
       </Box>
     </Box>

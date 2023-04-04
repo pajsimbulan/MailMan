@@ -11,7 +11,12 @@ function ProfileBlock({ avatar, update }) {
   };
   return (
     <>
-      <ProfilePictureModal edit={edit} closeModal={() => { setEdit(false); }} oldAvatarValue={avatarValue} setAvatar={(newAvatar) => { updateAvatar(newAvatar); }} />
+      <ProfilePictureModal
+        edit={edit}
+        closeModal={() => { setEdit(false); }}
+        oldAvatarValue={avatarValue}
+        setAvatar={(newAvatar) => { updateAvatar(newAvatar); }}
+      />
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
         <Avatar
           sx={{
@@ -19,7 +24,7 @@ function ProfileBlock({ avatar, update }) {
             width: 150,
             border: 'solid',
             borderWidth: '3px',
-            borderColor: 'colors.color2',
+            borderColor: '#F1F5F9',
             mx: 'auto',
             '@media (max-width: 800px)': { height: 135, width: 135 },
             '@media (max-width: 500px)': { height: 120, width: 120 },
@@ -46,7 +51,6 @@ function ProfileBlock({ avatar, update }) {
             '@media (max-width: 800px)': { fontSize: '12px' },
             '@media (max-width: 500px)': { fontSize: '10px' },
           }}
-
           onClick={() => { setEdit(true); }}
         >
           Change Profile Picture

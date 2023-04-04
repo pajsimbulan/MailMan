@@ -1,20 +1,19 @@
 import * as React from 'react';
-import { Box } from '@mui/system';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { Avatar, useMediaQuery } from '@mui/material';
+import {
+  Avatar, useMediaQuery, Zoom, Box,
+} from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import ReplyIcon from '@mui/icons-material/Reply';
 import formatDate from '../../utils/DateFormat';
 import EmailReplying from '../blocks/EmailReplying';
 import EmailReplyBlock from '../blocks/EmailReplyBlock';
-import { Zoom } from '@mui/material';
-const lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempus non quam vitae euismod. Sed ut purus eu ante ornare gravida. Duis pellentesque velit sit amet massa pharetra tempus. Curabitur sit amet ante fermentum, sollicitudin tortor nec, lobortis turpis. Aliquam molestie elit a nisi viverra viverra. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Interdum et malesuada fames ac ante ipsum primis in faucibus.\
-Donec sit amet metus quis enim';
+
 function EmailContentWindow({ closeEmail, email, onCLose }) {
   const [open, setOpen] = React.useState(true);
   const [starred, setStarred] = React.useState(false);
@@ -54,7 +53,7 @@ function EmailContentWindow({ closeEmail, email, onCLose }) {
         </IconButton>
       </Box>
       <Box sx={{
-        width: '100%', display: 'flex', justifyContent: 'center', flexDirection: 'column', px: 1, px: 1,
+        width: '100%', display: 'flex', justifyContent: 'center', flexDirection: 'column', px: 1,
       }}
       >
         <Typography sx={{
@@ -77,7 +76,10 @@ function EmailContentWindow({ closeEmail, email, onCLose }) {
         }}
         />
         <Box sx={{
-          display: 'flex', flexDirection: 'column', my: 'auto', '@media (max-width: 500px)': { whiteSpace: 'none', overflow: 'auto' },
+          display: 'flex',
+          flexDirection: 'column',
+          my: 'auto',
+          '@media (max-width: 500px)': { whiteSpace: 'none', overflow: 'auto' },
         }}
         >
           <Typography sx={{ fontSize: '12px', fontWeight: 'bold' }}>
@@ -101,7 +103,9 @@ function EmailContentWindow({ closeEmail, email, onCLose }) {
             }}
             onClick={(event) => { event.stopPropagation(); setStarred(!starred); console.log('star'); }}
           >
-            {starred ? <StarIcon sx={{ height: 20, width: 20 }} /> : <StarBorderIcon sx={{ height: 20, width: 20 }} />}
+            {starred
+              ? <StarIcon sx={{ height: 20, width: 20 }} />
+              : <StarBorderIcon sx={{ height: 20, width: 20 }} />}
           </IconButton>
         </Box>
       </Box>
@@ -148,7 +152,7 @@ function EmailContentWindow({ closeEmail, email, onCLose }) {
         </Box>
       </Box>
       <Box sx={{
-        width: '33.33%', display: 'flex', justifyContent: 'center', flexDirection: 'column', px: 1, px: 1,
+        width: '33.33%', display: 'flex', justifyContent: 'center', flexDirection: 'column', px: 1,
       }}
       >
         <Typography sx={{
@@ -180,7 +184,8 @@ function EmailContentWindow({ closeEmail, email, onCLose }) {
           }}
           onClick={(event) => { event.stopPropagation(); setStarred(!starred); console.log('star'); }}
         >
-          {starred ? <StarIcon sx={{ height: 25, width: 25 }} /> : <StarBorderIcon sx={{ height: 25, width: 25 }} />}
+          {starred ? <StarIcon sx={{ height: 25, width: 25 }} />
+            : <StarBorderIcon sx={{ height: 25, width: 25 }} />}
         </IconButton>
         <IconButton
           edge="start"
@@ -201,8 +206,8 @@ function EmailContentWindow({ closeEmail, email, onCLose }) {
   return (
     <Box>
       <Dialog
-      TransitionComponent={Zoom}
-      transitionDuration={1000}
+        TransitionComponent={Zoom}
+        transitionDuration={1000}
         PaperProps={{
           style: {
             minHeight: '90%',
@@ -238,7 +243,11 @@ function EmailContentWindow({ closeEmail, email, onCLose }) {
             '@media (max-width: 500px)': { mx: 3 },
           }}
           >
-            <Typography sx={{ '@media (max-width: 1000px)': { fontSize: '12px' }, '@media (max-width: 800px)': { fontSize: '10px' } }}>
+            <Typography sx={{
+              '@media (max-width: 1000px)': { fontSize: '12px' },
+              '@media (max-width: 800px)': { fontSize: '10px' },
+            }}
+            >
               {email.contents + email.contents + email.contents + email.contents}
             </Typography>
             <Avatar sx={{ width: 200, height: 200 }} />
@@ -265,7 +274,13 @@ function EmailContentWindow({ closeEmail, email, onCLose }) {
             ) }
           {/** END of Main Email */}
           {/** Reply Email */}
-          {reply ? <EmailReplying submitReply={(value) => { setReply(false); replies.current.push(value); }} exitReply={() => { setReply(false); }} /> : null}
+          {reply ? (
+            <EmailReplying
+              submitReply={(value) => { setReply(false); replies.current.push(value); }}
+              exitReply={() => { setReply(false); }}
+            />
+          )
+            : null}
           {/** END of Reply Email */}
 
         </Box>

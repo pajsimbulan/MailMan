@@ -1,11 +1,8 @@
 import * as React from 'react';
-import { Box } from '@mui/system';
-import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import {
   Avatar, Divider, TextField, useMediaQuery,
+  Box, Button, IconButton, Typography,
 } from '@mui/material';
 import { UserContext } from '../../App';
 
