@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Box, CircularProgress } from '@mui/material';
+import { Modal, Box, CircularProgress, Typography } from '@mui/material';
 
 function LoadingModal({ open }) {
   return (
@@ -29,7 +29,9 @@ function LoadingModal({ open }) {
       >
         <CircularProgress />
         <Box mt={2}>
-          <span id="loading-modal-description">Loading, please wait...</span>
+          <Typography>
+          Loading, please wait...
+          </Typography>
         </Box>
       </Box>
     </Modal>

@@ -1,12 +1,9 @@
 /* global alert */
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import { Button, Divider } from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import { Button, Divider,Avatar,Box,Typography} from '@mui/material';
+import Grid2 from '@mui/material/Unstable_Grid2'; // Grid version 2
 import { useNavigate } from 'react-router';
-import { useContext, useState, useRef } from 'react';
+import { useContext, useState, useRef, useEffect } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { UserContext } from '../../App';
 import FirstNameRow from '../blocks/FirstNameRow';
@@ -16,60 +13,47 @@ import PasswordRow from '../blocks/PasswordRow';
 import BirthDateRow from '../blocks/BirthDateRow';
 import ProfileBlock from '../blocks/ProfileBlock';
 import useUpdateUser from '../../hooks/useUpdateUser';
+import LoadingModal from '../../components/LoadingModal';
 
 function Profile() {
   const navigate = useNavigate();
   const { accessToken, userInfo } = useContext(UserContext);
   const [madeChanges, setMadeChanges] = useState(false);
   const password = useRef('');
-  const { updateUserInfo, updatePassword } = useUpdateUser({ accessToken, userInfo });
+  const { updateUserInfo, loading, statusCode, errorMessage } = useUpdateUser();
+  const hasMounted = useRef(false);
 
-  async function returnHandler() {
-    if (madeChanges) {
-      let statusCode;
-      try {
-        statusCode = await updateUserInfo(userInfo);
-        if (statusCode === 200) {
-          alert('User info updated successfully');
-        }
-        if (statusCode === 400) {
-          alert('Invalid input');
-        }
-        if (statusCode === 401) {
-          alert('Unauthorized');
-        } else {
-          alert('Error updating user info');
-        }
-      } catch (error) {
-        alert(`Error updating user info: ${error}`);
-      }
+  const returnHandler = async () => {
+    if(!madeChanges) {
+      navigate('/main');
     }
-    if (password.current) {
-      let statusCode;
-      try {
-        statusCode = await updatePassword(userInfo.firstName, userInfo.email, password.current);
-        if (statusCode === 200) {
-          alert('Password updated successfully');
-        }
-        if (statusCode === 400) {
-          alert('Invalid input');
-        }
-        if (statusCode === 401) {
-          alert('Unauthorized');
-        } else {
-          alert('Error updating password');
-        }
-      } catch (error) {
-        alert(`Error updating password: ${error}`);
+    console.log(`userInfo: ${JSON.stringify(userInfo)}`);
+    if(password.current) {
+      console.log(`password.current: ${password.current}`);
+        await updateUserInfo({...userInfo, newPassword: password.current}, accessToken);
       }
-    }
-    navigate('/main');
+      else {
+        await updateUserInfo(userInfo, accessToken);
+      }
   }
 
+  useEffect(() => {
+    if (hasMounted.current) {
+      console.log(`statusCode: ${statusCode}`);
+      if (statusCode < 400) {
+        navigate('/main');
+      }
+      console.log(errorMessage);
+    } else {
+      hasMounted.current = true;
+    }
+  }, [statusCode, errorMessage]);
+
   return (
-    <Box sx={{ width: '100%', height: '100%', background: 'repeating-radial-gradient(#CCE3FA,#EDF6FF)' }}>
+    <Box sx={{ width: '100%', height: '100vh', background: 'repeating-radial-gradient(#CCE3FA,#EDF6FF)' ,}}>
+      {loading && <LoadingModal />}
       <Box sx={{
-        display: 'flex', flexDirection: 'row', alignItems: 'center', mt: 1, ml: 3,
+        display: 'flex', flexDirection: 'row', alignItems: 'center', ml: 3, pt:2
       }}
       >
         <Avatar onClick={() => { navigate('/main'); }} src="postman.jpg" sx={{ width: 50, height: 50, background: 'transparent' }} />

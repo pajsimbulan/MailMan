@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
 function useUpdateUser() {
-  const [updatedUserInfo, setUpdatedUserInfo] = useState(undefined);
+  const [updatedUserInfo, setUpdatedUserInfo] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [statusCode, setStatusCode] = useState(0);
+  const [statusCode, setStatusCode] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const updateUserInfo = (newUserData, accessToken) => {
+  const updateUserInfo = async (newUserData, accessToken) => {
     setLoading(true);
     fetch(`${process.env.REACT_APP_BACKEND_URL}/${process.env.REACT_APP_BACKEND_VERSION}/user`, {
       method: 'PUT',
@@ -15,8 +15,10 @@ function useUpdateUser() {
       body: JSON.stringify(newUserData),
     })
       .then((res) => {
-        console.log(`returning status ${res.status}`);
         setStatusCode(res.status);
+        if (!res.ok) {
+          throw new Error(statusCode);
+        }
         return res.json();
       })
       .then((jsondata) => {
