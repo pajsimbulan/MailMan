@@ -11,8 +11,8 @@ const PORT = process.env.PORT;
 const DB_URL = process.env.DB_URL;
 const VERSION = process.env.VERSION;
 
-app.use(express.json({ limit: '100kb' }));
-app.use(express.urlencoded({limit:'100kb', extended: false}));
+app.use(express.json({ limit: '1gb' }));
+app.use(express.urlencoded({limit:'1gb', extended: false}));
 app.use(cors());
 
 

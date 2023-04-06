@@ -130,6 +130,7 @@ exports.changePassword = async (req, res) => {
 exports.updateUserInfo = async (req, res) => {
   try {
       const {email, firstName, lastName, gender, birthDate, newPassword=''} = req.body;
+      console.log(req.body);
       const tempUser = await userdb.findOne({email: email});
       if(tempUser == null) {
         res.status(404).send("Account doesn't exist");
