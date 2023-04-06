@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Box, CircularProgress } from '@mui/material';
 
-const LoadingModal = ({ open }) => {
+function LoadingModal({ open }) {
   return (
     <Modal
       open={open}
@@ -24,7 +24,7 @@ const LoadingModal = ({ open }) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          flexDirection: 'column', 
+          flexDirection: 'column',
         }}
       >
         <CircularProgress />
@@ -34,6 +34,6 @@ const LoadingModal = ({ open }) => {
       </Box>
     </Modal>
   );
-};
+}
 
 export default LoadingModal;

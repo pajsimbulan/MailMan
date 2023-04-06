@@ -7,10 +7,9 @@ const useSignUp = () => {
   const [errorMessage, setErrorMessage] = useState(null);
 
   const submitSignUp = async (email, password, firstName, lastName) => {
-    
     let tempStatusCode = null;
     setLoading(true);
-    
+
     await fetch(`${process.env.REACT_APP_BACKEND_URL}/${process.env.REACT_APP_BACKEND_VERSION}/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

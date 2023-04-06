@@ -1,13 +1,15 @@
 import * as React from 'react';
-import { Button, Divider, useMediaQuery, 
-  Avatar,OutlinedInput,TextField,Box,Typography,IconButton,InputAdornment } from '@mui/material';
+import {
+  Button, Divider, useMediaQuery,
+  Avatar, OutlinedInput, TextField, Box, Typography, IconButton, InputAdornment,
+} from '@mui/material';
 import { useNavigate } from 'react-router';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import ErrorActionAlert from '../../components/ErrorAlert';
 import PasswordChangedSuccesful from '../components/PasswordChangeSuccessful';
 import { emailRegex } from '../../utils/MailRegex';
-import useForgotPassword  from '../../hooks/useForgotPassword';
+import useForgotPassword from '../../hooks/useForgotPassword';
 import LoadingModal from '../../components/LoadingModal';
 
 function Signuppage() {
@@ -18,7 +20,9 @@ function Signuppage() {
   const [successful, setSuccessful] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const { passwordChanged, loading, statusCode, errorMessage, submitForgotPassword } = useForgotPassword();
+  const {
+    passwordChanged, loading, statusCode, errorMessage, submitForgotPassword,
+  } = useForgotPassword();
 
   const getFontSize = React.useMemo(() => (() => {
     if (isLessThan500) {
@@ -34,7 +38,7 @@ function Signuppage() {
     setAlertMessage(message);
   }
 
-  const submitForgot = (event) => {
+  const submitForgot = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     if (!emailRegex.test(data.get('email'))) {
@@ -43,13 +47,23 @@ function Signuppage() {
     }
     if (data.get('password') !== data.get('confirmPassword')) {
       openError("Error: Passwords don't match");
-      return;
     }
-    
+    await submitForgotPassword(data.get('email'), data.get('password'), data.get('firstName'));
   };
+
+  useEffect(() => {
+    if(passwordChanged && statusCode < 400) {
+      setSuccessful(true);
+    }
+    if(statusCode >= 400) {
+      setSuccessful(false);
+      openError(errorMessage);
+    }
+  }, [passwordChanged, statusCode]);
 
   return (
     <Box sx={{ width: '100%', minHeight: '100vh', background: 'repeating-radial-gradient(#B3BDC9,#FCFDFE)' }}>
+      {loading && <LoadingModal />}
       <ErrorActionAlert
         openAlert={openErrorAlert}
         message={alertMessage}
@@ -229,7 +243,6 @@ function Signuppage() {
                       fontSize: '12px', height: 45, my: 1.5, mt: 3,
                     },
                   }}
-                  onSubmit={(event) => { submitForgot(event); }}
                 >
                   Submit
                 </Button>

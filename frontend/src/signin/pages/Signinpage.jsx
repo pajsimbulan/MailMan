@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { useContext, useState, useEffect } from 'react';
 import {
-  Button, Divider, OutlinedInput, useMediaQuery,Box,TextField,Typography,Link,Avatar, IconButton, InputAdornment
+  Button, Divider, OutlinedInput, useMediaQuery, Box, TextField, Typography, Link, Avatar, IconButton, InputAdornment,
 } from '@mui/material';
 import { useNavigate } from 'react-router';
-import {Visibility , VisibilityOff} from '@mui/icons-material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import ErrorActionAlert from '../../components/ErrorAlert';
 import { UserContext } from '../../App';
 import { emailRegex } from '../../utils/MailRegex';
-import  useSignIn  from '../../hooks/useSignin';
+import useSignIn from '../../hooks/useSignin';
 import LoadingModal from '../../components/LoadingModal';
 
 function Signinpage() {
@@ -19,7 +19,9 @@ function Signinpage() {
   const [openErrorAlert, setOpenErrorAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const { submitSignIn, userInfo, accessToken, loading, statusCode, errorMessage } = useSignIn();
+  const {
+    submitSignIn, userInfo, accessToken, loading, statusCode, errorMessage,
+  } = useSignIn();
   const getFontSize = React.useMemo(() => (() => {
     if (isLessThan500) {
       return '10px';
@@ -28,7 +30,6 @@ function Signinpage() {
     }
     return '14px';
   }), [isLessThan500, isLessThan800]);
-  
 
   function openError(message) {
     setOpenErrorAlert(true);
@@ -49,16 +50,16 @@ function Signinpage() {
     if (userInfo && statusCode < 400) {
       for (const key in userInfo) {
         if (user.userInfo.hasOwnProperty(key)) {
-          user.userInfo[key] = userInfo[key]         
+          user.userInfo[key] = userInfo[key];
         }
       }
       user.accessToken = accessToken;
       navigate('/greet');
-      }
-      if (statusCode >= 400) {
-        openError(errorMessage);
-      }
-    }, [userInfo, statusCode]);
+    }
+    if (statusCode >= 400) {
+      openError(errorMessage);
+    }
+  }, [userInfo, statusCode]);
 
   return (
     <Box sx={{
@@ -225,7 +226,6 @@ function Signinpage() {
                 '@media (max-width: 800px)': { fontSize: '14px', my: 2.5, height: 50 },
                 '@media (max-width: 500px)': { fontSize: '12px', my: 2, height: 45 },
               }}
-              onSubmit={(event) => { submitLogin(event); }}
             >
               {' '}
               Submit

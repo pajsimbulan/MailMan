@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { Button, Divider, useMediaQuery,
-  Avatar,OutlinedInput,TextField ,
-  Box,Typography,IconButton,Link,InputAdornment} from '@mui/material';
+import {
+  Button, Divider, useMediaQuery,
+  Avatar, OutlinedInput, TextField,
+  Box, Typography, IconButton, Link, InputAdornment,
+} from '@mui/material';
 import { useNavigate } from 'react-router';
 import { useState, useEffect } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -19,7 +21,9 @@ function Signuppage() {
   const [alertMessage, setAlertMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [successful, setSuccessful] = useState(false);
-  const { submitSignUp, accountCreated, loading, statusCode, errorMessage, } = useSignUp();
+  const {
+    submitSignUp, accountCreated, loading, statusCode, errorMessage,
+  } = useSignUp();
 
   const getFontSize = React.useMemo(() => (() => {
     if (isLessThan500) {
@@ -55,7 +59,7 @@ function Signuppage() {
 
   return (
     <Box sx={{ width: '100%', minHeight: '100vh', background: 'repeating-radial-gradient(#B3BDC9,#FCFDFE)' }}>
-      {loading? <LoadingModal /> : null}
+      {loading ? <LoadingModal /> : null}
       <ErrorActionAlert
         openAlert={openErrorAlert}
         message={alertMessage}
