@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
 const useInbox = () => {
-  const [loading, setLoading] = useState(true);
   const [emails, setEmails] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [paginationData, setPaginationData] = useState({});
   const [statusCode, setStatusCode] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);

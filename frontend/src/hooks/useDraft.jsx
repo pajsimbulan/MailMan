@@ -3,7 +3,7 @@ import { useState } from 'react';
 const useDraft = () => {
   const [draft, setDraft] = useState(null);
   const [email, setEmail] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [statusCode, setStatusCode] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 

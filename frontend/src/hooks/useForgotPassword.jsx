@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 const useForgotPassword = () => {
   const [passwordChanged, setPasswordChanged] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [statusCode, setStatusCode] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 

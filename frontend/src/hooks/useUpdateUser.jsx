@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 function useUpdateUser() {
   const [updatedUserInfo, setUpdatedUserInfo] = useState(undefined);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [statusCode, setStatusCode] = useState(0);
   const [errorMessage, setErrorMessage] = useState('');
 

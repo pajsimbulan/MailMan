@@ -17,6 +17,7 @@ export const UserContext = createContext();
 export default function App() {
   const accessToken = ' ';
   const userInfo = {
+    _id: undefined,
     firstName: undefined,
     email: undefined,
     createdAt: undefined,
@@ -27,8 +28,8 @@ export default function App() {
   };
   return (
     <div>
+      <CssBaseline />
       <UserContext.Provider value={{ accessToken, userInfo }}>
-        <CssBaseline />
         <BrowserRouter>
           <AnimatedRoutes />
         </BrowserRouter>

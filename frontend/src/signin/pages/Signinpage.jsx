@@ -1,21 +1,15 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
+import { useContext, useState, useEffect } from 'react';
 import {
-  Button, Divider, OutlinedInput, useMediaQuery,
+  Button, Divider, OutlinedInput, useMediaQuery,Box,TextField,Typography,Link,Avatar, IconButton, InputAdornment
 } from '@mui/material';
-import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router';
-import { useContext, useState } from 'react';
-import Link from '@mui/material/Link';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
+import {Visibility , VisibilityOff} from '@mui/icons-material';
 import ErrorActionAlert from '../../components/ErrorAlert';
 import { UserContext } from '../../App';
 import { emailRegex } from '../../utils/MailRegex';
+import  useSignIn  from '../../hooks/useSignin';
+import LoadingModal from '../../components/LoadingModal';
 
 function Signinpage() {
   const isLessThan500 = useMediaQuery('(max-width:500px)');
@@ -25,6 +19,7 @@ function Signinpage() {
   const [openErrorAlert, setOpenErrorAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const { submitSignIn, userInfo, accessToken, loading, statusCode, errorMessage } = useSignIn();
   const getFontSize = React.useMemo(() => (() => {
     if (isLessThan500) {
       return '10px';
@@ -33,46 +28,36 @@ function Signinpage() {
     }
     return '14px';
   }), [isLessThan500, isLessThan800]);
+  
 
   function openError(message) {
     setOpenErrorAlert(true);
     setAlertMessage(message);
   }
 
-  const submitLogin = (event) => {
+  const submitLogin = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     if (!emailRegex.test(data.get('email'))) {
       openError('Error: Invalid Email Address.  Make sure the email consists of at least 1 alphabet and ends with *@mailman.com*');
       return;
     }
-    let statusCode;
-    fetch('http://localhost:4000/v0/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: data.get('email'),
-        password: data.get('password'),
-      }),
-    })
-      .then((res) => {
-        statusCode = res.status;
-        return res.json();
-      })
-      .then((jsondata) => {
-        user.userInfo = jsondata.user;
-        user.accessToken = jsondata.accessToken;
-        navigate('/greet');
-      }).catch(() => {
-        if (statusCode === 404) {
-          openError("Error: Account doesn't exist");
-        } else if (statusCode === 400) {
-          openError('Error: Invalid Input');
-        } else {
-          openError('Error: Make sure to fill all the required forms');
-        }
-      });
+    await submitSignIn(data.get('email'), data.get('password'));
   };
+
+  useEffect(() => {
+    if (userInfo && statusCode < 400) {
+      for (const key in userInfo) {
+        if (user.userInfo.hasOwnProperty(key)) {
+          user.userInfo[key] = userInfo[key]         
+        }
+      }
+      user.accessToken = accessToken;
+      navigate('/greet');
+    if (statusCode > 400) {
+      openError(errorMessage);
+    }}
+  }, [userInfo, statusCode]);
 
   return (
     <Box sx={{
@@ -83,6 +68,7 @@ function Signinpage() {
       flexDirection: 'column',
     }}
     >
+      <LoadingModal open={loading} />
       <ErrorActionAlert
         openAlert={openErrorAlert}
         message={alertMessage}

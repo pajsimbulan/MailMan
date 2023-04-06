@@ -1,16 +1,16 @@
 import { useState } from 'react';
 
-const useSignin = () => {
+const useSignIn = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [accessToken, setAccessToken] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [statusCode, setStatusCode] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
   const submitSignIn = async (email, password) => {
     setLoading(true);
     let tempStatusCode = null;
-    await fetch(`${process.env.BACKEND_URL}/${process.env.BACKEND_VERSION}/login`, {
+    await fetch(`${process.env.REACT_APP_BACKEND_URL}/${process.env.REACT_APP_BACKEND_VERSION}/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -42,4 +42,4 @@ const useSignin = () => {
   };
 };
 
-export default useSignin;
+export default useSignIn;
