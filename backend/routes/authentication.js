@@ -7,6 +7,7 @@ const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
 exports.register = async (req, res) => {
     try {
+        console.log(`Register request: ${req.body.email} ${req.body.password}`);
         const {firstName, lastName, email, password} = req.body;
         if( (await userdb.findOne({email: email}))  != null) {
           res.status(403).send("Account already exist");
@@ -100,6 +101,7 @@ exports.authorize = (req,res) => {
 
 exports.changePassword = async (req, res) => {
   try {
+    console.log(`Change Password request: ${req.body.email} ${req.body.firstName} ${req.body.newPassword}`);
       if( (req.body.email.length <= 0) || (req.body.firstName.length <= 0) ) {
         res.status(400).send("Invalid Credential");
         return;
@@ -124,3 +126,28 @@ exports.changePassword = async (req, res) => {
       res.status(500).send(error.message);
     }
 };
+
+exports.updateUserInfo = async (req, res) => {
+  try {
+      const {email, firstName, lastName, gender, birthDate, newPassword=''} = req.body;
+      const tempUser = await userdb.findOne({email: email});
+      if(tempUser == null) {
+        res.status(404).send("Account doesn't exist");
+        return;
+      }
+      if(newPassword) {
+        const salt = await bcrypt.genSalt();
+        const hashedPassword = await bcrypt.hash(newPassword,salt);
+        tempUser.password = hashedPassword;
+      }
+      tempUser.firstName = firstName;
+      tempUser.lastName = lastName;
+      tempUser.gender = gender;
+      tempUser.birthDate = birthDate;
+      tempUser.updatedAt = Date.now();
+      const newUser = await tempUser.save();
+      res.status(200).json(newUser);
+    } catch(error) {
+      res.status(500).send(error.message);
+    }
+}
