@@ -9,7 +9,7 @@ const useDraft = () => {
 
   const createDraft = async (userId, to, subject, contents, files, accessToken) => {
     setLoading(true);
-    await fetch(`${process.env.BACKEND_URL}/${process.env.BACKEND_VERSION}/draft`, {
+    await fetch(`${process.env.REACT_APP_BACKEND_URL}/${process.env.REACT_APP_BACKEND_VERSION}/draft`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `jwt ${accessToken.toString()}` },
       body: JSON.stringify({
@@ -35,7 +35,7 @@ const useDraft = () => {
   const updateDraft = async (draftId, to, subject, contents, files, accessToken) => {
     let tempStatusCode = null;
     setLoading(true);
-    await fetch(`${process.env.BACKEND_URL}/${process.env.BACKEND_VERSION}/draft`, {
+    await fetch(`${process.env.REACT_APP_BACKEND_URL}/${process.env.REACT_APP_BACKEND_VERSION}/draft`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', Authorization: `jwt ${accessToken.toString()}` },
       body: JSON.stringify({
@@ -66,7 +66,7 @@ const useDraft = () => {
   const getDraft = async (draftId, accessToken) => {
     let tempStatusCode = null;
     setLoading(true);
-    await fetch(`${process.env.BACKEND_URL}/${process.env.BACKEND_VERSION}/draft/${draftId}`, {
+    await fetch(`${process.env.REACT_APP_BACKEND_URL}/${process.env.REACT_APP_BACKEND_VERSION}/draft/${draftId}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json', Authorization: `jwt ${accessToken.toString()}` },
     })
@@ -103,7 +103,7 @@ const useDraft = () => {
     accessToken,
   ) => {
     setLoading(true);
-    await fetch(`${process.env.BACKEND_URL}/${process.env.BACKEND_VERSION}/postDraft`, {
+    await fetch(`${process.env.REACT_APP_BACKEND_URL}/${process.env.REACT_APP_BACKEND_VERSION}/postDraft`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `jwt ${accessToken.toString()}` },
       body: JSON.stringify({
@@ -129,7 +129,7 @@ const useDraft = () => {
   const deleteDrafts = async (userId, draftIdArray, accessToken) => {
     let tempStatusCode = null;
     setLoading(true);
-    await fetch(`${process.env.BACKEND_URL}/${process.env.BACKEND_VERSION}/deleteDrafts`, {
+    await fetch(`${process.env.REACT_APP_BACKEND_URL}/${process.env.REACT_APP_BACKEND_VERSION}/deleteDrafts`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json', Authorization: `jwt ${accessToken.toString()}` },
       body: JSON.stringify({ userId, draftIdArray }),

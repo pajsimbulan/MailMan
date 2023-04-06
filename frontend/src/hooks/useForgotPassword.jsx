@@ -9,7 +9,7 @@ const useForgotPassword = () => {
   const submitForgotPassword = async (email, newPassword, firstName) => {
     setLoading(true);
     let tempStatusCode = null;
-    await fetch(`${process.env.BACKEND_URL}/${process.env.BACKEND_VERSION}/changePassword`, {
+    await fetch(`${process.env.REACT_APP_BACKEND_URL}/${process.env.REACT_APP_BACKEND_VERSION}/changePassword`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

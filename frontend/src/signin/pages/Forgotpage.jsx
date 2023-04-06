@@ -1,19 +1,14 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import { Button, Divider, useMediaQuery } from '@mui/material';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import { Button, Divider, useMediaQuery, 
+  Avatar,OutlinedInput,TextField,Box,Typography,IconButton,InputAdornment } from '@mui/material';
 import { useNavigate } from 'react-router';
 import { useState } from 'react';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import ErrorActionAlert from '../../components/ErrorAlert';
 import PasswordChangedSuccesful from '../components/PasswordChangeSuccessful';
 import { emailRegex } from '../../utils/MailRegex';
+import useForgotPassword  from '../../hooks/useForgotPassword';
+import LoadingModal from '../../components/LoadingModal';
 
 function Signuppage() {
   const isLessThan500 = useMediaQuery('(max-width:500px)');
@@ -23,6 +18,8 @@ function Signuppage() {
   const [successful, setSuccessful] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const { passwordChanged, loading, statusCode, errorMessage, submitForgotPassword } = useForgotPassword();
+
   const getFontSize = React.useMemo(() => (() => {
     if (isLessThan500) {
       return '10px';
@@ -48,26 +45,7 @@ function Signuppage() {
       openError("Error: Passwords don't match");
       return;
     }
-    let statusCode;
-    fetch('http://localhost:4000/v0/changePassword', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        firstName: data.get('firstName'),
-        email: data.get('email'),
-        newPassword: data.get('password'),
-      }),
-    }).then((res) => {
-      statusCode = res.status;
-      setSuccessful(true);
-    })
-      .catch(() => {
-        if (statusCode === 404) {
-          openError("Error: Account doesn't exist");
-        } else {
-          openError("Error: Invalid Input.  Make sure to fill up the form correctly.  Forms with '  *  ' are required");
-        }
-      });
+    
   };
 
   return (

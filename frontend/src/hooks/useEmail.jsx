@@ -2,14 +2,14 @@ import { useState } from 'react';
 
 const useEmail = () => {
   const [email, setEmail] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [statusCode, setStatusCode] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
   const getEmail = async (emailId, accessToken) => {
     let tempStatusCode = null;
     setLoading(true);
-    await fetch(`${process.env.BACKEND_URL}/${process.env.BACKEND_VERSION}/email/${emailId}`, {
+    await fetch(`${process.env.REACT_APP_BACKEND_URL}/${process.env.REACT_APP_BACKEND_VERSION}/email/${emailId}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json', Authorization: (`jwt ${accessToken.toString()}`) },
     })
@@ -37,7 +37,7 @@ const useEmail = () => {
   const moveEmail = async (userId, fromInboxName, toInboxName, emailIdArray, accessToken) => {
     let tempStatusCode = null;
     setLoading(true);
-    await fetch(`${process.env.BACKEND_URL}/${process.env.BACKEND_VERSION}/moveEmail`, {
+    await fetch(`${process.env.REACT_APP_BACKEND_URL}/${process.env.REACT_APP_BACKEND_VERSION}/moveEmail`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', Authorization: `jwt ${accessToken.toString()}` },
       body: JSON.stringify({
@@ -77,7 +77,7 @@ const useEmail = () => {
   ) => {
     let tempStatusCode = null;
     setLoading(true);
-    await fetch(`${process.env.BACKEND_URL}/${process.env.BACKEND_VERSION}/email`, {
+    await fetch(`${process.env.REACT_APP_BACKEND_URL}/${process.env.REACT_APP_BACKEND_VERSION}/email`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `jwt ${accessToken.toString()}` },
       body: JSON.stringify({
@@ -115,7 +115,7 @@ const useEmail = () => {
   ) => {
     let tempStatusCode = null;
     setLoading(true);
-    await fetch(`${process.env.BACKEND_URL}/${process.env.BACKEND_VERSION}/reply`, {
+    await fetch(`${process.env.REACT_APP_BACKEND_URL}/${process.env.REACT_APP_BACKEND_VERSION}/reply`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `jwt ${accessToken.toString()}` },
       body: JSON.stringify({

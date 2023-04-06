@@ -54,10 +54,11 @@ function Signinpage() {
       }
       user.accessToken = accessToken;
       navigate('/greet');
-    if (statusCode > 400) {
-      openError(errorMessage);
-    }}
-  }, [userInfo, statusCode]);
+      }
+      if (statusCode >= 400) {
+        openError(errorMessage);
+      }
+    }, [userInfo, statusCode]);
 
   return (
     <Box sx={{

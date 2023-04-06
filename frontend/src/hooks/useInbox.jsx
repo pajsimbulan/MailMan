@@ -11,7 +11,7 @@ const useInbox = () => {
     let tempStatusCode = null;
     setLoading(true);
 
-    await fetch(`${process.env.BACKEND_URL}/${process.env.BACKEND_VERSION}/user/${userId}/inbox/${inboxName}?page=${pageNumber}&limit=${limit}`, {
+    await fetch(`${process.env.REACT_APP_BACKEND_URL}/${process.env.REACT_APP_BACKEND_VERSION}/user/${userId}/inbox/${inboxName}?page=${pageNumber}&limit=${limit}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json', Authorization: `jwt ${accessToken.toString()}` },
     })

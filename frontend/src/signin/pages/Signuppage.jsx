@@ -1,20 +1,15 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import { Button, Divider, useMediaQuery } from '@mui/material';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import { Button, Divider, useMediaQuery,
+  Avatar,OutlinedInput,TextField ,
+  Box,Typography,IconButton,Link,InputAdornment} from '@mui/material';
 import { useNavigate } from 'react-router';
-import { useState } from 'react';
-import Link from '@mui/material/Link';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
+import { useState, useEffect } from 'react';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import ErrorActionAlert from '../../components/ErrorAlert';
 import AccountCreationSuccessful from '../components/AccountCreationSuccessful';
 import { emailRegex } from '../../utils/MailRegex';
+import useSignUp from '../../hooks/useSignup';
+import LoadingModal from '../../components/LoadingModal';
 
 function Signuppage() {
   const isLessThan500 = useMediaQuery('(max-width:500px)');
@@ -24,6 +19,8 @@ function Signuppage() {
   const [alertMessage, setAlertMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [successful, setSuccessful] = useState(false);
+  const { submitSignUp, accountCreated, loading, statusCode, errorMessage, } = useSignUp();
+
   const getFontSize = React.useMemo(() => (() => {
     if (isLessThan500) {
       return '10px';
@@ -38,43 +35,27 @@ function Signuppage() {
     setAlertMessage(message);
   }
 
-  const submitSignUp = (event) => {
+  const submit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-
     if (!emailRegex.test(data.get('email'))) {
       openError('Error: Invalid Email Address.  Make sure the email consists of at least 1 alphabet and ends with *@mailman.com*');
       return;
     }
-    let statusCode;
-    fetch('http://localhost:4000/v0/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: data.get('email'),
-        password: data.get('password'),
-        firstName: data.get('firstName'),
-        lastName: data.get('lastName'),
-      }),
-    })
-      .then((res) => {
-        statusCode = res.status;
-        if ((statusCode === 403) || (statusCode === 404)) {
-          throw new Error(statusCode);
-        }
-        setSuccessful(true);
-      })
-      .catch(() => {
-        if (statusCode === 403) {
-          openError('Error: Account already exists');
-        } else {
-          openError("Error: Make sure to fill up the form correctly.  Forms with '  *  ' are required");
-        }
-      });
+    await submitSignUp(data.get('email'), data.get('password'), data.get('firstName'), data.get('lastName'));
   };
+
+  useEffect(() => {
+    if (accountCreated && statusCode < 400) {
+      setSuccessful(true);
+    } else if (statusCode >= 400) {
+      openError(errorMessage);
+    }
+  }, [accountCreated, statusCode, errorMessage]);
 
   return (
     <Box sx={{ width: '100%', minHeight: '100vh', background: 'repeating-radial-gradient(#B3BDC9,#FCFDFE)' }}>
+      {loading? <LoadingModal /> : null}
       <ErrorActionAlert
         openAlert={openErrorAlert}
         message={alertMessage}
@@ -100,7 +81,7 @@ function Signuppage() {
       >
         <Box
           component="form"
-          onSubmit={(event) => { submitSignUp(event); }}
+          onSubmit={(event) => { submit(event); }}
           sx={{
             marginTop: '3%',
             width: 'auto',
@@ -252,7 +233,6 @@ function Signuppage() {
                     '@media (max-width: 800px)': { fontSize: '14px', my: 2.5, height: 50 },
                     '@media (max-width: 500px)': { fontSize: '12px', my: 2, height: 45 },
                   }}
-                  onSubmit={(event) => { submitSignUp(event); }}
                 >
                   Create Account
                 </Button>

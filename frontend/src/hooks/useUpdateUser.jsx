@@ -8,7 +8,7 @@ function useUpdateUser() {
 
   const updateUserInfo = (newUserData, accessToken) => {
     setLoading(true);
-    fetch(`${process.env.BACKEND_URL}/${process.env.BACKEND_VERSION}/user`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/${process.env.REACT_APP_BACKEND_VERSION}/user`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json ', Authorization: (`jwt ${accessToken.toString()}`) },
       Authorization: (`jwt: ${accessToken.toString()}`),
