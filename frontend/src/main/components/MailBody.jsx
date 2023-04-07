@@ -50,21 +50,6 @@ function MailBody({ selectedInbox }) {
     </ListItem>
   ))), [data]);
 
-  useEffect(() => {
-    console.log('mailbody fetching data');
-    fetch('http://localhost:4000/v0/email', {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json ', Authorization: (`jwt ${user.accessToken.toString()}`) },
-    }).then((res) => res.json()).then((jsondata) => {
-      size.current = jsondata.length;
-      setData(jsondata);
-      setCheckBoxArray(new Array(size.current).fill(false));
-    }).catch((error) => {
-      alert(error);
-      // navigate("/");
-    });
-  }, [refresh]);
-
   return (
     <Box sx={{
       width: '100%',

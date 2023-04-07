@@ -251,7 +251,6 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
             >
               {email.contents + email.contents + email.contents + email.contents}
             </Typography>
-            <Avatar sx={{ width: 200, height: 200 }} />
           </Box>
           {replies.current.map((reply) => <EmailReplyBlock key={reply} contents={reply} />)}
           {reply ? null

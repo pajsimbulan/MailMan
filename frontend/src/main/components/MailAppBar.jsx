@@ -22,6 +22,7 @@ function MailAppBar({ currentInbox, selectedInbox }) {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [darkMode, setDarkMode] = React.useState(false);
+  console.log(`user info: ${userInfo.avatar}`);
 
   const isMenuOpen = Boolean(anchorEl);
   console.log(`app bar render inbpx: ${currentInbox}`);
@@ -154,18 +155,6 @@ function MailAppBar({ currentInbox, selectedInbox }) {
           />
         </Box>
         <Box sx={{ display: { xs: 'flex', md: 'flex' }, gap: 2 }}>
-          <IconButton
-            size="large"
-            aria-label="set light mode or dark mode"
-            aria-haspopup="true"
-            color="inherit"
-            onClick={() => { setDarkMode(!darkMode); }}
-            sx={{
-              border: 'solid', borderWidth: 2, borderColor: '#EBF5FF', height: 50, width: 50, my: 'auto', '@media (max-width: 500px)': { height: 30, width: 30 },
-            }}
-          >
-            {darkMode ? <LightModeOutlinedIcon sx={{ color: '#002159' }} /> : <DarkModeOutlinedIcon sx={{ color: '#002159' }} />}
-          </IconButton>
           <IconButton
             size="large"
             edge="end"

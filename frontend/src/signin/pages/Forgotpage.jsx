@@ -63,7 +63,7 @@ function Signuppage() {
 
   return (
     <Box sx={{ width: '100%', minHeight: '100vh', background: 'repeating-radial-gradient(#B3BDC9,#FCFDFE)' }}>
-      {loading && <LoadingModal />}
+      {loading && <LoadingModal open={loading}/>}
       <ErrorActionAlert
         openAlert={openErrorAlert}
         message={alertMessage}

@@ -22,14 +22,11 @@ function Profile() {
   const password = useRef('');
   const { updateUserInfo, loading, statusCode, errorMessage } = useUpdateUser();
   const hasMounted = useRef(false);
-
   const returnHandler = async () => {
     if(!madeChanges) {
       navigate('/main');
     }
-    console.log(`userInfo: ${JSON.stringify(userInfo)}`);
     if(password.current) {
-      console.log(`password.current: ${password.current}`);
         await updateUserInfo({...userInfo, newPassword: password.current}, accessToken);
       }
       else {
@@ -51,7 +48,7 @@ function Profile() {
 
   return (
     <Box sx={{ width: '100%', height: '100vh', background: 'repeating-radial-gradient(#CCE3FA,#EDF6FF)' ,}}>
-      {loading && <LoadingModal />}
+      {loading && <LoadingModal open={loading}/>}
       <Box sx={{
         display: 'flex', flexDirection: 'row', alignItems: 'center', ml: 3, pt:2
       }}

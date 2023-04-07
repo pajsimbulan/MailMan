@@ -6,16 +6,8 @@ import {
 } from '@mui/material';
 import UploadIcon from '@mui/icons-material/Upload';
 import PropTypes from 'prop-types';
-
+import { arrayBufferToBase64 } from '../../utils/DatatoBinary64';
 const MAX_FILE_SIZE = 13000000;
-
-const arrayBufferToBase64 = (buffer) => {
-  const binary = new Uint8Array(buffer).reduce(
-    (acc, byte) => acc + String.fromCharCode(byte),
-    '',
-  );
-  return btoa(binary);
-};
 
 function ProfilePictureModal({
   edit, closeModal, oldAvatarValue, setAvatar,

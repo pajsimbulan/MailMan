@@ -48,6 +48,7 @@ exports.login = async (req, res) => {
       res.status(404).send("Account doesn't exist");
       return;
     }
+    console.log(`User found: ${user}`);
     if(! (await bcrypt.compare(password, user.password))) {
       console.log(`Invalid password: ${password} ${user.password}`);
       res.status(400).send("Invalid Credential");
@@ -59,9 +60,12 @@ exports.login = async (req, res) => {
       algorithm: 'HS256'
     });
 
-    delete user.password
+    delete user.password;
+    if(user.avatar) {
+      console.log(`sending this: ~~:${user.avatar}`);
+    }
     res.status(200).json({user,
-      accessToken: accessToken});
+      accessToken: accessToken,});
   } catch(error) {
     res.status(500).send(error.message);
   }
@@ -129,7 +133,7 @@ exports.changePassword = async (req, res) => {
 
 exports.updateUserInfo = async (req, res) => {
   try {
-      const {email, firstName, lastName, gender, birthDate, newPassword=''} = req.body;
+      const {email, firstName, lastName, gender, birthDate, avatar, newPassword=''} = req.body;
       console.log(req.body);
       const tempUser = await userdb.findOne({email: email});
       if(tempUser == null) {
@@ -141,12 +145,16 @@ exports.updateUserInfo = async (req, res) => {
         const hashedPassword = await bcrypt.hash(newPassword,salt);
         tempUser.password = hashedPassword;
       }
+      if(avatar) {
+        tempUser.avatar = avatar;
+      }
       tempUser.firstName = firstName;
       tempUser.lastName = lastName;
       tempUser.gender = gender;
       tempUser.birthDate = birthDate;
       tempUser.updatedAt = Date.now();
       const newUser = await tempUser.save();
+      console.log(`newUser: ${newUser.avatar}`);
       res.status(200).json(newUser);
     } catch(error) {
       res.status(500).send(error.message);

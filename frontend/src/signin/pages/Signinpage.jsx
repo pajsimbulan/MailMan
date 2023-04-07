@@ -10,6 +10,7 @@ import { UserContext } from '../../App';
 import { emailRegex } from '../../utils/MailRegex';
 import useSignIn from '../../hooks/useSignin';
 import LoadingModal from '../../components/LoadingModal';
+import { intArrayToBase64String } from '../../utils/DatatoBinary64';
 
 function Signinpage() {
   const isLessThan500 = useMediaQuery('(max-width:500px)');
@@ -54,6 +55,7 @@ function Signinpage() {
         }
       }
       user.accessToken = accessToken;
+      user.userInfo.avatar = intArrayToBase64String(user.userInfo.avatar.data);
       navigate('/greet');
     }
     if (statusCode >= 400) {
@@ -70,7 +72,7 @@ function Signinpage() {
       flexDirection: 'column',
     }}
     >
-      <LoadingModal open={loading} />
+      {loading && <LoadingModal open={loading} />}
       <ErrorActionAlert
         openAlert={openErrorAlert}
         message={alertMessage}
@@ -292,3 +294,6 @@ function Signinpage() {
 }
 
 export default Signinpage;
+
+
+
