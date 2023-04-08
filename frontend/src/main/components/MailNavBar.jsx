@@ -39,7 +39,7 @@ function MailNavBar({ currentInbox, selectedInbox, onSelect = undefined }) {
   const [composeEmail, setComposeEmail] = React.useState(false);
   const [openSuccess, setOpenSuccess] = React.useState(false);
   const [openError, setOpenError] = React.useState(false);
-
+  const [statusMessage, setStatusMessage] = React.useState('');
   React.useState(() => {
     selectedInbox(inboxes[selectedIndex]);
   }, [selectedIndex]);
@@ -94,15 +94,18 @@ function MailNavBar({ currentInbox, selectedInbox, onSelect = undefined }) {
         ? (
           <ComposeEmail
             openComposeEmail={composeEmail}
-            closeComposeEmail={(status) => {
+            closeComposeEmail={(status, message) => {
               setComposeEmail(false);
               openAlert(status);
+              if(message) {
+                setStatusMessage(message);
+              } 
             }}
           />
         ) : null}
 
-      <SuccessActionAlert openAlert={openSuccess} message="Email sent successfully" closeAlert={() => { closeAlerts(); }} />
-      <ErrorActionAlert openAlert={openError} message="Error sending email" closeAlert={() => { closeAlerts(); }} />
+      <SuccessActionAlert openAlert={openSuccess} message={statusMessage} closeAlert={() => { closeAlerts(); }} />
+      <ErrorActionAlert openAlert={openError} message={statusMessage} closeAlert={() => { closeAlerts(); }} />
       <Box sx={{
         display: 'flex', flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', mt: 2, mx: 3, borderBottomColor: '#C6CED6', pb: 2,
       }}

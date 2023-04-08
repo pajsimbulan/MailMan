@@ -2,30 +2,23 @@
 /* global FileReader */
 /* global alert */
 import * as React from 'react';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
+import {
+  Avatar, Divider, useMediaQuery, 
+  Zoom, Box,Button,TextField,Dialog,IconButton,Typography
+} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import {
-  Avatar, Divider, useMediaQuery, Zoom, Box,
-} from '@mui/material';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import PropTypes from 'prop-types';
 import { UserContext } from '../../App';
 import FileChip from './FileChip';
+import { arrayBufferToBase64 } from '../../utils/DatatoBinary64';
+import useDraft from '../../hooks/useDraft';
+import useEmail from '../../hooks/useEmail';
+import { emailRegex } from '../../utils/MailRegex';
 
 const MAX_FILE_SIZE = 13000000;
-const arrayBufferToBase64 = (buffer) => {
-  const binary = new Uint8Array(buffer).reduce(
-    (acc, byte) => acc + String.fromCharCode(byte),
-    '',
-  );
-  return btoa(binary);
-};
 const iconButtonStyling = { height: 25, width: 25, '@media (max-width: 800px)': { height: 20, width: 20 } };
 
 function ComposeEmail({ openComposeEmail, closeComposeEmail }) {
@@ -37,20 +30,66 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail }) {
   const subjectRef = React.useRef();
   const contentsRef = React.useRef();
   const [binaryFiles, setBinaryFiles] = React.useState([]);
+  const { createDraft,
+    statusCode: statusCodeDraft,
+    errorMessage: errorMessageDraft} = useDraft();
+    const {
+      sendEmail,
+      statusCode: statusCodeEmail,
+      errorMessage: errorMessageEmail} = useEmail();
 
   React.useEffect(() => {
     setOpen(openComposeEmail);
   }, [openComposeEmail]);
-
-  const submitSend = () => {
-    setOpen(false);
-    closeComposeEmail('success');
+  
+  const submitSend = async () => {
+    if(emailRegex.test(toRef.current.value) && subjectRef.current.value !== '' && contentsRef.current.value !== '') {
+      await sendEmail(user.userInfo._id,
+        user.userInfo.email,
+        user.userInfo.firstName,
+        toRef.current.value, 
+        subjectRef.current.value, 
+        contentsRef.current.value, 
+        binaryFiles, 
+        user.accessToken);
+    }
+    else {
+      setOpen(false);
+      closeComposeEmail('none', 'No changes made');
+    }
   };
 
-  const handleClose = () => {
-    setOpen(false);
-    closeComposeEmail('none');
+  React.useEffect(() => {
+    if (statusCodeEmail >= 400) {
+      setOpen(false);
+      closeComposeEmail('fail', errorMessageEmail);
+    }
+    if(statusCodeEmail >= 200 && statusCodeEmail < 400) {
+      setOpen(false);
+      closeComposeEmail('success', "Email sent");
+    }
+  },[statusCodeEmail, errorMessageEmail]);
+
+  const handleClose = async () => {
+    if(toRef.current.value !== '' || subjectRef.current.value !== '' || contentsRef.current.value !== '' || binaryFiles.length !== 0) {
+      await createDraft(user.userInfo._id, toRef.current.value, subjectRef.current.value, contentsRef.current.value, binaryFiles, user.accessToken);
+    }
+    else {
+      setOpen(false);
+      closeComposeEmail('none', 'No changes made');
+    }
   };
+
+  React.useEffect(() => {
+    if (statusCodeDraft >= 400) {
+      setOpen(false);
+      closeComposeEmail('fail', errorMessageDraft);
+    }
+    if(statusCodeDraft >= 200 && statusCodeDraft < 400) {
+      setOpen(false);
+      closeComposeEmail('success', "Draft saved");
+    }
+  },[statusCodeDraft, errorMessageDraft]);
 
   const downloadFile = (file) => {
     const dataUrl = `data:application/octet-stream;base64,${file.data}`;
@@ -140,14 +179,14 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail }) {
                 '@media (max-width: 800px)': { fontSize: '12px' },
               }}
               >
-                Zaheer
+                {user.userInfo.firstName}
               </Typography>
               <Typography sx={{
                 fontSize: '12px',
                 '@media (max-width: 800px)': { fontSize: '10px' },
               }}
               >
-                {'<zaheer@avatar.com>'}
+                {`<${user.userInfo.email}>`}
               </Typography>
             </Box>
           </Box>
@@ -165,7 +204,6 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail }) {
               edge="start"
               color="inherit"
               onClick={() => {
-                console.log('Close button clicked');
                 handleClose();
               }}
               aria-label="close"
@@ -307,9 +345,10 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail }) {
               }}
               >
                 <Button
+                  component="button"
                   variant="outlined"
                   size="small"
-                  onClick={handleClose}
+                  onClick={() => {closeComposeEmail('none', 'No changes made');}}
                   startIcon={<DeleteOutlineIcon />}
                   sx={{
                     border: 'solid', borderRadius: 4, borderWidth: 2, textTransform: 'none', color: '#002159', '&:hover': { borderColor: '#002159' },
@@ -318,6 +357,7 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail }) {
                   Discard
                 </Button>
                 <Button
+                  component="button"
                   variant="outlined"
                   size="small"
                   onClick={submitSend}
@@ -339,7 +379,7 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail }) {
 }
 
 ComposeEmail.propTypes = {
-  openComposeEmail: PropTypes.func.isRequired,
+  openComposeEmail: PropTypes.bool.isRequired,
   closeComposeEmail: PropTypes.func.isRequired,
 };
 

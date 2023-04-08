@@ -7,8 +7,6 @@ import TextField from '@mui/material/TextField';
 import Menu from '@mui/material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from 'react-router';
-import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
-import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import { Avatar, useMediaQuery } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
@@ -21,9 +19,6 @@ function MailAppBar({ currentInbox, selectedInbox }) {
   const isLessThan500 = useMediaQuery('(max-width:500px)');
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [darkMode, setDarkMode] = React.useState(false);
-  console.log(`user info: ${userInfo.avatar}`);
-
   const isMenuOpen = Boolean(anchorEl);
   console.log(`app bar render inbpx: ${currentInbox}`);
   const handleProfileMenuOpen = (event) => {

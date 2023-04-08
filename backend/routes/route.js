@@ -54,6 +54,7 @@ exports.moveEmails = async(req, res) => {
 exports.sendEmail = async(req, res) => {
     try {
         const {userId, from, fromFirstName, to, subject, contents, files= []} = req.body;   
+        console.log(`Send email request: ${userId} ${from} ${fromFirstName} ${to} ${subject} ${contents} ${files}`);
         let fileIds = [];
         if(files.length > 0) {
             files.forEach( (file) => {
@@ -80,6 +81,7 @@ exports.sendEmail = async(req, res) => {
             await toInbox.save();
             await userRecepientAllEmails.save();
         }
+        console.log(`Email sent successfully: ${savedEmail}`);
         res.status(201).send({message:"Email sent successfully", email: savedEmail});
     } catch (error) {
         console.log(error.message);
@@ -118,6 +120,7 @@ exports.replyEmail = async(req, res) => {
 exports.createDraft = async(req, res) => {
     try {
         const {userId, to, subject, contents, files=[]} = req.body;   
+        console.log(`got these userId, to, subject, contents, files: ${userId}, ${to}, ${subject}, ${contents}, ${files}`);
         if(files.length > 0) {
             var fileIds = [];
             files.forEach((file) => {
@@ -135,6 +138,7 @@ exports.createDraft = async(req, res) => {
         const savedDraftEmail = await draftEmail.save();
         drafts.emails.push(savedDraftEmail._id);
         await drafts.save();
+        console.log(`savedDraftEmail: ${savedDraftEmail}`);
         res.status(201).send(savedDraftEmail);
     } catch (error) {
         console.log(error.message);

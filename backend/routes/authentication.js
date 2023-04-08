@@ -61,9 +61,6 @@ exports.login = async (req, res) => {
     });
 
     delete user.password;
-    if(user.avatar) {
-      console.log(`sending this: ~~:${user.avatar}`);
-    }
     res.status(200).json({user,
       accessToken: accessToken,});
   } catch(error) {
@@ -134,7 +131,6 @@ exports.changePassword = async (req, res) => {
 exports.updateUserInfo = async (req, res) => {
   try {
       const {email, firstName, lastName, gender, birthDate, avatar, newPassword=''} = req.body;
-      console.log(req.body);
       const tempUser = await userdb.findOne({email: email});
       if(tempUser == null) {
         res.status(404).send("Account doesn't exist");
@@ -154,7 +150,6 @@ exports.updateUserInfo = async (req, res) => {
       tempUser.birthDate = birthDate;
       tempUser.updatedAt = Date.now();
       const newUser = await tempUser.save();
-      console.log(`newUser: ${newUser.avatar}`);
       res.status(200).json(newUser);
     } catch(error) {
       res.status(500).send(error.message);
