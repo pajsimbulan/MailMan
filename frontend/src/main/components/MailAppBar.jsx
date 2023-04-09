@@ -174,7 +174,7 @@ function MailAppBar({ currentInbox, selectedInbox }) {
 
 MailAppBar.propTypes = {
   currentInbox: PropTypes.string.isRequired,
-  selectedInbox: PropTypes.string.isRequired,
+  selectedInbox: PropTypes.func.isRequired,
 };
 
 export default MailAppBar;

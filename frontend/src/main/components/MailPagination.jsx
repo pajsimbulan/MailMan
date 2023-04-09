@@ -4,8 +4,9 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import PropTypes from 'prop-types';
 
-function MailPagination({ range, totalCount }) {
+function MailPagination({ range=10, totalCount=0 }) {
   const [page, setPage] = React.useState(1);
+  const [refresh, setRefresh] = React.useState(false);
   const rowsPerPage = range; // number of rows to display per page
 
   const totalPages = Math.ceil(totalCount / rowsPerPage);
@@ -21,6 +22,9 @@ function MailPagination({ range, totalCount }) {
   if (totalCount <= 0) {
     return null;
   }
+  React.useEffect(() => {
+    setRefresh(!refresh);
+  }, [range, totalCount]);
 
   const startRow = (page - 1) * rowsPerPage + 1;
   const endRow = Math.min(page * rowsPerPage, totalCount);
@@ -53,8 +57,8 @@ function MailPagination({ range, totalCount }) {
 }
 
 MailPagination.propTypes = {
-  range: PropTypes.number.isRequired,
-  totalCount: PropTypes.number.isRequired,
+  range: PropTypes.number,
+  totalCount: PropTypes.number,
 };
 
 export default MailPagination;

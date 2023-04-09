@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import hourOfDay from '../../utils/DateHOD';
 import parseDate from '../../utils/DateParser';
 
-function EmailBlock({ email, avatarUrl, selected }) {
+function EmailBlock({ email, avatar, selected }) {
   const [starred, setStarred] = React.useState(false);
 
   return (
@@ -49,7 +49,7 @@ function EmailBlock({ email, avatarUrl, selected }) {
       >
         {starred ? <StarIcon sx={{ height: 25, width: 25, '@media (max-width: 800px)': { height: 20, width: 20 } }} /> : <StarBorderIcon sx={{ height: 25, width: 25, '@media (max-width: 800px)': { height: 20, width: 20 } }} />}
       </IconButton>
-      <Avatar alt={email.from} src={avatarUrl} sx={{ my: 'auto', height: 30, width: 30 }} />
+      <Avatar alt={email.from} src={avatar? `data:image/jpeg;base64,${avatar}`:''} sx={{ my: 'auto', height: 30, width: 30 }} />
       <Box
         component="div"
         sx={{
@@ -84,7 +84,7 @@ function EmailBlock({ email, avatarUrl, selected }) {
 }
 EmailBlock.propTypes = {
   email: PropTypes.object.isRequired,
-  avatarUrl: PropTypes.string.isRequired,
+  avatar: PropTypes.string,
   selected: PropTypes.func.isRequired,
 };
 

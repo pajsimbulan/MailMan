@@ -205,8 +205,8 @@ function MailNavBar({ currentInbox, selectedInbox, onSelect = undefined }) {
 
 MailNavBar.propTypes = {
   currentInbox: PropTypes.string.isRequired,
-  selectedInbox: PropTypes.string.isRequired,
-  onSelect: PropTypes.func.isRequired,
+  selectedInbox: PropTypes.func.isRequired,
+  onSelect: PropTypes.func,
 };
 
 export default MailNavBar;

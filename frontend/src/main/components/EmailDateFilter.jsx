@@ -20,7 +20,12 @@ function EmailDateFilterToggleButton({ setFilter }) {
   const handleChange = (event, newEmailDateFilter) => {
     event.preventDefault();
     setEmailDateFilter(newEmailDateFilter);
-    setFilter(newEmailDateFilter.toLowerCase());
+    if (newEmailDateFilter === null) {
+      setFilter('');
+    }
+    else {
+      setFilter(newEmailDateFilter.toLowerCase());
+    }
   };
 
   return (

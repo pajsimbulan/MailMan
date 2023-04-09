@@ -1,11 +1,13 @@
 import { useState } from 'react';
 
 const useInbox = () => {
-  const [emails, setEmails] = useState([]);
+  const [inbox, setInbox] = useState([]);
   const [loading, setLoading] = useState(false);
   const [paginationData, setPaginationData] = useState({});
   const [statusCode, setStatusCode] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
 
   const getInbox = async (userId, inboxName, accessToken, pageNumber = 1, limit = 10) => {
     let tempStatusCode = null;
@@ -24,8 +26,13 @@ const useInbox = () => {
         return res.json();
       })
       .then((jsondata) => {
-        setEmails(jsondata.emails);
-        setPaginationData(jsondata.paginationData);
+        setInbox(jsondata.inbox);
+        setPaginationData({
+          ...jsondata.pagination,
+          page: parseInt(jsondata.pagination.page, 10),
+          limit: parseInt(jsondata.pagination.limit, 10)
+        });
+        
       })
       .catch(() => {
         if (tempStatusCode === 404) {
@@ -40,8 +47,12 @@ const useInbox = () => {
 
   return {
     getInbox,
-    emails,
+    inbox,
+    page,
+    limit,
     paginationData,
+    setPage,
+    setLimit,
     loading,
     statusCode,
     errorMessage,
