@@ -274,7 +274,7 @@ exports.getInbox = async(req, res) => {
         const totalPages = Math.ceil(count / limit);
         let inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase()})
             .populate('emails')   
-            .populate({path:'emails', populate:{path:'replies'}, options: { skip: skip, limit: limit }});
+            .populate({path:'emails', populate:{path:'replies'}, options: { skip: skip, limit: limit , sort: { createdAt: -1 }}});
         if (inbox == null) {
             res.status(404).send("Inbox doesn't exist");
             return;
