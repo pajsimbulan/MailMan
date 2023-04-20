@@ -17,6 +17,11 @@ const inboxSchema = new mongoose.Schema({
         default: [],
         ref: 'Email',
     },
+    drafts: {
+        type:[mongoose.Schema.Types.ObjectId],
+        default: [],
+        ref: 'Draft',
+    },
 
 });
 

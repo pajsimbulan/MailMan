@@ -272,13 +272,22 @@ exports.getInbox = async(req, res) => {
         const tempInbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase() }).populate('emails');
         const count = tempInbox.emails.length;
         const totalPages = Math.ceil(count / limit);
-        let inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase()})
-            .populate('emails')   
-            .populate({path:'emails', populate:{path:'replies'}, options: { skip: skip, limit: limit , sort: { createdAt: -1 }}});
+        let inbox;
+
+        if(inboxName.toLowerCase() === 'drafts') {
+            inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase()}) 
+                .populate({path:'drafts', options: { skip: skip, limit: limit , sort: { createdAt: -1 }}});
+        } else {
+            inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase()})
+                .populate('emails')   
+                .populate({path:'emails', populate:[{path:'replies'}, {path:'files'}], options: { skip: skip, limit: limit , sort: { createdAt: -1 }}});
+        }
         if (inbox == null) {
             res.status(404).send("Inbox doesn't exist");
             return;
         }
+
+        console.log(`inbox: ${inbox}`);
         res.status(200).send({
             inbox,
             pagination: {
