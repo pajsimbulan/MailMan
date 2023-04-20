@@ -136,7 +136,7 @@ exports.createDraft = async(req, res) => {
             return;
         }
         const savedDraftEmail = await draftEmail.save();
-        drafts.emails.push(savedDraftEmail._id);
+        drafts.drafts.push(savedDraftEmail._id);
         await drafts.save();
         console.log(`savedDraftEmail: ${savedDraftEmail}`);
         res.status(201).send(savedDraftEmail);
@@ -193,13 +193,11 @@ exports.postDraft = async(req, res) => {
     try {
         const {userId, draftId, from, fromFirstName, to, subject, contents, files=[]} = req.body;
 
-        
-
         //delete draft from drafts db
         await draftdb.deleteOne({_id: draftId});
         const draftInbox = await inboxdb.findOne({ userId: userId, inboxName: 'drafts'});
-        const tempDrafts = draftInbox.emails.filter((email) => {return(email._id.toString() !== draftId);});
-        draftInbox.emails = [...tempDrafts];
+        const tempDrafts = draftInbox.drafts.filter((draft) => {return(draft._id.toString() !== draftId);});
+        draftInbox.drafts = [...tempDrafts];
         await draftInbox.save();
 
         if(files.length > 0) {
@@ -247,8 +245,8 @@ exports.deleteDrafts = async(req, res) => {
             res.status(404).send("User doesn't exist");
             return;
         }
-        const tempDraftsArray = drafts.emails.filter((draftEmail) => { return (!draftIdArray.includes(draftEmail._id.toString()));});
-        drafts.emails = [...tempDraftsArray];
+        const tempDraftsArray = drafts.drafts.filter((draftEmail) => { return (!draftIdArray.includes(draftEmail._id.toString()));});
+        drafts.drafts = [...tempDraftsArray];
 
         //delete files from files db
         drafts.files.forEach((file) => {
@@ -275,8 +273,12 @@ exports.getInbox = async(req, res) => {
         let inbox;
 
         if(inboxName.toLowerCase() === 'drafts') {
+            console.log('iti s drafts');
             inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase()}) 
-                .populate({path:'drafts', options: { skip: skip, limit: limit , sort: { createdAt: -1 }}});
+            .populate({
+                path: 'drafts',
+                options: { skip: skip, limit: limit, sort: { createdAt: -1 } }
+            });
         } else {
             inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase()})
                 .populate('emails')   
@@ -288,7 +290,7 @@ exports.getInbox = async(req, res) => {
         }
 
         console.log(`inbox: ${inbox}`);
-        res.status(200).send({
+        res.status(200).send({  
             inbox,
             pagination: {
               page: page,
