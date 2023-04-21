@@ -39,6 +39,10 @@ const emailSchema = new mongoose.Schema(
         files: {
             type: [mongoose.Schema.Types.ObjectId],
             ref: 'File',
+        },
+        photos: {
+            type: [mongoose.Schema.Types.ObjectId],
+            ref: 'File',
         }
     },
 );

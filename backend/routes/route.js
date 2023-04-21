@@ -12,11 +12,13 @@ const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
 exports.getEmail = async (req, res) => {
     try {
-        let email = await emaildb.findOne({_id: req.params.id}).populate('replies').populate('files');
+        console.log(`Get email request: ${req.params.id}`);
+        let email = await emaildb.findOne({_id: req.params.id}).populate('replies').populate('files').populate('photos');
         if (email == null) {
             res.status(404).send("Email doesn't exist");
             return;
         }
+        console.log(`Email found: ${email}`);
         res.status(200).send(email);
     } catch (error) {
         console.log(error.message);
@@ -53,9 +55,10 @@ exports.moveEmails = async(req, res) => {
 
 exports.sendEmail = async(req, res) => {
     try {
-        const {userId, from, fromFirstName, to, subject, contents, files= []} = req.body;   
+        const {userId, from, fromFirstName, to, subject, contents, files= [], photos= []} = req.body;   
         console.log(`Send email request: ${userId} ${from} ${fromFirstName} ${to} ${subject} ${contents} ${files}`);
         let fileIds = [];
+        let photoIds = [];
         if(files.length > 0) {
             files.forEach( (file) => {
 
@@ -64,7 +67,15 @@ exports.sendEmail = async(req, res) => {
                 fileIds.push(newFile._id);
             });
         }
-        let email = new emaildb({from, fromFirstName, to, subject, contents, files: fileIds}); 
+        if(photos.length > 0) {
+            photos.forEach( (file) => {
+
+                let newFile = new filedb({name: file.name, data: Buffer.from(file.data, 'base64')});
+                newFile.save();
+                photoIds.push(newFile._id);
+            });
+        }
+        let email = new emaildb({from, fromFirstName, to, subject, contents, files: fileIds, photos: photoIds}); 
         let savedEmail = await email.save();
         const fromInbox = await inboxdb.findOne({ userId: userId, inboxName: 'sent'});
         const userAllEmails = await inboxdb.findOne({ userId: userId, inboxName: 'all emails'});
@@ -91,7 +102,7 @@ exports.sendEmail = async(req, res) => {
 
 exports.replyEmail = async(req, res) => { 
     try {
-        const {userEmail, userFirstName, originalEmailId,contents, files= []} = req.body;
+        const {userEmail, userFirstName, originalEmailId,contents, files= [], photos=[]} = req.body;
         if(files.length > 0) {
             var fileIds = [];
             files.forEach((file) => {
@@ -100,7 +111,15 @@ exports.replyEmail = async(req, res) => {
                 fileIds.push(newFile._id);
             });
         }
-        let replyEmail = new replydb({from: userEmail, fromFirstName: userFirstName, contents, files: fileIds});
+        if(photos.length > 0) {
+            var photoIds = [];
+            photos.forEach((file) => {
+                let newFile = new filedb({name: file.name, data: Buffer.from(file.data, 'base64')});
+                newFile.save();
+                photoIds.push(newFile._id);
+            });
+        }
+        let replyEmail = new replydb({from: userEmail, fromFirstName: userFirstName, contents, files: fileIds, photos: photoIds});
         replyEmail.save();
         let originalEmail = await emaildb.findOne({_id: originalEmailId});
         if(originalEmail == null) {
@@ -119,7 +138,7 @@ exports.replyEmail = async(req, res) => {
 
 exports.createDraft = async(req, res) => {
     try {
-        const {userId, to, subject, contents, files=[]} = req.body;   
+        const {userId, to, subject, contents, files=[], photos=[]} = req.body;   
         console.log(`got these userId, to, subject, contents, files: ${userId}, ${to}, ${subject}, ${contents}, ${files}`);
         if(files.length > 0) {
             var fileIds = [];
@@ -129,7 +148,15 @@ exports.createDraft = async(req, res) => {
                 fileIds.push(newFile._id);
             });
         }
-        const draftEmail = new draftdb({userId, to, subject, contents, files: fileIds}); 
+        if(photos.length > 0) {
+            var photoIds = [];
+            photos.forEach((file) => {
+                let newFile = new filedb({name: file.name, data: Buffer.from(file.data, 'base64')});
+                newFile.save();
+                photoIds.push(newFile._id);
+            });
+        }
+        const draftEmail = new draftdb({userId, to, subject, contents, files: fileIds, photos: photoIds}); 
         const drafts = await inboxdb.findOne({ userId: userId, inboxName: 'drafts'});
         if(drafts == null) {
             res.status(404).send("User doesn't exist");
@@ -148,13 +175,21 @@ exports.createDraft = async(req, res) => {
 
 exports.updateDraft = async(req, res) => {
     try {
-        const {draftId, to, subject, contents, files=[]} = req.body;   
+        const {draftId, to, subject, contents, files=[], photos=[]} = req.body;   
         if(files.length > 0) {
             var fileIds = [];
             files.forEach((file) => {
                 let newFile = new filedb({name: file.name, data: Buffer.from(file.data, 'base64')});
                 newFile.save();
                 fileIds.push(newFile._id);
+            });
+        }
+        if(photos.length > 0) {
+            var photoIds = [];
+            photos.forEach((file) => {
+                let newFile = new filedb({name: file.name, data: Buffer.from(file.data, 'base64')});
+                newFile.save();
+                photoIds.push(newFile._id);
             });
         }
         const draftEmail = await draftdb.findOne({_id: draftId}); 
@@ -166,6 +201,7 @@ exports.updateDraft = async(req, res) => {
         draftEmail.subject = subject;
         draftEmail.contents = contents;
         draftEmail.files= [...draftEmail.files, ...fileIds];
+        draftEmail.photos= [...draftEmail.photos, ...photoIds];
         const savedDraftEmail = await draftEmail.save();
         res.status(200).send({message:"Draft updated successfully", draft: savedDraftEmail});
     } catch (error) {
@@ -177,7 +213,7 @@ exports.updateDraft = async(req, res) => {
 
 exports.getDraft = async(req, res) => {
     try {
-        let draftEmail = await draftdb.findOne({_id: req.params.id }).populate('files');
+        let draftEmail = await draftdb.findOne({_id: req.params.id }).populate('files').populate('photos');
         if (draftEmail == null) {
             res.status(404).send("Draft Email doesn't exist");
             return;
@@ -191,7 +227,7 @@ exports.getDraft = async(req, res) => {
 
 exports.postDraft = async(req, res) => {
     try {
-        const {userId, draftId, from, fromFirstName, to, subject, contents, files=[]} = req.body;
+        const {userId, draftId, from, fromFirstName, to, subject, contents, files=[], photos=[]} = req.body;
 
         //delete draft from drafts db
         await draftdb.deleteOne({_id: draftId});
@@ -208,9 +244,17 @@ exports.postDraft = async(req, res) => {
                 fileIds.push(newFile._id);
             });
         }
+        if(photos.length > 0) {
+            var photoIds = [];
+            photos.forEach((file) => {
+                let newFile = new filedb({name: file.name, data: file.data});
+                newFile.save();
+                photoIds.push(newFile._id);
+            });
+        }
 
         //send email
-        let email = new emaildb({from, fromFirstName, to, subject, contents, files: fileIds}); 
+        let email = new emaildb({from, fromFirstName, to, subject, contents, files: fileIds, photos: photoIds}); 
         let savedEmail = await email.save();
         const fromInbox = await inboxdb.findOne({ userId: userId, inboxName: 'sent'});
         const userAllEmails = await inboxdb.findOne({ userId: userId, inboxName: 'all emails'});
@@ -252,6 +296,11 @@ exports.deleteDrafts = async(req, res) => {
         drafts.files.forEach((file) => {
             filedb.deleteOne({_id: file._id});
         });
+
+        //delete photos from files db
+        drafts.photos.forEach((photo) => {
+            filedb.deleteOne({_id: photo._id});
+        });
         
         await drafts.save();
         res.status(200).send("Drafts deleted successfully");
@@ -267,19 +316,23 @@ exports.getInbox = async(req, res) => {
         const {userId, inboxName} = req.params;
         const { page = 1, limit = 10 } = req.query;
         const skip = (page - 1) * limit;
-        const tempInbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase() }).populate('emails');
-        const count = tempInbox.emails.length;
-        const totalPages = Math.ceil(count / limit);
+        let tempInbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase() });
+        let count;
+        let totalPages;
         let inbox;
 
         if(inboxName.toLowerCase() === 'drafts') {
             console.log('iti s drafts');
+            tempInbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase() });
+            count = tempInbox.drafts.length;
             inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase()}) 
             .populate({
                 path: 'drafts',
                 options: { skip: skip, limit: limit, sort: { createdAt: -1 } }
-            });
+            });     
         } else {
+            tempInbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase() });
+            count = tempInbox.emails.length;
             inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase()})
                 .populate('emails')   
                 .populate({path:'emails', populate:[{path:'replies'}, {path:'files'}], options: { skip: skip, limit: limit , sort: { createdAt: -1 }}});
@@ -288,6 +341,7 @@ exports.getInbox = async(req, res) => {
             res.status(404).send("Inbox doesn't exist");
             return;
         }
+        totalPages = Math.ceil(count / limit);
 
         console.log(`inbox: ${inbox}`);
         res.status(200).send({  
