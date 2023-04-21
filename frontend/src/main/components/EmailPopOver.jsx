@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import { IconButton } from '@mui/material';
 import PropTypes from 'prop-types';
 
-function EmailPopOvers({ item, name }) {
+function EmailPopOvers({ item, name, onClick }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handlePopoverOpen = (event) => {
@@ -26,6 +26,7 @@ function EmailPopOvers({ item, name }) {
       }}
       onMouseEnter={handlePopoverOpen}
       onMouseLeave={handlePopoverClose}
+      onClick={onClick}
     >
 
       {item()}
@@ -64,6 +65,7 @@ function EmailPopOvers({ item, name }) {
 EmailPopOvers.propTypes = {
   item: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default EmailPopOvers;

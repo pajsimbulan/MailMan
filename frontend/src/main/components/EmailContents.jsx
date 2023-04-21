@@ -14,13 +14,29 @@ import PropTypes from 'prop-types';
 import formatDate from '../../utils/DateFormat';
 import EmailReplying from '../blocks/EmailReplying';
 import EmailReplyBlock from '../blocks/EmailReplyBlock';
+import useEmail from '../../hooks/useEmail';
+import { UserContext } from '../../App';
+import getFileType from '../../utils/FileType';
+import { intArrayToBase64String } from '../../utils/DatatoBinary64';
+import FileChip from './FileChip';
 
 function EmailContentWindow({ closeEmail, email, onClose }) {
+  const user = React.useContext(UserContext);
   const [open, setOpen] = React.useState(true);
   const [starred, setStarred] = React.useState(false);
   const [reply, setReply] = React.useState(false);
   const isLessThan800 = useMediaQuery('(max-width:800px)');
+  
   const replies = React.useRef([]);
+  const {
+    getEmail,
+    moveEmail,
+    sendEmail,
+    replyEmail,
+    email: fetchedEmail,
+    loading,
+    statusCode,
+    errorMessage, } = useEmail();
   console.log(replies.current.length);
   const handleClose = () => {
     console.log('handleClose called');
@@ -28,6 +44,25 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
     closeEmail();
     // onClose(starred);
   };
+
+  const downloadFile = (name, data) => {
+    const base64String = btoa(intArrayToBase64String(data.data));
+    const dataUrl = `data:${getFileType(name)};base64,${base64String}`;
+    const link = document.createElement('a');
+    link.href = dataUrl;
+    link.download = name;
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+  
+
+  console.log(`fetchedEmail: ${JSON.stringify(fetchedEmail)}`);
+
+  React.useEffect(() => {
+    getEmail(email._id, user.accessToken);
+  }, [email]);
 
   const mobileHeader = React.useMemo(() => (
     <Box sx={{
@@ -251,6 +286,14 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
             >
               {email.contents + email.contents + email.contents + email.contents}
             </Typography>
+              {fetchedEmail && fetchedEmail.files.length > 0
+                  ? (
+                    <FileChip
+                      files={fetchedEmail.files.map((file) => ({ name: file.name, type: getFileType(file.name) }))}
+                      onClick={(index) => { downloadFile(fetchedEmail.files[index].name, fetchedEmail.files[index].data); }}
+                      onDelete={() => {}}
+                    />
+                  ) : null}
           </Box>
           {replies.current.map((reply) => <EmailReplyBlock key={reply} contents={reply} />)}
           {reply ? null

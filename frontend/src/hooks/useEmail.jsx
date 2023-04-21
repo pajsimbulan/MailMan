@@ -73,6 +73,7 @@ const useEmail = () => {
     subject,
     contents,
     files,
+    photos,
     accessToken,
   ) => {
     let tempStatusCode = null;
@@ -81,7 +82,7 @@ const useEmail = () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `jwt ${accessToken.toString()}` },
       body: JSON.stringify({
-        userId, from, fromFirstName, to, subject, contents, files,
+        userId, from, fromFirstName, to, subject, contents, files, photos
       }),
     })
       .then((res) => {
@@ -111,6 +112,7 @@ const useEmail = () => {
     originalEmailId,
     contents,
     files,
+    photos,
     accessToken,
   ) => {
     let tempStatusCode = null;
@@ -119,7 +121,7 @@ const useEmail = () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `jwt ${accessToken.toString()}` },
       body: JSON.stringify({
-        userEmail, userFirstName, originalEmailId, contents, files,
+        userEmail, userFirstName, originalEmailId, contents, files, photos
       }),
     })
       .then((res) => {

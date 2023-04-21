@@ -10,6 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import ImageIcon from '@mui/icons-material/Image';
 import PropTypes from 'prop-types';
 import { UserContext } from '../../App';
 import FileChip from './FileChip';
@@ -30,6 +31,8 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail }) {
   const subjectRef = React.useRef();
   const contentsRef = React.useRef();
   const [binaryFiles, setBinaryFiles] = React.useState([]);
+  const [binaryPhotos, setBinaryPhotos] = React.useState([]);
+
   const { createDraft,
     statusCode: statusCodeDraft,
     errorMessage: errorMessageDraft} = useDraft();
@@ -51,6 +54,7 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail }) {
         subjectRef.current.value, 
         contentsRef.current.value, 
         binaryFiles, 
+        binaryPhotos,
         user.accessToken);
     }
     else {
@@ -72,7 +76,7 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail }) {
 
   const handleClose = async () => {
     if(toRef.current.value !== '' || subjectRef.current.value !== '' || contentsRef.current.value !== '' || binaryFiles.length !== 0) {
-      await createDraft(user.userInfo._id, toRef.current.value, subjectRef.current.value, contentsRef.current.value, binaryFiles, user.accessToken);
+      await createDraft(user.userInfo._id, toRef.current.value, subjectRef.current.value, contentsRef.current.value, binaryFiles, binaryPhotos, user.accessToken);
     }
     else {
       setOpen(false);
@@ -134,6 +138,38 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail }) {
     setBinaryFiles([...binaryFiles, ...tempFiles]);
   };
 
+  const handlePhotosChange = async (event) => {
+    const { files } = event.target;
+
+    const readFile = (file) => new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const arrayBuffer = reader.result;
+        const base64Data = arrayBufferToBase64(arrayBuffer);
+        resolve({ name: file.name, data: base64Data, type: file.type });
+      };
+      reader.onerror = (error) => {
+        console.error(`Error reading file ${file.name}:`, error);
+        reject(error);
+      };
+      reader.readAsArrayBuffer(file);
+    });
+
+    const tempFiles = await Promise.all(
+      Array.from(files)
+        .filter((file) => {
+          if (file.size <= MAX_FILE_SIZE) {
+            return true;
+          }
+          alert('File size is too large. Limit files to 13MB');
+          return false;
+        })
+        .map((file) => readFile(file)),
+    );
+
+    setBinaryPhotos([...binaryPhotos, ...tempFiles]);
+  };
+
   return (
     <Box>
       <Dialog
@@ -162,7 +198,7 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail }) {
           display: 'flex', flexDirection: 'row', flexWrap: 'wrap', p: 1, bgcolor: '#eceff1',
         }}
         >
-          <Box sx={{ width: '33.33%', display: 'flex', flexDirection: 'row' }}>
+          <Box sx={{ width: '33.33%', display: 'flex', flexDirection: 'row', }}>
             <Avatar
               sx={{
                 mr: 1, height: 40, width: 40, my: 'auto',
@@ -198,9 +234,9 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail }) {
               New Email
             </Typography>
           </Box>
-          <Box sx={{ width: '33.33%', display: 'flex', justifyContent: 'end' }}>
+          <Box sx={{ width: '33.33%', display: 'flex', justifyContent: 'end',  }}>
             <IconButton
-              sx={iconButtonStyling}
+              sx={{ height: 25, width: 25, '@media (max-width: 800px)': { height: 20, width: 20 }, position:'fixed'}}
               edge="start"
               color="inherit"
               onClick={() => {
@@ -286,9 +322,35 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail }) {
             </Box>
             <Divider />
             <Box sx={{
-              display: 'flex', flexGrow: 1, flexDirection: 'column', bgcolor: '#ECEFF1', borderRadius: 5, p: 2,
+              display: 'flex', flexGrow: 1, flexDirection: 'column', bgcolor: '#ECEFF1', borderRadius: 5, p: 2,overflow:'auto'
             }}
-            >
+            > {binaryPhotos.length <= 0 ? null : ( 
+              binaryPhotos.map((photo, index) => (
+              <Box sx={{maxWidth:'100%', overflow:'auto', padding:'20px'}}>
+                <Box sx={{display:'flex', justifyContent:'end'}}> 
+                  <IconButton
+                    sx={{height: 20, width: 20, '@media (max-width: 800px)': { height: 15, width: 15 }, position:'relative', right:0, bottom:0}}
+                    edge="start"
+                    color="inherit"
+                    onClick={() =>  {
+                      console.log(`index: ${index}`);
+                      setBinaryPhotos((files) => {
+                        const toRemove = files[index].name;
+                        const newFiles = files.filter((files) => files.name !== toRemove);
+                        return newFiles;
+                      });
+                    }}
+                    aria-label="close"
+                  >
+                    <CloseIcon sx={{
+                      color: 'grey', height: 20, width: 20, '@media (max-width: 800px)': { height: 15, width: 15 },
+                    }}
+                    />
+                  </IconButton>
+                </Box>
+                <img src={`data:image/jpeg;base64,${photo.data}`} style={{maxWidth:'100%'}}/>
+                </Box>))
+              )}
               <TextField
                 inputProps={{
                   style: { fontSize: isLessThan800 ? '10px' : (isLessThan1000 ? '12px' : '14px') },
@@ -323,23 +385,44 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail }) {
               display: 'flex', flexGrow: 1, justifyContent: 'space-between', my: 1, '@media (max-width: 300px)': { flexDirection: 'column' },
             }}
             >
-              <Button
+              <Box sx={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 1, '@media (max-width: 500px)': { flexDirection: 'column' }, m: 1,}}>
+                <Button
+                  component="label"
+                  size="small"
+                  variant="outlined"
+                  endIcon={<AttachFileIcon />}
+                  sx={{
+                    border: 'solid', borderRadius: 4, borderWidth: 2, textTransform: 'none', color: '#2e7d32', '&:hover': { borderColor: '#2e7d32' },
+                  }}
+                >
+                  Attach File
+                  <input
+                    type="file"
+                    onChange={handleFileChange}
+                    style={{ display: 'none' }}
+                    multiple
+                  />
+                </Button>
+                <Button
                 component="label"
                 size="small"
                 variant="outlined"
-                endIcon={<AttachFileIcon />}
+                endIcon={<ImageIcon />}
                 sx={{
-                  border: 'solid', borderRadius: 4, borderWidth: 2, textTransform: 'none', color: '#2e7d32', '&:hover': { borderColor: '#2e7d32' },
+                  border: 'solid', borderRadius: 4, borderWidth: 2, textTransform: 'none', color: '#002159', '&:hover': { borderColor: '#002159' },
                 }}
               >
-                Attach File
+               Insert Photo
                 <input
                   type="file"
-                  onChange={handleFileChange}
+                  accept=".jpg, .jpeg, .png, .gif"
+                  onChange={handlePhotosChange}
                   style={{ display: 'none' }}
                   multiple
                 />
               </Button>
+              </Box>
+              
               <Box sx={{
                 display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 1, '@media (max-width: 500px)': { flexDirection: 'column' }, m: 1,
               }}

@@ -7,13 +7,13 @@ const useDraft = () => {
   const [statusCode, setStatusCode] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const createDraft = async (userId, to, subject, contents, files, accessToken) => {
+  const createDraft = async (userId, to, subject, contents, files=[], photos=[], accessToken) => {
     setLoading(true);
     await fetch(`${process.env.REACT_APP_BACKEND_URL}/${process.env.REACT_APP_BACKEND_VERSION}/draft`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `jwt ${accessToken.toString()}` },
       body: JSON.stringify({
-        userId, to, subject, contents, files,
+        userId, to, subject, contents, files, photos
       }),
     })
       .then((res) => {
@@ -32,14 +32,14 @@ const useDraft = () => {
     setLoading(false);
   };
 
-  const updateDraft = async (draftId, to, subject, contents, files, accessToken) => {
+  const updateDraft = async (draftId, to, subject, contents, files, photos, accessToken) => {
     let tempStatusCode = null;
     setLoading(true);
     await fetch(`${process.env.REACT_APP_BACKEND_URL}/${process.env.REACT_APP_BACKEND_VERSION}/draft`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', Authorization: `jwt ${accessToken.toString()}` },
       body: JSON.stringify({
-        draftId, to, subject, contents, files,
+        draftId, to, subject, contents, files, photos
       }),
     })
       .then((res) => {
@@ -100,6 +100,7 @@ const useDraft = () => {
     subject,
     contents,
     files,
+    photos,
     accessToken,
   ) => {
     setLoading(true);
@@ -107,7 +108,7 @@ const useDraft = () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `jwt ${accessToken.toString()}` },
       body: JSON.stringify({
-        userId, draftId, from, fromFirstName, to, subject, contents, files,
+        userId, draftId, from, fromFirstName, to, subject, contents, files, photos
       }),
     })
       .then((res) => {
