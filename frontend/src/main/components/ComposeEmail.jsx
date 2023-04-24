@@ -14,7 +14,8 @@ import ImageIcon from '@mui/icons-material/Image';
 import PropTypes from 'prop-types';
 import { UserContext } from '../../App';
 import FileChip from './FileChip';
-import { arrayBufferToBase64 } from '../../utils/DatatoBinary64';
+import { arrayBufferToBase64, intArrayToBase64String } from '../../utils/DatatoBinary64';
+import getFileType  from '../../utils/FileType';
 import useDraft from '../../hooks/useDraft';
 import useEmail from '../../hooks/useEmail';
 import { emailRegex } from '../../utils/MailRegex';
@@ -22,40 +23,80 @@ import { emailRegex } from '../../utils/MailRegex';
 const MAX_FILE_SIZE = 13000000;
 const iconButtonStyling = { height: 25, width: 25, '@media (max-width: 800px)': { height: 20, width: 20 } };
 
-function ComposeEmail({ openComposeEmail, closeComposeEmail }) {
+function ComposeEmail({ openComposeEmail, closeComposeEmail, draftId=''}) {
   const isLessThan800 = useMediaQuery('(max-width:800px)');
   const isLessThan1000 = useMediaQuery('(max-width:1000px)');
   const user = React.useContext(UserContext);
   const [open, setOpen] = React.useState(openComposeEmail);
-  const toRef = React.useRef();
-  const subjectRef = React.useRef();
-  const contentsRef = React.useRef();
+  const [toValue, setToValue] = React.useState("");
+  const [subjectValue, setSubjectValue] = React.useState("");
+  const [contentsValue, setContentsValue] = React.useState("");
   const [binaryFiles, setBinaryFiles] = React.useState([]);
   const [binaryPhotos, setBinaryPhotos] = React.useState([]);
+  const [exit , setExit] = React.useState(false);
 
   const { createDraft,
+    updateDraft,
+    postDraft,
+    getDraft,
+    draft: fetchedDraft,
     statusCode: statusCodeDraft,
     errorMessage: errorMessageDraft} = useDraft();
     const {
       sendEmail,
       statusCode: statusCodeEmail,
       errorMessage: errorMessageEmail} = useEmail();
+    
 
+    React.useEffect(() => {
+      if(fetchedDraft != null) {
+        setToValue(fetchedDraft.to);
+        setSubjectValue(fetchedDraft.subject);
+        setContentsValue(fetchedDraft.contents);
+        if(binaryFiles.length <= 0) {
+          setBinaryFiles(fetchedDraft.files.map((file) => {  if(file && file.data) {  return   { name: file.name, data: intArrayToBase64String(file.data.data), type: getFileType(file.name)};}}    ));
+        }
+        if(binaryPhotos.length <= 0) {
+          setBinaryPhotos(fetchedDraft.photos.map((file) => {  if(file && file.data) {  return   { name: file.name, data: intArrayToBase64String(file.data.data), type: getFileType(file.name)};}}    ));
+        }
+      }
+
+    },[fetchedDraft]);
+  
   React.useEffect(() => {
     setOpen(openComposeEmail);
-  }, [openComposeEmail]);
+    getDraft(draftId, user.accessToken);
+  }, [openComposeEmail, draftId]);
+
+
   
   const submitSend = async () => {
-    if(emailRegex.test(toRef.current.value) && subjectRef.current.value !== '' && contentsRef.current.value !== '') {
-      await sendEmail(user.userInfo._id,
-        user.userInfo.email,
-        user.userInfo.firstName,
-        toRef.current.value, 
-        subjectRef.current.value, 
-        contentsRef.current.value, 
-        binaryFiles, 
-        binaryPhotos,
-        user.accessToken);
+    if(emailRegex.test(toValue) && subjectValue !== '' && contentsValue !== '') {
+      if(draftId !== '' && fetchedDraft !== null) {
+        await postDraft(
+          user.userInfo._id,
+          draftId,
+          user.userInfo.email,
+          user.userInfo.firstName,
+          toValue, 
+          subjectValue,
+          contentsValue, 
+          binaryFiles, 
+          binaryPhotos,
+          user.accessToken
+        );
+      } else {
+        await sendEmail(user.userInfo._id,
+          user.userInfo.email,
+          user.userInfo.firstName,
+          toValue, 
+          subjectValue,
+          contentsValue, 
+          binaryFiles, 
+          binaryPhotos,
+          user.accessToken);
+      }
+        setExit(true);
     }
     else {
       setOpen(false);
@@ -64,6 +105,9 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail }) {
   };
 
   React.useEffect(() => {
+    if(!exit) {
+      return;
+    }
     if (statusCodeEmail >= 400) {
       setOpen(false);
       closeComposeEmail('fail', errorMessageEmail);
@@ -75,8 +119,14 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail }) {
   },[statusCodeEmail, errorMessageEmail]);
 
   const handleClose = async () => {
-    if(toRef.current.value !== '' || subjectRef.current.value !== '' || contentsRef.current.value !== '' || binaryFiles.length !== 0) {
-      await createDraft(user.userInfo._id, toRef.current.value, subjectRef.current.value, contentsRef.current.value, binaryFiles, binaryPhotos, user.accessToken);
+    if(toValue !== '' || subjectValue !== '' || contentsValue !== '' || binaryFiles.length !== 0) {
+      if(draftId !== '' && fetchedDraft !== null) {
+        await updateDraft(draftId, toValue, subjectValue, contentsValue, binaryFiles, binaryPhotos, user.accessToken);
+      }
+      else {
+        await createDraft(user.userInfo._id, toValue, subjectValue, contentsValue, binaryFiles, binaryPhotos, user.accessToken);
+      }
+      setExit(true);
     }
     else {
       setOpen(false);
@@ -85,6 +135,9 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail }) {
   };
 
   React.useEffect(() => {
+    if(!exit) {
+      return;
+    }
     if (statusCodeDraft >= 400) {
       setOpen(false);
       closeComposeEmail('fail', errorMessageDraft);
@@ -93,7 +146,7 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail }) {
       setOpen(false);
       closeComposeEmail('success', "Draft saved");
     }
-  },[statusCodeDraft, errorMessageDraft]);
+  });
 
   const downloadFile = (file) => {
     const dataUrl = `data:application/octet-stream;base64,${file.data}`;
@@ -285,7 +338,10 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail }) {
                 name="to"
                 id="to"
                 fullWidth
-                inputRef={toRef}
+                value={toValue}
+                onChange={(event) => {
+                  setToValue(event.target.value);
+                }}
                 inputProps={{
                   style: { fontSize: isLessThan800 ? '10px' : (isLessThan1000 ? '12px' : '14px') },
                 }}
@@ -316,7 +372,10 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail }) {
                 name="subject"
                 id="subject"
                 fullWidth
-                inputRef={subjectRef}
+                value={subjectValue}
+                onChange={(event) => {
+                  setSubjectValue(event.target.value);
+                }}
                 sx={{ '& fieldset': { border: 'none' } }}
               />
             </Box>
@@ -324,7 +383,23 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail }) {
             <Box sx={{
               display: 'flex', flexGrow: 1, flexDirection: 'column', bgcolor: '#ECEFF1', borderRadius: 5, p: 2,overflow:'auto'
             }}
-            > {binaryPhotos.length <= 0 ? null : ( 
+            > 
+              <TextField
+                inputProps={{
+                  style: { fontSize: isLessThan800 ? '10px' : (isLessThan1000 ? '12px' : '14px') },
+                }}
+                name="contents"
+                id="contents"
+                value={contentsValue}
+                onChange={(event) => {
+                  setContentsValue(event.target.value);
+                }}
+                fullWidth
+                multiline
+                rows={12}
+                sx={{ '& fieldset': { border: 'none' } }}
+              />
+              {binaryPhotos.length <= 0 ? null : ( 
               binaryPhotos.map((photo, index) => (
               <Box sx={{maxWidth:'100%', overflow:'auto', padding:'20px'}}>
                 <Box sx={{display:'flex', justifyContent:'end'}}> 
@@ -333,7 +408,6 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail }) {
                     edge="start"
                     color="inherit"
                     onClick={() =>  {
-                      console.log(`index: ${index}`);
                       setBinaryPhotos((files) => {
                         const toRemove = files[index].name;
                         const newFiles = files.filter((files) => files.name !== toRemove);
@@ -351,18 +425,6 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail }) {
                 <img src={`data:image/jpeg;base64,${photo.data}`} style={{maxWidth:'100%'}}/>
                 </Box>))
               )}
-              <TextField
-                inputProps={{
-                  style: { fontSize: isLessThan800 ? '10px' : (isLessThan1000 ? '12px' : '14px') },
-                }}
-                name="contents"
-                id="contents"
-                inputRef={contentsRef}
-                fullWidth
-                multiline
-                rows={12}
-                sx={{ '& fieldset': { border: 'none' } }}
-              />
               {binaryFiles.length > 0
                 ? (
                   <FileChip

@@ -9,16 +9,13 @@ const draftEmailSchema = new mongoose.Schema(
         },
         to: {
             type: String,
-            required: true,
             lowercase: true,
         },
         subject: {  
-            type: String,
-            required: true,
+            type: String,       
         },
         contents: {
             type: String,
-            required: true,
         },
         createdAt: {
             type: Date,

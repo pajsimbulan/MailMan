@@ -46,6 +46,7 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
   };
 
   const downloadFile = (name, data) => {
+    console.log(`downloadFile called with name: ${name} and data: ${intArrayToBase64String(data)}`);
     const base64String = btoa(intArrayToBase64String(data.data));
     const dataUrl = `data:${getFileType(name)};base64,${base64String}`;
     const link = document.createElement('a');

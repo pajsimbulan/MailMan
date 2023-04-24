@@ -12,13 +12,12 @@ const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
 exports.getEmail = async (req, res) => {
     try {
-        console.log(`Get email request: ${req.params.id}`);
+        
         let email = await emaildb.findOne({_id: req.params.id}).populate('replies').populate('files').populate('photos');
         if (email == null) {
             res.status(404).send("Email doesn't exist");
             return;
         }
-        console.log(`Email found: ${email}`);
         res.status(200).send(email);
     } catch (error) {
         console.log(error.message);
@@ -56,13 +55,12 @@ exports.moveEmails = async(req, res) => {
 exports.sendEmail = async(req, res) => {
     try {
         const {userId, from, fromFirstName, to, subject, contents, files= [], photos= []} = req.body;   
-        console.log(`Send email request: ${userId} ${from} ${fromFirstName} ${to} ${subject} ${contents} ${files}`);
         let fileIds = [];
         let photoIds = [];
         if(files.length > 0) {
             files.forEach( (file) => {
 
-                let newFile = new filedb({name: file.name, data: Buffer.from(file.data, 'base64')});
+                let newFile = new filedb({name: file.name, data: file.data});
                 newFile.save();
                 fileIds.push(newFile._id);
             });
@@ -70,7 +68,7 @@ exports.sendEmail = async(req, res) => {
         if(photos.length > 0) {
             photos.forEach( (file) => {
 
-                let newFile = new filedb({name: file.name, data: Buffer.from(file.data, 'base64')});
+                let newFile = new filedb({name: file.name, data: file.data});
                 newFile.save();
                 photoIds.push(newFile._id);
             });
@@ -106,7 +104,7 @@ exports.replyEmail = async(req, res) => {
         if(files.length > 0) {
             var fileIds = [];
             files.forEach((file) => {
-                let newFile = new filedb({name: file.name, data: Buffer.from(file.data, 'base64')});
+                let newFile = new filedb({name: file.name, data: file.data});
                 newFile.save();
                 fileIds.push(newFile._id);
             });
@@ -114,7 +112,7 @@ exports.replyEmail = async(req, res) => {
         if(photos.length > 0) {
             var photoIds = [];
             photos.forEach((file) => {
-                let newFile = new filedb({name: file.name, data: Buffer.from(file.data, 'base64')});
+                let newFile = new filedb({name: file.name, data: file.data});
                 newFile.save();
                 photoIds.push(newFile._id);
             });
@@ -139,11 +137,11 @@ exports.replyEmail = async(req, res) => {
 exports.createDraft = async(req, res) => {
     try {
         const {userId, to, subject, contents, files=[], photos=[]} = req.body;   
-        console.log(`got these userId, to, subject, contents, files: ${userId}, ${to}, ${subject}, ${contents}, ${files}`);
         if(files.length > 0) {
             var fileIds = [];
             files.forEach((file) => {
-                let newFile = new filedb({name: file.name, data: Buffer.from(file.data, 'base64')});
+                console.log(`filename: ${file.name} filedata: ${file.data}`);
+                let newFile = new filedb({name: file.name, data: file.data});
                 newFile.save();
                 fileIds.push(newFile._id);
             });
@@ -151,7 +149,7 @@ exports.createDraft = async(req, res) => {
         if(photos.length > 0) {
             var photoIds = [];
             photos.forEach((file) => {
-                let newFile = new filedb({name: file.name, data: Buffer.from(file.data, 'base64')});
+                let newFile = new filedb({name: file.name, data: file.data});
                 newFile.save();
                 photoIds.push(newFile._id);
             });
@@ -176,32 +174,55 @@ exports.createDraft = async(req, res) => {
 exports.updateDraft = async(req, res) => {
     try {
         const {draftId, to, subject, contents, files=[], photos=[]} = req.body;   
-        if(files.length > 0) {
-            var fileIds = [];
-            files.forEach((file) => {
-                let newFile = new filedb({name: file.name, data: Buffer.from(file.data, 'base64')});
-                newFile.save();
-                fileIds.push(newFile._id);
-            });
-        }
-        if(photos.length > 0) {
-            var photoIds = [];
-            photos.forEach((file) => {
-                let newFile = new filedb({name: file.name, data: Buffer.from(file.data, 'base64')});
-                newFile.save();
-                photoIds.push(newFile._id);
-            });
-        }
         const draftEmail = await draftdb.findOne({_id: draftId}); 
         if(draftEmail == null) {
             res.status(404).send("Draft doesn't exist");
             return;
         }
+        if(files.length > 0) {
+
+            //delete old files
+            if (draftEmail.files.length > 0) {
+                await filedb.deleteMany({ _id: { $in: draftEmail.files } });
+            }
+            var fileIds = [];
+            files.forEach((file) => {
+                    let newFile = new filedb({name: file.name, data: file.data});
+                    newFile.save();
+                    fileIds.push(newFile._id);
+            });
+        } else {
+            if (draftEmail.files.length > 0) {
+                await filedb.deleteMany({ _id: { $in: draftEmail.files } });
+            }
+        }
+        if(photos.length > 0) {
+            var photoIds = [];
+            
+            //delete old photos
+            if (draftEmail.photos.length > 0) {
+                await filedb.deleteMany({ _id: { $in: draftEmail.photos } });
+            }
+            
+            photos.forEach((file) => {
+                    let newFile = new filedb({name: file.name, data: file.data});
+                    newFile.save();
+                    photoIds.push(newFile._id);
+            });
+        } else {
+            if (draftEmail.photos.length > 0) {
+                await filedb.deleteMany({ _id: { $in: draftEmail.photos } });
+            }
+        }
         draftEmail.to = to;
         draftEmail.subject = subject;
         draftEmail.contents = contents;
-        draftEmail.files= [...draftEmail.files, ...fileIds];
-        draftEmail.photos= [...draftEmail.photos, ...photoIds];
+        if(files.length > 0) {
+            draftEmail.files= [...draftEmail.files, ...fileIds];
+        }
+        if(photos.length > 0) {
+            draftEmail.photos= [...draftEmail.photos, ...photoIds];
+        }
         const savedDraftEmail = await draftEmail.save();
         res.status(200).send({message:"Draft updated successfully", draft: savedDraftEmail});
     } catch (error) {
@@ -218,6 +239,7 @@ exports.getDraft = async(req, res) => {
             res.status(404).send("Draft Email doesn't exist");
             return;
         }
+        console.log(`returning draftEmail: ${draftEmail}`);
         res.status(200).send(draftEmail);
     } catch (error) {
         console.log(error.message);
@@ -326,16 +348,14 @@ exports.getInbox = async(req, res) => {
             tempInbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase() });
             count = tempInbox.drafts.length;
             inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase()}) 
-            .populate({
-                path: 'drafts',
-                options: { skip: skip, limit: limit, sort: { createdAt: -1 } }
-            });     
+            .populate('drafts')   
+                .populate({path:'drafts', populate:[{path:'files'}, {path:'photos'}], options: { skip: skip, limit: limit , sort: { createdAt: -1 }}});   
         } else {
             tempInbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase() });
             count = tempInbox.emails.length;
             inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase()})
                 .populate('emails')   
-                .populate({path:'emails', populate:[{path:'replies'}, {path:'files'}], options: { skip: skip, limit: limit , sort: { createdAt: -1 }}});
+                .populate({path:'emails', populate:[{path:'replies'}, {path:'files'}, {path:'photos'}], options: { skip: skip, limit: limit , sort: { createdAt: -1 }}});
         }
         if (inbox == null) {
             res.status(404).send("Inbox doesn't exist");
@@ -343,7 +363,6 @@ exports.getInbox = async(req, res) => {
         }
         totalPages = Math.ceil(count / limit);
 
-        console.log(`inbox: ${inbox}`);
         res.status(200).send({  
             inbox,
             pagination: {

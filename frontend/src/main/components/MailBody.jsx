@@ -16,6 +16,7 @@ import EmailDateFilterToggleButton from './EmailDateFilter';
 import MailPagination from './MailPagination';
 import EmailBlock from '../blocks/MailBodyEmailBlock';
 import EmailContentWindow from './EmailContents';
+import ComposeEmail from './ComposeEmail';
 import useEmail from '../../hooks/useEmail';
 import useInbox from '../../hooks/useInbox';
 import useDraft from '../../hooks/useDraft';
@@ -47,6 +48,7 @@ function MailBody({ selectedInbox }) {
   const [refresh, setRefresh] = useState(false);
   const [checkboxArray, setCheckBoxArray] = useState([]);
   const [openEmail, setOpenEmail] = useState(false);
+  const [openDrafts, setOpenDrafts] = useState(false);
   const [openedEmail, setOpenedEmail] = useState(undefined);
   const [dateFilter, setDateFilter] = useState('today');
   const [selected, setSelected] = useState([]);
@@ -78,6 +80,7 @@ function MailBody({ selectedInbox }) {
     errorMessage: errorMessageDraft } = useDraft();
  
     useEffect(() => {
+      console.log(`getting inbox`);
       getInbox(user.userInfo._id, selectedInbox, user.accessToken, page, 10);
     }, [refresh, selectedInbox]);
 
@@ -95,7 +98,6 @@ function MailBody({ selectedInbox }) {
           }
           return false;
         });
-        console.log(`is drafts ${uniqueEmails}`);
       }
       else {
         uniqueEmails = inbox.emails.filter((email) => {
@@ -112,8 +114,14 @@ function MailBody({ selectedInbox }) {
           <EmailBlock
             email={email}
             selected={(email) => {
-              setOpenEmail(true);
               setOpenedEmail(email);
+              
+              if(inbox.inboxName === 'drafts') {
+                setOpenDrafts(true);
+              }
+              else {
+                setOpenEmail(true);
+              }
             }}
           />
         </ListItem>
@@ -151,8 +159,15 @@ function MailBody({ selectedInbox }) {
     >
       {openEmail ? (
         <EmailContentWindow
-          closeEmail={() => { setOpenEmail(false); }}
+          closeEmail={() => { setOpenEmail(false);setRefresh(!refresh); }}
           email={openedEmail}
+        />
+      ) : null}
+      {openDrafts ? (
+        <ComposeEmail
+        openComposeEmail={openDrafts}
+        closeComposeEmail={() => { setOpenDrafts(false); setRefresh(!refresh);}}
+        draftId={openedEmail._id}
         />
       ) : null}
       <List sx={{

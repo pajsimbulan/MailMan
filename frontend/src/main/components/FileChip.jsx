@@ -12,7 +12,7 @@ function FileChip({ files, onClick, onDelete }) {
     >
       {files.map((file, index) => (
         <Chip
-          key={file.name}
+          key={file.name + index}
           icon={getFileIcon(file.type)}
           label={file.name}
           deleteIcon={

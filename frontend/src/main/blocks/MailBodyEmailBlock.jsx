@@ -11,7 +11,7 @@ import parseDate from '../../utils/DateParser';
 
 function EmailBlock({ email, avatar, selected }) {
   const [starred, setStarred] = React.useState(false);
-
+  
   return (
     <Box
       onClick={() => { selected(email); }}
@@ -60,7 +60,7 @@ function EmailBlock({ email, avatar, selected }) {
           fontWeight: 'bold', fontSize: '14px', '@media (max-width: 800px)': { fontSize: '12px' }, '@media (max-width: 500px)': { fontSize: '10px' },
         }}
         >
-          {email.subject}
+          {email.subject == ''? "No subject":email.subject}
         </Typography>
         <Box sx={{ maxWidth: '100%' }}>
           <Typography sx={{ fontSize: '12px', '@media (max-width: 800px)': { fontSize: '10px' }, '@media (max-width: 500px)': { fontSize: '8px' } }}>

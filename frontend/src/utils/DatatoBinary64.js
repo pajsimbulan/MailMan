@@ -1,8 +1,8 @@
 //Converts a data array to a base64 string
 export function intArrayToBase64String(dataArray) {
-    const uint16Array = new Uint8Array(dataArray);
+    const uint8Array = new Uint8Array(dataArray);
     const textDecoder = new TextDecoder('ascii');
-    return textDecoder.decode(uint16Array);
+    return textDecoder.decode(uint8Array);
   }
 
 //Converts a buffer to a base64 string
@@ -12,4 +12,4 @@ export const arrayBufferToBase64 = (buffer) => {
       '',
     );
     return btoa(binary);
-  };
+  };  
