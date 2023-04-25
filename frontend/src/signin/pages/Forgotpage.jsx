@@ -52,10 +52,10 @@ function Signuppage() {
   };
 
   useEffect(() => {
-    if(passwordChanged && statusCode < 400) {
+    if (passwordChanged && statusCode < 400) {
       setSuccessful(true);
     }
-    if(statusCode >= 400) {
+    if (statusCode >= 400) {
       setSuccessful(false);
       openError(errorMessage);
     }
@@ -63,7 +63,7 @@ function Signuppage() {
 
   return (
     <Box sx={{ width: '100%', minHeight: '100vh', background: 'repeating-radial-gradient(#B3BDC9,#FCFDFE)' }}>
-      {loading && <LoadingModal open={loading}/>}
+      {loading && <LoadingModal open={loading} />}
       <ErrorActionAlert
         openAlert={openErrorAlert}
         message={alertMessage}

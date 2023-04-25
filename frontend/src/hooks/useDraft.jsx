@@ -7,14 +7,14 @@ const useDraft = () => {
   const [statusCode, setStatusCode] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const createDraft = async (userId, to = '', subject ='', contents = '', files=[], photos=[], accessToken) => {
+  const createDraft = async (userId, to = '', subject = '', contents = '', files = [], photos = [], accessToken) => {
     setLoading(true);
     console.log('createDraft');
     await fetch(`${process.env.REACT_APP_BACKEND_URL}/${process.env.REACT_APP_BACKEND_VERSION}/draft`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `jwt ${accessToken.toString()}` },
       body: JSON.stringify({
-        userId, to, subject, contents, files, photos
+        userId, to, subject, contents, files, photos,
       }),
     })
       .then((res) => {
@@ -26,7 +26,7 @@ const useDraft = () => {
         return res.json();
       })
       .then((jsondata) => {
-        //setDraft(jsondata);
+        // setDraft(jsondata);
       })
       .catch(() => {
         setErrorMessage('Error: Failed to create draft');
@@ -41,7 +41,7 @@ const useDraft = () => {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', Authorization: `jwt ${accessToken.toString()}` },
       body: JSON.stringify({
-        draftId, to, subject, contents, files, photos
+        draftId, to, subject, contents, files, photos,
       }),
     })
       .then((res) => {
@@ -110,7 +110,7 @@ const useDraft = () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `jwt ${accessToken.toString()}` },
       body: JSON.stringify({
-        userId, draftId, from, fromFirstName, to, subject, contents, files, photos
+        userId, draftId, from, fromFirstName, to, subject, contents, files, photos,
       }),
     })
       .then((res) => {

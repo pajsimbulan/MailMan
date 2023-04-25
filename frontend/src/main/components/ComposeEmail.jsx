@@ -3,8 +3,8 @@
 /* global alert */
 import * as React from 'react';
 import {
-  Avatar, Divider, useMediaQuery, 
-  Zoom, Box,Button,TextField,Dialog,IconButton,Typography
+  Avatar, Divider, useMediaQuery,
+  Zoom, Box, Button, TextField, Dialog, IconButton, Typography,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
@@ -15,7 +15,7 @@ import PropTypes from 'prop-types';
 import { UserContext } from '../../App';
 import FileChip from './FileChip';
 import { arrayBufferToBase64, intArrayToBase64String } from '../../utils/DatatoBinary64';
-import getFileType  from '../../utils/FileType';
+import getFileType from '../../utils/FileType';
 import useDraft from '../../hooks/useDraft';
 import useEmail from '../../hooks/useEmail';
 import { emailRegex } from '../../utils/MailRegex';
@@ -23,128 +23,126 @@ import { emailRegex } from '../../utils/MailRegex';
 const MAX_FILE_SIZE = 13000000;
 const iconButtonStyling = { height: 25, width: 25, '@media (max-width: 800px)': { height: 20, width: 20 } };
 
-function ComposeEmail({ openComposeEmail, closeComposeEmail, draftId=''}) {
+function ComposeEmail({ openComposeEmail, closeComposeEmail, draftId = '' }) {
   const isLessThan800 = useMediaQuery('(max-width:800px)');
   const isLessThan1000 = useMediaQuery('(max-width:1000px)');
   const user = React.useContext(UserContext);
   const [open, setOpen] = React.useState(openComposeEmail);
-  const [toValue, setToValue] = React.useState("");
-  const [subjectValue, setSubjectValue] = React.useState("");
-  const [contentsValue, setContentsValue] = React.useState("");
+  const [toValue, setToValue] = React.useState('');
+  const [subjectValue, setSubjectValue] = React.useState('');
+  const [contentsValue, setContentsValue] = React.useState('');
   const [binaryFiles, setBinaryFiles] = React.useState([]);
   const [binaryPhotos, setBinaryPhotos] = React.useState([]);
-  const [exit , setExit] = React.useState(false);
+  const [exit, setExit] = React.useState(false);
 
-  const { createDraft,
+  const {
+    createDraft,
     updateDraft,
     postDraft,
     getDraft,
     draft: fetchedDraft,
     statusCode: statusCodeDraft,
-    errorMessage: errorMessageDraft} = useDraft();
-    const {
-      sendEmail,
-      statusCode: statusCodeEmail,
-      errorMessage: errorMessageEmail} = useEmail();
-    
+    errorMessage: errorMessageDraft,
+  } = useDraft();
+  const {
+    sendEmail,
+    statusCode: statusCodeEmail,
+    errorMessage: errorMessageEmail,
+  } = useEmail();
 
-    React.useEffect(() => {
-      if(fetchedDraft != null) {
-        setToValue(fetchedDraft.to);
-        setSubjectValue(fetchedDraft.subject);
-        setContentsValue(fetchedDraft.contents);
-        if(binaryFiles.length <= 0) {
-          setBinaryFiles(fetchedDraft.files.map((file) => {  if(file && file.data) {  return   { name: file.name, data: intArrayToBase64String(file.data.data), type: getFileType(file.name)};}}    ));
-        }
-        if(binaryPhotos.length <= 0) {
-          setBinaryPhotos(fetchedDraft.photos.map((file) => {  if(file && file.data) {  return   { name: file.name, data: intArrayToBase64String(file.data.data), type: getFileType(file.name)};}}    ));
-        }
+  React.useEffect(() => {
+    if (fetchedDraft != null) {
+      setToValue(fetchedDraft.to);
+      setSubjectValue(fetchedDraft.subject);
+      setContentsValue(fetchedDraft.contents);
+      if (binaryFiles.length <= 0) {
+        setBinaryFiles(fetchedDraft.files.map((file) => { if (file && file.data) { return { name: file.name, data: intArrayToBase64String(file.data.data), type: getFileType(file.name) }; } }));
       }
+      if (binaryPhotos.length <= 0) {
+        setBinaryPhotos(fetchedDraft.photos.map((file) => { if (file && file.data) { return { name: file.name, data: intArrayToBase64String(file.data.data), type: getFileType(file.name) }; } }));
+      }
+    }
+  }, [fetchedDraft]);
 
-    },[fetchedDraft]);
-  
   React.useEffect(() => {
     setOpen(openComposeEmail);
     getDraft(draftId, user.accessToken);
   }, [openComposeEmail, draftId]);
 
-
-  
   const submitSend = async () => {
-    if(emailRegex.test(toValue) && subjectValue !== '' && contentsValue !== '') {
-      if(draftId !== '' && fetchedDraft !== null) {
+    if (emailRegex.test(toValue) && subjectValue !== '' && contentsValue !== '') {
+      if (draftId !== '' && fetchedDraft !== null) {
         await postDraft(
           user.userInfo._id,
           draftId,
           user.userInfo.email,
           user.userInfo.firstName,
-          toValue, 
+          toValue,
           subjectValue,
-          contentsValue, 
-          binaryFiles, 
+          contentsValue,
+          binaryFiles,
           binaryPhotos,
-          user.accessToken
+          user.accessToken,
         );
       } else {
-        await sendEmail(user.userInfo._id,
+        await sendEmail(
+          user.userInfo._id,
           user.userInfo.email,
           user.userInfo.firstName,
-          toValue, 
+          toValue,
           subjectValue,
-          contentsValue, 
-          binaryFiles, 
+          contentsValue,
+          binaryFiles,
           binaryPhotos,
-          user.accessToken);
+          user.accessToken,
+        );
       }
-        setExit(true);
-    }
-    else {
+      setExit(true);
+    } else {
       setOpen(false);
       closeComposeEmail('none', 'No changes made');
     }
   };
 
   React.useEffect(() => {
-    if(!exit) {
+    if (!exit) {
       return;
     }
     if (statusCodeEmail >= 400) {
       setOpen(false);
       closeComposeEmail('fail', errorMessageEmail);
     }
-    if(statusCodeEmail >= 200 && statusCodeEmail < 400) {
+    if (statusCodeEmail >= 200 && statusCodeEmail < 400) {
       setOpen(false);
-      closeComposeEmail('success', "Email sent");
+      closeComposeEmail('success', 'Email sent');
     }
-  },[statusCodeEmail, errorMessageEmail]);
+  }, [statusCodeEmail, errorMessageEmail]);
 
   const handleClose = async () => {
-    if(toValue !== '' || subjectValue !== '' || contentsValue !== '' || binaryFiles.length !== 0) {
-      if(draftId !== '' && fetchedDraft !== null) {
+    if (toValue !== '' || subjectValue !== '' || contentsValue !== '' || binaryFiles.length !== 0) {
+      if (draftId !== '' && fetchedDraft !== null) {
         await updateDraft(draftId, toValue, subjectValue, contentsValue, binaryFiles, binaryPhotos, user.accessToken);
-      }
-      else {
+      } else {
         await createDraft(user.userInfo._id, toValue, subjectValue, contentsValue, binaryFiles, binaryPhotos, user.accessToken);
       }
       setExit(true);
-    }
-    else {
+    } else {
       setOpen(false);
       closeComposeEmail('none', 'No changes made');
     }
   };
 
   React.useEffect(() => {
-    if(!exit) {
+    if (!exit) {
       return;
     }
     if (statusCodeDraft >= 400) {
       setOpen(false);
       closeComposeEmail('fail', errorMessageDraft);
     }
-    if(statusCodeDraft >= 200 && statusCodeDraft < 400) {
+    if (statusCodeDraft >= 200 && statusCodeDraft < 400) {
       setOpen(false);
-      closeComposeEmail('success', "Draft saved");
+      closeComposeEmail('success', 'Draft saved');
     }
   });
 
@@ -251,7 +249,7 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail, draftId=''}) {
           display: 'flex', flexDirection: 'row', flexWrap: 'wrap', p: 1, bgcolor: '#eceff1',
         }}
         >
-          <Box sx={{ width: '33.33%', display: 'flex', flexDirection: 'row', }}>
+          <Box sx={{ width: '33.33%', display: 'flex', flexDirection: 'row' }}>
             <Avatar
               sx={{
                 mr: 1, height: 40, width: 40, my: 'auto',
@@ -287,9 +285,11 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail, draftId=''}) {
               New Email
             </Typography>
           </Box>
-          <Box sx={{ width: '33.33%', display: 'flex', justifyContent: 'end',  }}>
+          <Box sx={{ width: '33.33%', display: 'flex', justifyContent: 'end' }}>
             <IconButton
-              sx={{ height: 25, width: 25, '@media (max-width: 800px)': { height: 20, width: 20 }, position:'fixed'}}
+              sx={{
+                height: 25, width: 25, '@media (max-width: 800px)': { height: 20, width: 20 }, position: 'fixed',
+              }}
               edge="start"
               color="inherit"
               onClick={() => {
@@ -381,9 +381,9 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail, draftId=''}) {
             </Box>
             <Divider />
             <Box sx={{
-              display: 'flex', flexGrow: 1, flexDirection: 'column', bgcolor: '#ECEFF1', borderRadius: 5, p: 2,overflow:'auto'
+              display: 'flex', flexGrow: 1, flexDirection: 'column', bgcolor: '#ECEFF1', borderRadius: 5, p: 2, overflow: 'auto',
             }}
-            > 
+            >
               <TextField
                 inputProps={{
                   style: { fontSize: isLessThan800 ? '10px' : (isLessThan1000 ? '12px' : '14px') },
@@ -399,31 +399,34 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail, draftId=''}) {
                 rows={12}
                 sx={{ '& fieldset': { border: 'none' } }}
               />
-              {binaryPhotos.length <= 0 ? null : ( 
-              binaryPhotos.map((photo, index) => (
-              <Box sx={{maxWidth:'100%', overflow:'auto', padding:'20px'}}>
-                <Box sx={{display:'flex', justifyContent:'end'}}> 
-                  <IconButton
-                    sx={{height: 20, width: 20, '@media (max-width: 800px)': { height: 15, width: 15 }, position:'relative', right:0, bottom:0}}
-                    edge="start"
-                    color="inherit"
-                    onClick={() =>  {
-                      setBinaryPhotos((files) => {
-                        const toRemove = files[index].name;
-                        const newFiles = files.filter((files) => files.name !== toRemove);
-                        return newFiles;
-                      });
-                    }}
-                    aria-label="close"
-                  >
-                    <CloseIcon sx={{
-                      color: 'grey', height: 20, width: 20, '@media (max-width: 800px)': { height: 15, width: 15 },
-                    }}
-                    />
-                  </IconButton>
-                </Box>
-                <img src={`data:image/jpeg;base64,${photo.data}`} style={{maxWidth:'100%'}}/>
-                </Box>))
+              {binaryPhotos.length <= 0 ? null : (
+                binaryPhotos.map((photo, index) => (
+                  <Box sx={{ maxWidth: '100%', overflow: 'auto', padding: '20px' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+                      <IconButton
+                        sx={{
+                          height: 20, width: 20, '@media (max-width: 800px)': { height: 15, width: 15 }, position: 'relative', right: 0, bottom: 0,
+                        }}
+                        edge="start"
+                        color="inherit"
+                        onClick={() => {
+                          setBinaryPhotos((files) => {
+                            const toRemove = files[index].name;
+                            const newFiles = files.filter((files) => files.name !== toRemove);
+                            return newFiles;
+                          });
+                        }}
+                        aria-label="close"
+                      >
+                        <CloseIcon sx={{
+                          color: 'grey', height: 20, width: 20, '@media (max-width: 800px)': { height: 15, width: 15 },
+                        }}
+                        />
+                      </IconButton>
+                    </Box>
+                    <img src={`data:image/jpeg;base64,${photo.data}`} style={{ maxWidth: '100%' }} />
+                  </Box>
+                ))
               )}
               {binaryFiles.length > 0
                 ? (
@@ -447,7 +450,10 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail, draftId=''}) {
               display: 'flex', flexGrow: 1, justifyContent: 'space-between', my: 1, '@media (max-width: 300px)': { flexDirection: 'column' },
             }}
             >
-              <Box sx={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 1, '@media (max-width: 500px)': { flexDirection: 'column' }, m: 1,}}>
+              <Box sx={{
+                display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 1, '@media (max-width: 500px)': { flexDirection: 'column' }, m: 1,
+              }}
+              >
                 <Button
                   component="label"
                   size="small"
@@ -466,25 +472,25 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail, draftId=''}) {
                   />
                 </Button>
                 <Button
-                component="label"
-                size="small"
-                variant="outlined"
-                endIcon={<ImageIcon />}
-                sx={{
-                  border: 'solid', borderRadius: 4, borderWidth: 2, textTransform: 'none', color: '#002159', '&:hover': { borderColor: '#002159' },
-                }}
-              >
-               Insert Photo
-                <input
-                  type="file"
-                  accept=".jpg, .jpeg, .png, .gif"
-                  onChange={handlePhotosChange}
-                  style={{ display: 'none' }}
-                  multiple
-                />
-              </Button>
+                  component="label"
+                  size="small"
+                  variant="outlined"
+                  endIcon={<ImageIcon />}
+                  sx={{
+                    border: 'solid', borderRadius: 4, borderWidth: 2, textTransform: 'none', color: '#002159', '&:hover': { borderColor: '#002159' },
+                  }}
+                >
+                  Insert Photo
+                  <input
+                    type="file"
+                    accept=".jpg, .jpeg, .png, .gif"
+                    onChange={handlePhotosChange}
+                    style={{ display: 'none' }}
+                    multiple
+                  />
+                </Button>
               </Box>
-              
+
               <Box sx={{
                 display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 1, '@media (max-width: 500px)': { flexDirection: 'column' }, m: 1,
               }}
@@ -493,7 +499,7 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail, draftId=''}) {
                   component="button"
                   variant="outlined"
                   size="small"
-                  onClick={() => {closeComposeEmail('none', 'No changes made');}}
+                  onClick={() => { closeComposeEmail('none', 'No changes made'); }}
                   startIcon={<DeleteOutlineIcon />}
                   sx={{
                     border: 'solid', borderRadius: 4, borderWidth: 2, textTransform: 'none', color: '#002159', '&:hover': { borderColor: '#002159' },

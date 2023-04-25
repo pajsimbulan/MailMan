@@ -22,8 +22,7 @@ function EmailDateFilterToggleButton({ setFilter }) {
     setEmailDateFilter(newEmailDateFilter);
     if (newEmailDateFilter === null) {
       setFilter('');
-    }
-    else {
+    } else {
       setFilter(newEmailDateFilter.toLowerCase());
     }
   };

@@ -30,9 +30,8 @@ const useInbox = () => {
         setPaginationData({
           ...jsondata.pagination,
           page: parseInt(jsondata.pagination.page, 10),
-          limit: parseInt(jsondata.pagination.limit, 10)
+          limit: parseInt(jsondata.pagination.limit, 10),
         });
-        
       })
       .catch(() => {
         if (tempStatusCode === 404) {

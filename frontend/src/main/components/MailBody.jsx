@@ -3,7 +3,9 @@ import * as React from 'react';
 import {
   useContext, useState, useEffect, useMemo,
 } from 'react';
-import { List, Box, ListItem, Checkbox, Typography } from '@mui/material';
+import {
+  List, Box, ListItem, Checkbox, Typography,
+} from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
@@ -24,19 +26,19 @@ import useDraft from '../../hooks/useDraft';
 const EmailPopOversStyle = { color: 'grey', height: 20, width: 20 };
 
 function emptyMailMessage(dateRange) {
-  if(dateRange==='today') {
+  if (dateRange === 'today') {
     return 'You have no emails for today';
   }
-  if(dateRange==='3d') {
+  if (dateRange === '3d') {
     return 'You have no emails from the past 3 days';
   }
-  if(dateRange==='1w') {
+  if (dateRange === '1w') {
     return 'You have no emails from the past week';
   }
-  if(dateRange==='1m') {
+  if (dateRange === '1m') {
     return 'You have no emails from the past month';
   }
-  if(dateRange==='all') {
+  if (dateRange === 'all') {
     return 'You have no emails for all time';
   }
   return 'Select a date range to view emails';
@@ -53,21 +55,25 @@ function MailBody({ selectedInbox }) {
   const [dateFilter, setDateFilter] = useState('today');
   const [selected, setSelected] = useState([]);
   console.log(`refresh: ${refresh}`);
-  const { getEmail,
+  const {
+    getEmail,
     email,
     loading: loadingEmail,
     statusCode: statusCodeEmail,
-    errorMessage: errorMessageEmail, } = useEmail();
-  const {getInbox,
+    errorMessage: errorMessageEmail,
+  } = useEmail();
+  const {
+    getInbox,
     inbox,
     page,
     limit,
     setPage,
     setLimit,
-    paginationData = { totalCount: 0},
+    paginationData = { totalCount: 0 },
     loading: loadingInbox,
     statusCode: statusCodeInbox,
-    errorMessage: errorMessageInbox } = useInbox();
+    errorMessage: errorMessageInbox,
+  } = useInbox();
   const {
     updateDraft,
     getDraft,
@@ -77,72 +83,72 @@ function MailBody({ selectedInbox }) {
     loading: loadingDraft,
     email: emailDraft,
     statusCode: statusCodeDraft,
-    errorMessage: errorMessageDraft } = useDraft();
- 
-    useEffect(() => {
-      console.log(`getting inbox`);
-      getInbox(user.userInfo._id, selectedInbox, user.accessToken, page, 10);
-    }, [refresh, selectedInbox]);
+    errorMessage: errorMessageDraft,
+  } = useDraft();
 
-    const renderEmails = useMemo(() => {
-      if (!inbox || !inbox.emails) return null;
-      console.log(inbox);
-      console.log(`paginationDatas: ${paginationData.page} ${paginationData.limit} ${paginationData.totalCount} ${paginationData.totalPages}`);
-      const uniqueEmailIds = new Set(); 
-      let uniqueEmails;
-      if(inbox.inboxName === 'drafts') {
-        uniqueEmails = inbox.drafts.filter((draft) => {
-          if (!uniqueEmailIds.has(draft._id)) {
-            uniqueEmailIds.add(draft._id);
-            return true;
-          }
-          return false;
-        });
-      }
-      else {
-        uniqueEmails = inbox.emails.filter((email) => {
-          if (!uniqueEmailIds.has(email._id)) {
-            uniqueEmailIds.add(email._id);
-            return true;
-          }
-          return false;
-        });
-      }
-    
-      return uniqueEmails.map((email) => (
-        <ListItem sx={{ width: "100%" }} key={email._id}>
-          <EmailBlock
-            email={email}
-            selected={(email) => {
-              setOpenedEmail(email);
-              
-              if(inbox.inboxName === 'drafts') {
-                setOpenDrafts(true);
-              }
-              else {
-                setOpenEmail(true);
-              }
-            }}
-          />
-        </ListItem>
-      ));
-    }, [inbox, inbox.inboxName, refresh, selectedInbox]);
+  useEffect(() => {
+    console.log('getting inbox');
+    getInbox(user.userInfo._id, selectedInbox, user.accessToken, page, 10);
+  }, [refresh, selectedInbox]);
 
-    const renderNoEmails = useMemo(() => {
-      if (inbox && inbox.inboxName===selectedInbox && paginationData.totalCount <= 0) {
-        return(
-          <Box sx={{p:5, display:"flex", flexDirection:'column', justifyContent:'center',alignItems:'center'}}>
-            <Typography sx={{color:'#808080'}}>
-             {emptyMailMessage(dateFilter)}
-            </Typography>
-          </Box>
-        )
-      }
-      else {
-        return null;
-      }
-    }, [inbox, inbox.inboxName, refresh, selectedInbox, dateFilter]);
-    
+  const renderEmails = useMemo(() => {
+    if (!inbox || !inbox.emails) return null;
+    console.log(inbox);
+    console.log(`paginationDatas: ${paginationData.page} ${paginationData.limit} ${paginationData.totalCount} ${paginationData.totalPages}`);
+    const uniqueEmailIds = new Set();
+    let uniqueEmails;
+    if (inbox.inboxName === 'drafts') {
+      uniqueEmails = inbox.drafts.filter((draft) => {
+        if (!uniqueEmailIds.has(draft._id)) {
+          uniqueEmailIds.add(draft._id);
+          return true;
+        }
+        return false;
+      });
+    } else {
+      uniqueEmails = inbox.emails.filter((email) => {
+        if (!uniqueEmailIds.has(email._id)) {
+          uniqueEmailIds.add(email._id);
+          return true;
+        }
+        return false;
+      });
+    }
+
+    return uniqueEmails.map((email) => (
+      <ListItem sx={{ width: '100%' }} key={email._id}>
+        <EmailBlock
+          email={email}
+          selected={(email) => {
+            setOpenedEmail(email);
+
+            if (inbox.inboxName === 'drafts') {
+              setOpenDrafts(true);
+            } else {
+              setOpenEmail(true);
+            }
+          }}
+        />
+      </ListItem>
+    ));
+  }, [inbox, inbox.inboxName, refresh, selectedInbox]);
+
+  const renderNoEmails = useMemo(() => {
+    if (inbox && inbox.inboxName === selectedInbox && paginationData.totalCount <= 0) {
+      return (
+        <Box sx={{
+          p: 5, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
+        }}
+        >
+          <Typography sx={{ color: '#808080' }}>
+            {emptyMailMessage(dateFilter)}
+          </Typography>
+        </Box>
+      );
+    }
+
+    return null;
+  }, [inbox, inbox.inboxName, refresh, selectedInbox, dateFilter]);
 
   return (
     <Box sx={{
@@ -154,20 +160,20 @@ function MailBody({ selectedInbox }) {
       alignItems: 'stretch',
       justifyContent: 'center',
       overflow: 'scroll',
-      pb:2
+      pb: 2,
     }}
     >
       {openEmail ? (
         <EmailContentWindow
-          closeEmail={() => { setOpenEmail(false);setRefresh(!refresh); }}
+          closeEmail={() => { setOpenEmail(false); setRefresh(!refresh); }}
           email={openedEmail}
         />
       ) : null}
       {openDrafts ? (
         <ComposeEmail
-        openComposeEmail={openDrafts}
-        closeComposeEmail={() => { setOpenDrafts(false); setRefresh(!refresh);}}
-        draftId={openedEmail._id}
+          openComposeEmail={openDrafts}
+          closeComposeEmail={() => { setOpenDrafts(false); setRefresh(!refresh); }}
+          draftId={openedEmail._id}
         />
       ) : null}
       <List sx={{
@@ -198,18 +204,18 @@ function MailBody({ selectedInbox }) {
                 );
               }}
             />
-            <EmailPopOvers item={() => <RefreshIcon sx={EmailPopOversStyle} onClick={() => {setRefresh(!refresh)}}/>} name="Refresh" />
+            <EmailPopOvers item={() => <RefreshIcon sx={EmailPopOversStyle} onClick={() => { setRefresh(!refresh); }} />} name="Refresh" />
             {selected.length > 0 ? (
               <>
-                <EmailPopOvers item={() => <DeleteForeverIcon sx={EmailPopOversStyle} onClick={() => {setRefresh(!refresh)}}/>} name="Delete" />
-                <EmailPopOvers item={() => <StarIcon sx={EmailPopOversStyle} onClick={() => {setRefresh(!refresh)}}/>} name="Starred" />
-                <EmailPopOvers item={() => <ReportGmailerrorredIcon sx={EmailPopOversStyle} onClick={() => {setRefresh(!refresh)}}/>} name="Spam" />
+                <EmailPopOvers item={() => <DeleteForeverIcon sx={EmailPopOversStyle} onClick={() => { setRefresh(!refresh); }} />} name="Delete" />
+                <EmailPopOvers item={() => <StarIcon sx={EmailPopOversStyle} onClick={() => { setRefresh(!refresh); }} />} name="Starred" />
+                <EmailPopOvers item={() => <ReportGmailerrorredIcon sx={EmailPopOversStyle} onClick={() => { setRefresh(!refresh); }} />} name="Spam" />
               </>
             )
               : null}
           </Box>
-          {inbox && inbox.inboxName===selectedInbox? <MailPagination range={paginationData.limit} totalCount={paginationData.totalCount} /> : null}
-          <EmailDateFilterToggleButton setFilter={(filter) => { setDateFilter(filter);}} />
+          {inbox && inbox.inboxName === selectedInbox ? <MailPagination range={paginationData.limit} totalCount={paginationData.totalCount} /> : null}
+          <EmailDateFilterToggleButton setFilter={(filter) => { setDateFilter(filter); }} />
         </ListItem>
         {renderEmails}
         {renderNoEmails}

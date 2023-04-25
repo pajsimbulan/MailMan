@@ -1,9 +1,13 @@
 /* global alert */
 import * as React from 'react';
-import { Button, Divider,Avatar,Box,Typography} from '@mui/material';
+import {
+  Button, Divider, Avatar, Box, Typography,
+} from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2'; // Grid version 2
 import { useNavigate } from 'react-router';
-import { useContext, useState, useRef, useEffect } from 'react';
+import {
+  useContext, useState, useRef, useEffect,
+} from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { UserContext } from '../../App';
 import FirstNameRow from '../blocks/FirstNameRow';
@@ -20,19 +24,20 @@ function Profile() {
   const { accessToken, userInfo } = useContext(UserContext);
   const [madeChanges, setMadeChanges] = useState(false);
   const password = useRef('');
-  const { updateUserInfo, loading, statusCode, errorMessage } = useUpdateUser();
+  const {
+    updateUserInfo, loading, statusCode, errorMessage,
+  } = useUpdateUser();
   const hasMounted = useRef(false);
   const returnHandler = async () => {
-    if(!madeChanges) {
+    if (!madeChanges) {
       navigate('/main');
     }
-    if(password.current) {
-        await updateUserInfo({...userInfo, newPassword: password.current}, accessToken);
-      }
-      else {
-        await updateUserInfo(userInfo, accessToken);
-      }
-  }
+    if (password.current) {
+      await updateUserInfo({ ...userInfo, newPassword: password.current }, accessToken);
+    } else {
+      await updateUserInfo(userInfo, accessToken);
+    }
+  };
 
   useEffect(() => {
     if (hasMounted.current) {
@@ -47,10 +52,10 @@ function Profile() {
   }, [statusCode, errorMessage]);
 
   return (
-    <Box sx={{ width: '100%', height: '100vh', background: 'repeating-radial-gradient(#CCE3FA,#EDF6FF)' ,}}>
-      {loading && <LoadingModal open={loading}/>}
+    <Box sx={{ width: '100%', height: '100vh', background: 'repeating-radial-gradient(#CCE3FA,#EDF6FF)' }}>
+      {loading && <LoadingModal open={loading} />}
       <Box sx={{
-        display: 'flex', flexDirection: 'row', alignItems: 'center', ml: 3, pt:2
+        display: 'flex', flexDirection: 'row', alignItems: 'center', ml: 3, pt: 2,
       }}
       >
         <Avatar onClick={() => { navigate('/main'); }} src="postman.jpg" sx={{ width: 50, height: 50, background: 'transparent' }} />

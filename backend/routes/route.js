@@ -13,7 +13,9 @@ const jwtSecretKey = process.env.JWT_SECRET_KEY;
 exports.getEmail = async (req, res) => {
     try {
         
-        let email = await emaildb.findOne({_id: req.params.id}).populate('replies').populate('files').populate('photos');
+        let email = await emaildb.findOne({_id: req.params.id}).populate('files').populate('photos')
+        .populate('replies')
+        .populate({path:'replies', populate:[{path:'files'}, {path:'photos'}]});
         if (email == null) {
             res.status(404).send("Email doesn't exist");
             return;
@@ -101,16 +103,22 @@ exports.sendEmail = async(req, res) => {
 exports.replyEmail = async(req, res) => { 
     try {
         const {userEmail, userFirstName, originalEmailId,contents, files= [], photos=[]} = req.body;
+        console.log(`got these user inputs: ${userEmail}, ${userFirstName}, ${originalEmailId}, ${contents}, ${files}, ${photos}`);
+        var fileIds = [];
+        let originalEmail = await emaildb.findOne({_id: originalEmailId});
+        if(originalEmail == null) {
+            res.status(404).send("Email doesn't exist");
+            return;
+        }
         if(files.length > 0) {
-            var fileIds = [];
             files.forEach((file) => {
                 let newFile = new filedb({name: file.name, data: file.data});
                 newFile.save();
                 fileIds.push(newFile._id);
             });
         }
+        var photoIds = [];
         if(photos.length > 0) {
-            var photoIds = [];
             photos.forEach((file) => {
                 let newFile = new filedb({name: file.name, data: file.data});
                 newFile.save();
@@ -119,11 +127,6 @@ exports.replyEmail = async(req, res) => {
         }
         let replyEmail = new replydb({from: userEmail, fromFirstName: userFirstName, contents, files: fileIds, photos: photoIds});
         replyEmail.save();
-        let originalEmail = await emaildb.findOne({_id: originalEmailId});
-        if(originalEmail == null) {
-            res.status(404).send("Email doesn't exist");
-            return;
-        }
         originalEmail.replies.push(replyEmail._id);
         originalEmail.save();
         res.status(201).send({message:"Reply sent successfully", reply: replyEmail});

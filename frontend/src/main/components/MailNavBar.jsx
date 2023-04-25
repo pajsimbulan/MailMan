@@ -97,9 +97,9 @@ function MailNavBar({ currentInbox, selectedInbox, onSelect = undefined }) {
             closeComposeEmail={(status, message) => {
               setComposeEmail(false);
               openAlert(status);
-              if(message) {
+              if (message) {
                 setStatusMessage(message);
-              } 
+              }
             }}
           />
         ) : null}

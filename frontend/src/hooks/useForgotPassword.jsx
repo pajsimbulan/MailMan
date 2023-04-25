@@ -19,7 +19,7 @@ const useForgotPassword = () => {
     }).then((res) => {
       tempStatusCode = res.status;
       setStatusCode(res.status);
-      if(!res.ok) {
+      if (!res.ok) {
         throw new Error(statusCode);
       }
       setPasswordChanged(true);

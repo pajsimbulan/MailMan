@@ -11,7 +11,7 @@ import parseDate from '../../utils/DateParser';
 
 function EmailBlock({ email, avatar, selected }) {
   const [starred, setStarred] = React.useState(false);
-  
+
   return (
     <Box
       onClick={() => { selected(email); }}
@@ -49,7 +49,7 @@ function EmailBlock({ email, avatar, selected }) {
       >
         {starred ? <StarIcon sx={{ height: 25, width: 25, '@media (max-width: 800px)': { height: 20, width: 20 } }} /> : <StarBorderIcon sx={{ height: 25, width: 25, '@media (max-width: 800px)': { height: 20, width: 20 } }} />}
       </IconButton>
-      <Avatar alt={email.from} src={avatar? `data:image/jpeg;base64,${avatar}`:''} sx={{ my: 'auto', height: 30, width: 30 }} />
+      <Avatar alt={email.from} src={avatar ? `data:image/jpeg;base64,${avatar}` : ''} sx={{ my: 'auto', height: 30, width: 30 }} />
       <Box
         component="div"
         sx={{
@@ -60,7 +60,7 @@ function EmailBlock({ email, avatar, selected }) {
           fontWeight: 'bold', fontSize: '14px', '@media (max-width: 800px)': { fontSize: '12px' }, '@media (max-width: 500px)': { fontSize: '10px' },
         }}
         >
-          {email.subject == ''? "No subject":email.subject}
+          {email.subject == '' ? 'No subject' : email.subject}
         </Typography>
         <Box sx={{ maxWidth: '100%' }}>
           <Typography sx={{ fontSize: '12px', '@media (max-width: 800px)': { fontSize: '10px' }, '@media (max-width: 500px)': { fontSize: '8px' } }}>

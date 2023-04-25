@@ -4,7 +4,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import PropTypes from 'prop-types';
 
-function MailPagination({ range=10, totalCount=0 }) {
+function MailPagination({ range = 10, totalCount = 0 }) {
   const [page, setPage] = React.useState(1);
   const [refresh, setRefresh] = React.useState(false);
   const rowsPerPage = range; // number of rows to display per page

@@ -24,10 +24,10 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
   const user = React.useContext(UserContext);
   const [open, setOpen] = React.useState(true);
   const [starred, setStarred] = React.useState(false);
-  const [reply, setReply] = React.useState(false);
+  const [replying, setReplying] = React.useState(false);
+  const [replyingValue, setReplyingValue] = React.useState('');
   const isLessThan800 = useMediaQuery('(max-width:800px)');
-  
-  const replies = React.useRef([]);
+  console.log(`replyng ${replying}`);
   const {
     getEmail,
     moveEmail,
@@ -36,8 +36,9 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
     email: fetchedEmail,
     loading,
     statusCode,
-    errorMessage, } = useEmail();
-  console.log(replies.current.length);
+    errorMessage,
+  } = useEmail();
+ 
   const handleClose = () => {
     console.log('handleClose called');
     setOpen(false);
@@ -47,8 +48,8 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
 
   const downloadFile = (name, data) => {
     console.log(`downloadFile called with name: ${name} and data: ${intArrayToBase64String(data)}`);
-    const base64String = btoa(intArrayToBase64String(data.data));
-    const dataUrl = `data:${getFileType(name)};base64,${base64String}`;
+    const base64String = intArrayToBase64String(data.data);
+    const dataUrl = `data:application/octet-stream;base64,${base64String}`;
     const link = document.createElement('a');
     link.href = dataUrl;
     link.download = name;
@@ -57,13 +58,10 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
     link.click();
     document.body.removeChild(link);
   };
-  
-
-  console.log(`fetchedEmail: ${JSON.stringify(fetchedEmail)}`);
 
   React.useEffect(() => {
     getEmail(email._id, user.accessToken);
-  }, [email]);
+  }, [email, user.accessToken, replyingValue]);
 
   const mobileHeader = React.useMemo(() => (
     <Box sx={{
@@ -120,7 +118,7 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
         }}
         >
           <Typography sx={{ fontSize: '12px', fontWeight: 'bold' }}>
-            Zaheer
+          {email.fromFirstName}
           </Typography>
           <Typography sx={{ fontSize: '10px' }}>
             {`<${email.from}>`}
@@ -175,7 +173,7 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
               '@media (max-width: 1000px)': { fontSize: '12px' },
             }}
           >
-            Zaheer
+            {email.fromFirstName}
           </Typography>
           <Typography
             variant="body2"
@@ -285,19 +283,28 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
               '@media (max-width: 800px)': { fontSize: '10px' },
             }}
             >
-              {email.contents + email.contents + email.contents + email.contents}
+              {email.contents}
+
             </Typography>
-              {fetchedEmail && fetchedEmail.files.length > 0
-                  ? (
-                    <FileChip
-                      files={fetchedEmail.files.map((file) => ({ name: file.name, type: getFileType(file.name) }))}
-                      onClick={(index) => { downloadFile(fetchedEmail.files[index].name, fetchedEmail.files[index].data); }}
-                      onDelete={() => {}}
-                    />
-                  ) : null}
+            {fetchedEmail && fetchedEmail.photos.length > 0 ? (
+              fetchedEmail.photos.map((photo) => (
+                <Box sx={{ maxWidth: '100%', overflow: 'auto', padding: '20px' }}>
+                  <img src={`data:image/jpeg;base64,${intArrayToBase64String(photo.data.data)}`} style={{ maxWidth: '100%' }} />
+                </Box>
+              ))
+            ) : null}
+            {fetchedEmail && fetchedEmail.files.length > 0
+              ? (
+                <FileChip
+                  files={fetchedEmail.files.map((file) => ({ name: file.name, type: getFileType(file.name) }))}
+                  onClick={(index) => { downloadFile(fetchedEmail.files[index].name, fetchedEmail.files[index].data); }}
+                  onDelete={() => {}}
+                />
+              ) : null}
           </Box>
-          {replies.current.map((reply) => <EmailReplyBlock key={reply} contents={reply} />)}
-          {reply ? null
+          {fetchedEmail && fetchedEmail.replies? fetchedEmail.replies.map((reply) => <EmailReplyBlock key={reply._id} fromFirstName={reply.fromFirstName} fromEmail={reply.from} replyEmailContents={reply.contents} replyFiles={reply.files} replyPhotos={reply.photos}/>) : null
+          }
+          {replying ? null
             : (
               <Box sx={{
                 display: 'flex', flexGrow: 1, justifyContent: 'end', my: 1, mx: 5,
@@ -306,7 +313,7 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
                 <Button
                   size={isLessThan800 ? 'small' : 'medium'}
                   variant="outlined"
-                  onClick={() => { setReply(true); }}
+                  onClick={() => { setReplying(true); }}
                   endIcon={<ReplyIcon />}
                   sx={{
                     border: 'solid', borderRadius: 4, borderWidth: 2, textTransform: 'none', color: '#338feb',
@@ -318,10 +325,14 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
             ) }
           {/** END of Main Email */}
           {/** Reply Email */}
-          {reply ? (
+          {replying && fetchedEmail &&  fetchedEmail._id? (
             <EmailReplying
-              submitReply={(value) => { setReply(false); replies.current.push(value); }}
-              exitReply={() => { setReply(false); }}
+              emailId={(fetchedEmail && fetchedEmail._id? fetchedEmail._id : null)}
+              submitReply={(value) => { 
+                console.log(`submitReply called with ${value}`);
+                setReplying(false); 
+                setReplyingValue(value); }}
+              exitReply={() => { setReplying(false); }}
             />
           )
             : null}

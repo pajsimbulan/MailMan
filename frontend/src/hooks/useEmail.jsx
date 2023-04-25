@@ -82,7 +82,7 @@ const useEmail = () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `jwt ${accessToken.toString()}` },
       body: JSON.stringify({
-        userId, from, fromFirstName, to, subject, contents, files, photos
+        userId, from, fromFirstName, to, subject, contents, files, photos,
       }),
     })
       .then((res) => {
@@ -117,11 +117,12 @@ const useEmail = () => {
   ) => {
     let tempStatusCode = null;
     setLoading(true);
+    console.log(`beginning of replyEmail: ${userEmail} ${userFirstName} ${originalEmailId} ${contents} ${files} ${photos} ${accessToken}`);
     await fetch(`${process.env.REACT_APP_BACKEND_URL}/${process.env.REACT_APP_BACKEND_VERSION}/reply`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `jwt ${accessToken.toString()}` },
       body: JSON.stringify({
-        userEmail, userFirstName, originalEmailId, contents, files, photos
+        userEmail, userFirstName, originalEmailId, contents, files, photos,
       }),
     })
       .then((res) => {
@@ -143,6 +144,7 @@ const useEmail = () => {
         }
       });
     setLoading(false);
+    console.log(`end of replyEmail: ${contents}`);
   };
 
   return {

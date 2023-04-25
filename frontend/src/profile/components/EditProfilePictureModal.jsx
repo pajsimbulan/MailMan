@@ -7,6 +7,7 @@ import {
 import UploadIcon from '@mui/icons-material/Upload';
 import PropTypes from 'prop-types';
 import { arrayBufferToBase64 } from '../../utils/DatatoBinary64';
+
 const MAX_FILE_SIZE = 13000000;
 
 function ProfilePictureModal({
