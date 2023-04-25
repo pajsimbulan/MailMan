@@ -4,7 +4,7 @@
 import * as React from 'react';
 import {
   Avatar, Divider, useMediaQuery,
-  Zoom, Box, Button, TextField, Dialog, IconButton, Typography,
+  Zoom, Box, Button, TextField, Dialog, IconButton, Typography, CircularProgress, Skeleton
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
@@ -21,7 +21,6 @@ import useEmail from '../../hooks/useEmail';
 import { emailRegex } from '../../utils/MailRegex';
 
 const MAX_FILE_SIZE = 13000000;
-const iconButtonStyling = { height: 25, width: 25, '@media (max-width: 800px)': { height: 20, width: 20 } };
 
 function ComposeEmail({ openComposeEmail, closeComposeEmail, draftId = '' }) {
   const isLessThan800 = useMediaQuery('(max-width:800px)');
@@ -40,6 +39,7 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail, draftId = '' }) {
     updateDraft,
     postDraft,
     getDraft,
+    loading,
     draft: fetchedDraft,
     statusCode: statusCodeDraft,
     errorMessage: errorMessageDraft,
@@ -272,7 +272,7 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail, draftId = '' }) {
                 fontSize: '12px',
                 '@media (max-width: 800px)': { fontSize: '10px' },
               }}
-              >
+              > 
                 {`<${user.userInfo.email}>`}
               </Typography>
             </Box>
@@ -334,6 +334,7 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail, draftId = '' }) {
               >
                 To:
               </Typography>
+              {draftId && loading?  <Skeleton animation="wave" /> : 
               <TextField
                 name="to"
                 id="to"
@@ -346,7 +347,7 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail, draftId = '' }) {
                   style: { fontSize: isLessThan800 ? '10px' : (isLessThan1000 ? '12px' : '14px') },
                 }}
                 sx={{ '& fieldset': { border: 'none' } }}
-              />
+              /> }
             </Box>
             <Divider />
             <Box sx={{
@@ -365,7 +366,7 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail, draftId = '' }) {
               >
                 Subject:
               </Typography>
-              <TextField
+              {draftId && loading?  <Skeleton animation="wave" /> : <TextField
                 inputProps={{
                   style: { fontSize: isLessThan800 ? '10px' : (isLessThan1000 ? '12px' : '14px') },
                 }}
@@ -377,13 +378,13 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail, draftId = '' }) {
                   setSubjectValue(event.target.value);
                 }}
                 sx={{ '& fieldset': { border: 'none' } }}
-              />
+              />}
             </Box>
             <Divider />
             <Box sx={{
               display: 'flex', flexGrow: 1, flexDirection: 'column', bgcolor: '#ECEFF1', borderRadius: 5, p: 2, overflow: 'auto',
             }}
-            >
+            > {draftId && loading? <CircularProgress sx={{ alignSelf: 'center' }} /> : 
               <TextField
                 inputProps={{
                   style: { fontSize: isLessThan800 ? '10px' : (isLessThan1000 ? '12px' : '14px') },
@@ -398,7 +399,7 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail, draftId = '' }) {
                 multiline
                 rows={12}
                 sx={{ '& fieldset': { border: 'none' } }}
-              />
+              /> }
               {binaryPhotos.length <= 0 ? null : (
                 binaryPhotos.map((photo, index) => (
                   <Box sx={{ maxWidth: '100%', overflow: 'auto', padding: '20px' }}>

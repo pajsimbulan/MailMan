@@ -10,6 +10,7 @@ exports.register = async (req, res) => {
         console.log(`Register request: ${req.body.email} ${req.body.password}`);
         const {firstName, lastName, email, password} = req.body;
         if( (await userdb.findOne({email: email}))  != null) {
+          console.log(`Account already exist: ${email}`);
           res.status(403).send("Account already exist");
           return;
         }
@@ -21,9 +22,10 @@ exports.register = async (req, res) => {
             password: hashedPassword,
             email,
         });
+        console.log(`New user created: ${newUser}`);
         let savedUser = await newUser.save();
         delete savedUser.password;
-
+        console.log(`User created: ${savedUser}`);
         //initialize inboxes
         savedUser.inboxes.forEach(async (inboxName) => {
           let newInbox = new inboxdb({
@@ -34,6 +36,7 @@ exports.register = async (req, res) => {
         });
         res.status(201).json(savedUser); 
     } catch(error) {
+        console.log('Error, account not created');
         res.status(400).send(error.message);
     }
     

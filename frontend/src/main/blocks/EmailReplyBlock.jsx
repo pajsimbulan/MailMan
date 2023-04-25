@@ -45,7 +45,7 @@ function EmailReplyBlock({ reply}) {
             display: 'flex', flexDirection: 'row', gap: 1, mr: 1,
           }}
           >
-            <Avatar src={`data:image/jpeg;base64,${intArrayToBase64String(reply.from.avatar.data)}` } sx={{ my: 'auto' }} />
+            <Avatar src={reply.from && reply.from.avatar? `data:image/jpeg;base64,${intArrayToBase64String(reply.from.avatar.data)}`: null } sx={{ my: 'auto' }} />
             <Box sx={{
               display: 'flex',
               flexDirection: 'column',

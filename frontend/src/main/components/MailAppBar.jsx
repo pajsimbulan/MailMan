@@ -63,6 +63,8 @@ function MailAppBar({ currentInbox, selectedInbox }) {
             sx={{ color: '#0067b8', '&:hover': { cursor: 'pointer', color: '#338feb' } }}
             onClick={() => {
               handleMenuClose();
+              localStorage.removeItem('mailman_accesstoken');
+              localStorage.removeItem('mailman_userinfo');
               navigate('/');
             }}
           >

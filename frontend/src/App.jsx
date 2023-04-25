@@ -15,8 +15,8 @@ import './App.css';
 
 export const UserContext = createContext();
 export default function App() {
-  const accessToken = ' ';
-  const userInfo = {
+  let accessToken = '';
+  let userInfo = {
     _id: undefined,
     firstName: undefined,
     email: undefined,
@@ -26,6 +26,11 @@ export default function App() {
     birthDate: undefined,
     avatar: undefined,
   };
+
+  if(accessToken === ''&& localStorage.getItem('mailman_accesstoken')) {
+    accessToken = localStorage.getItem('mailman_accesstoken');
+    userInfo = JSON.parse(localStorage.getItem('mailman_userinfo'));
+  }
   return (
     <div>
       <CssBaseline />

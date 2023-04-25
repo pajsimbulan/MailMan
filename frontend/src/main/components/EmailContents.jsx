@@ -107,7 +107,7 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
       }}
       >
         <Avatar 
-        src={`data:image/jpeg;base64,${intArrayToBase64String(email.from.avatar.data)}` }
+        src={email.from && email.from.avatar?`data:image/jpeg;base64,${intArrayToBase64String(email.from.avatar.data)}`:null }
         sx={{
           height: 50, width: 50, mr: 1.5, my: 'auto', '@media (max-width: 700px)': { mx: 0.5 },
         }}
@@ -159,7 +159,7 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
       }}
       >
         <Avatar 
-        src={`data:image/jpeg;base64,${intArrayToBase64String(email.from.avatar.data)}` }
+        src={email.from && email.from.avatar?`data:image/jpeg;base64,${intArrayToBase64String(email.from.avatar.data)}`:null }
         sx={{
           mr: 2,
           height: 60,

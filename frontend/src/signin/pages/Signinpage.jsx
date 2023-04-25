@@ -58,6 +58,8 @@ function Signinpage() {
       if(user.userInfo.avatar) {
         user.userInfo.avatar = intArrayToBase64String(user.userInfo.avatar.data);
       }
+      localStorage.setItem('mailman_accesstoken', accessToken);
+      localStorage.setItem('mailman_userinfo', JSON.stringify(user.userInfo));
       navigate('/greet');
     }
     if (statusCode >= 400) {

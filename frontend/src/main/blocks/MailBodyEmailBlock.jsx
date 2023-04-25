@@ -52,7 +52,7 @@ function EmailBlock({ email, selected }) {
       >
         {starred ? <StarIcon sx={{ height: 25, width: 25, '@media (max-width: 800px)': { height: 20, width: 20 } }} /> : <StarBorderIcon sx={{ height: 25, width: 25, '@media (max-width: 800px)': { height: 20, width: 20 } }} />}
       </IconButton>
-      <Avatar alt={email.from} src={`data:image/jpeg;base64,${email.from?intArrayToBase64String(email.from.avatar.data):user.userInfo.avatar}` } sx={{ my: 'auto', height: 30, width: 30 }} />
+      <Avatar alt={email.from} src={email.from && email.from.avatar? `data:image/jpeg;base64,${intArrayToBase64String(email.from.avatar.data)}` : null } sx={{ my: 'auto', height: 30, width: 30 }} />
       <Box
         component="div"
         sx={{
