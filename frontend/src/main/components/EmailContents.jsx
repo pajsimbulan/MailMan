@@ -5,7 +5,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import {
-  Avatar, useMediaQuery, Zoom, Box,
+  Avatar, useMediaQuery, Zoom, Box, CircularProgress
 } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
@@ -106,7 +106,9 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
         width: '100%', display: 'flex', px: 1, my: 1, flexDirection: 'row',
       }}
       >
-        <Avatar sx={{
+        <Avatar 
+        src={`data:image/jpeg;base64,${intArrayToBase64String(email.from.avatar.data)}` }
+        sx={{
           height: 50, width: 50, mr: 1.5, my: 'auto', '@media (max-width: 700px)': { mx: 0.5 },
         }}
         />
@@ -118,10 +120,10 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
         }}
         >
           <Typography sx={{ fontSize: '12px', fontWeight: 'bold' }}>
-          {email.fromFirstName}
+          {email.from.firstName}
           </Typography>
           <Typography sx={{ fontSize: '10px' }}>
-            {`<${email.from}>`}
+            {`<${email.from.email}>`}
           </Typography>
         </Box>
         <Box sx={{ display: 'flex', flexgrow: 1 }} />
@@ -156,7 +158,9 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
         width: '33.33%', display: 'flex', px: 1, flexDirection: 'row',
       }}
       >
-        <Avatar sx={{
+        <Avatar 
+        src={`data:image/jpeg;base64,${intArrayToBase64String(email.from.avatar.data)}` }
+        sx={{
           mr: 2,
           height: 60,
           width: 60,
@@ -173,7 +177,7 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
               '@media (max-width: 1000px)': { fontSize: '12px' },
             }}
           >
-            {email.fromFirstName}
+            {email.from.firstName}
           </Typography>
           <Typography
             variant="body2"
@@ -182,7 +186,7 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
               '@media (max-width: 1000px)': { fontSize: '10px' },
             }}
           >
-            {`<${email.from}>`}
+            {`<${email.from.email}>`}
           </Typography>
         </Box>
       </Box>
@@ -278,6 +282,9 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
             '@media (max-width: 500px)': { mx: 3 },
           }}
           >
+            {
+              loading? <CircularProgress sx={{ alignSelf: 'center' }} /> :
+            
             <Typography sx={{
               '@media (max-width: 1000px)': { fontSize: '12px' },
               '@media (max-width: 800px)': { fontSize: '10px' },
@@ -285,7 +292,7 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
             >
               {email.contents}
 
-            </Typography>
+            </Typography> }
             {fetchedEmail && fetchedEmail.photos.length > 0 ? (
               fetchedEmail.photos.map((photo) => (
                 <Box sx={{ maxWidth: '100%', overflow: 'auto', padding: '20px' }}>
@@ -298,11 +305,12 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
                 <FileChip
                   files={fetchedEmail.files.map((file) => ({ name: file.name, type: getFileType(file.name) }))}
                   onClick={(index) => { downloadFile(fetchedEmail.files[index].name, fetchedEmail.files[index].data); }}
-                  onDelete={() => {}}
+                  deleteable={false}
                 />
               ) : null}
           </Box>
-          {fetchedEmail && fetchedEmail.replies? fetchedEmail.replies.map((reply) => <EmailReplyBlock key={reply._id} fromFirstName={reply.fromFirstName} fromEmail={reply.from} replyEmailContents={reply.contents} replyFiles={reply.files} replyPhotos={reply.photos}/>) : null
+          {fetchedEmail && fetchedEmail.replies? fetchedEmail.replies.map((reply) => 
+          <EmailReplyBlock key={reply._id} reply={reply}/>) : null
           }
           {replying ? null
             : (

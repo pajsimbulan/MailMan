@@ -55,7 +55,9 @@ function Signinpage() {
         }
       }
       user.accessToken = accessToken;
-      user.userInfo.avatar = intArrayToBase64String(user.userInfo.avatar.data);
+      if(user.userInfo.avatar) {
+        user.userInfo.avatar = intArrayToBase64String(user.userInfo.avatar.data);
+      }
       navigate('/greet');
     }
     if (statusCode >= 400) {

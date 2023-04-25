@@ -13,9 +13,13 @@ const jwtSecretKey = process.env.JWT_SECRET_KEY;
 exports.getEmail = async (req, res) => {
     try {
         
-        let email = await emaildb.findOne({_id: req.params.id}).populate('files').populate('photos')
+        let email = await emaildb.findOne({_id: req.params.id})
+        .populate('from')
+        .populate('to')
+        .populate('files')
+        .populate('photos')
         .populate('replies')
-        .populate({path:'replies', populate:[{path:'files'}, {path:'photos'}]});
+        .populate({path:'replies', populate:[{path:'from'},{path:'files'}, {path:'photos'}]});
         if (email == null) {
             res.status(404).send("Email doesn't exist");
             return;
@@ -75,15 +79,13 @@ exports.sendEmail = async(req, res) => {
                 photoIds.push(newFile._id);
             });
         }
-        let email = new emaildb({from, fromFirstName, to, subject, contents, files: fileIds, photos: photoIds}); 
+        let userRecipient = await userdb.findOne({email: to});
+        let email = new emaildb({from: userId, to: (userRecipient === null? '': userRecipient._id), subject, contents, files: fileIds, photos: photoIds}); 
         let savedEmail = await email.save();
         const fromInbox = await inboxdb.findOne({ userId: userId, inboxName: 'sent'});
         const userAllEmails = await inboxdb.findOne({ userId: userId, inboxName: 'all emails'});
         fromInbox.emails.push(savedEmail._id);
         userAllEmails.emails.push(savedEmail._id);
-        await fromInbox.save();
-        await userAllEmails.save();
-        let userRecipient = await userdb.findOne({email: to});
         if(userRecipient !== null) {
             const toInbox = await inboxdb.findOne({ userId: userRecipient._id,  inboxName: 'inbox'});
             const userRecepientAllEmails = await inboxdb.findOne({ userId: userRecipient._id,  inboxName: 'all emails'});
@@ -92,6 +94,8 @@ exports.sendEmail = async(req, res) => {
             await toInbox.save();
             await userRecepientAllEmails.save();
         }
+        await fromInbox.save();
+        await userAllEmails.save();
         console.log(`Email sent successfully: ${savedEmail}`);
         res.status(201).send({message:"Email sent successfully", email: savedEmail});
     } catch (error) {
@@ -103,11 +107,16 @@ exports.sendEmail = async(req, res) => {
 exports.replyEmail = async(req, res) => { 
     try {
         const {userEmail, userFirstName, originalEmailId,contents, files= [], photos=[]} = req.body;
-        console.log(`got these user inputs: ${userEmail}, ${userFirstName}, ${originalEmailId}, ${contents}, ${files}, ${photos}`);
+
         var fileIds = [];
         let originalEmail = await emaildb.findOne({_id: originalEmailId});
         if(originalEmail == null) {
             res.status(404).send("Email doesn't exist");
+            return;
+        }
+        const fromUser = await userdb.findOne({email: userEmail});
+        if(fromUser == null) {
+            res.status(404).send("User doesn't exist");
             return;
         }
         if(files.length > 0) {
@@ -125,7 +134,7 @@ exports.replyEmail = async(req, res) => {
                 photoIds.push(newFile._id);
             });
         }
-        let replyEmail = new replydb({from: userEmail, fromFirstName: userFirstName, contents, files: fileIds, photos: photoIds});
+        let replyEmail = new replydb({from: fromUser._id, contents, files: fileIds, photos: photoIds});
         replyEmail.save();
         originalEmail.replies.push(replyEmail._id);
         originalEmail.save();
@@ -279,7 +288,8 @@ exports.postDraft = async(req, res) => {
         }
 
         //send email
-        let email = new emaildb({from, fromFirstName, to, subject, contents, files: fileIds, photos: photoIds}); 
+        let userRecipient = await userdb.findOne({email: to});
+        let email = new emaildb({from: userId, to: (userRecipient === null? '': userRecipient._id), subject, contents, files: fileIds, photos: photoIds}); 
         let savedEmail = await email.save();
         const fromInbox = await inboxdb.findOne({ userId: userId, inboxName: 'sent'});
         const userAllEmails = await inboxdb.findOne({ userId: userId, inboxName: 'all emails'});
@@ -287,7 +297,6 @@ exports.postDraft = async(req, res) => {
         userAllEmails.emails.push(savedEmail._id);
         await fromInbox.save();
         await userAllEmails.save();
-        let userRecipient = await userdb.findOne({email: to});
         if(userRecipient !== null) {
             const toInbox = await inboxdb.findOne({ userId: userRecipient._id,  inboxName: 'inbox'});
             const userRecepientAllEmails = await inboxdb.findOne({ userId: userRecipient._id,  inboxName: 'all emails'});
@@ -350,15 +359,23 @@ exports.getInbox = async(req, res) => {
             console.log('iti s drafts');
             tempInbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase() });
             count = tempInbox.drafts.length;
-            inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase()}) 
+            /**inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase()}) 
             .populate('drafts')   
-                .populate({path:'drafts', populate:[{path:'files'}, {path:'photos'}], options: { skip: skip, limit: limit , sort: { createdAt: -1 }}});   
+                .populate({path:'drafts', populate:[{path:'files'}, {path:'photos'}], options: { skip: skip, limit: limit , sort: { createdAt: -1 }}});   */
+            inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase()}) 
+            .populate({ 
+                path: 'drafts', 
+                options: { skip: skip, limit: limit, sort: { createdAt: -1 } }
+              });
         } else {
             tempInbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase() });
             count = tempInbox.emails.length;
-            inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase()})
+            /**inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase()})
                 .populate('emails')   
-                .populate({path:'emails', populate:[{path:'replies'}, {path:'files'}, {path:'photos'}], options: { skip: skip, limit: limit , sort: { createdAt: -1 }}});
+                .populate({path:'emails', populate:[{path:'replies'}, {path:'files'}, {path:'photos'}], options: { skip: skip, limit: limit , sort: { createdAt: -1 }}});**/
+            inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase()})
+            .populate('emails')   
+            .populate({path:'emails', populate:[{path:'from'}, {path:'to'}], options: { skip: skip, limit: limit , sort: { createdAt: -1 }}});
         }
         if (inbox == null) {
             res.status(404).send("Inbox doesn't exist");

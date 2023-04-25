@@ -3,20 +3,13 @@ const mongoose = require('mongoose');
 const emailSchema = new mongoose.Schema(
     {
         from: {
-            type: String,
-            required: true,
-            lowercase: true,
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
         },
-        fromFirstName: {
-            type: String,
-            required: true,
-            min: 3,
-            max: 100,
-        },
+       
         to: {
-            type: String,
-            required: true,
-            lowercase: true,
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
         },
         subject: {  
             type: String,
@@ -25,6 +18,10 @@ const emailSchema = new mongoose.Schema(
         contents: {
             type: String,
             required: true,
+        },
+        starred: {
+            type: Boolean,
+            default: false,
         },
         createdAt: {
             type: Date,

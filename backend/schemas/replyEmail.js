@@ -3,15 +3,8 @@ const mongoose = require('mongoose');
 const replyEmailSchema = new mongoose.Schema(
     {
         from: {
-            type: String,
-            required: true,
-            lowercase: true,
-        },
-        fromFirstName: {
-            type: String,
-            required: true,
-            min: 3,
-            max: 100,
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
         },
         contents: {
             type: String,

@@ -7,8 +7,10 @@ import formatDate from '../../utils/DateFormat';
 import { intArrayToBase64String } from '../../utils/DatatoBinary64';
 import FileChip from '../components/FileChip';
 import getFileType from '../../utils/FileType';
+import { UserContext } from '../../App';
 
-function EmailReplyBlock({ fromFirstName, fromEmail, replyEmailContents, replyFiles, replyPhotos}) {
+function EmailReplyBlock({ reply}) {
+  const user = React.useContext(UserContext);
 
   const downloadFile = (name, data) => {
     console.log(`downloadFile called with name: ${name} and data: ${intArrayToBase64String(data)}`);
@@ -43,7 +45,7 @@ function EmailReplyBlock({ fromFirstName, fromEmail, replyEmailContents, replyFi
             display: 'flex', flexDirection: 'row', gap: 1, mr: 1,
           }}
           >
-            <Avatar sx={{ my: 'auto' }} />
+            <Avatar src={`data:image/jpeg;base64,${intArrayToBase64String(reply.from.avatar.data)}` } sx={{ my: 'auto' }} />
             <Box sx={{
               display: 'flex',
               flexDirection: 'column',
@@ -52,10 +54,10 @@ function EmailReplyBlock({ fromFirstName, fromEmail, replyEmailContents, replyFi
             }}
             >
               <Typography sx={{ fontSize: '12px', fontWeight: 'bold' }}>
-                {fromFirstName}
+                {reply.from.firstName}
               </Typography>
               <Typography sx={{ fontSize: '10px' }}>
-                {`<${fromEmail}>`}
+                {`<${reply.from.email}>`}
               </Typography>
             </Box>
           </Box>
@@ -63,30 +65,36 @@ function EmailReplyBlock({ fromFirstName, fromEmail, replyEmailContents, replyFi
             my: 'auto', color: '#8e8080', fontSize: '13px', '@media (max-width: 1000px)': { fontSize: '10px' },
           }}
           >
-            { `${formatDate(new Date())} (${parseDate(new Date())})`}
+            { `${formatDate(reply.createdAt)}` + ' ' + isWithinYesterday(reply.createdAt)}
           </Typography>
         </Box>
         <Typography sx={{ '@media (max-width: 1000px)': { fontSize: '12px' }, '@media (max-width: 800px)': { fontSize: '10px' }, wordWrap: 'break-word' }}>
-          {replyEmailContents}
+          {reply.contents}
         </Typography>
-        {replyPhotos.length > 0 ? (
-              replyPhotos.map((photo) => (
+        {reply.photos.length > 0 ? (
+              reply.photos.map((photo) => (
                 <Box sx={{ maxWidth: '100%', overflow: 'auto', padding: '20px' }}>
                   <img src={`data:image/jpeg;base64,${intArrayToBase64String(photo.data.data)}`} style={{ maxWidth: '100%' }} />
                 </Box>
               ))
             ) : null}
-            {replyFiles.length > 0
+            {reply.files.length > 0
               ? (
                 <FileChip
-                  files={replyFiles.map((file) => ({ name: file.name, type: getFileType(file.name) }))}
-                  onClick={(index) => { downloadFile(replyFiles[index].name, replyFiles[index].data); }}
-                  onDelete={() => {}}
+                  files={reply.files.map((file) => ({ name: file.name, type: getFileType(file.name) }))}
+                  onClick={(index) => { downloadFile(reply.files[index].name, reply.files[index].data); }}
+                  deleteable={false}
                 />
               ) : null}
       </Box>
     </Box>
   );
+}
+
+const isWithinYesterday = (date) => {
+  if(parseDate(date) === 'Today') return '(Today)';
+  if(parseDate(date) === 'Yesterday') return '(Yesterday)';
+  return '';
 }
 
 EmailReplyBlock.propTypes = {

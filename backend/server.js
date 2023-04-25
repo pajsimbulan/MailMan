@@ -43,6 +43,7 @@ app.put(`/${VERSION}/deleteDrafts`, auth.check, route.deleteDrafts);
 mongoose.connect(DB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => app.listen(PORT, () => {
         console.log("Connection to Database is successful");
+        
         console.log(`Server Running on port ${PORT}`);
     }))
     .catch((error) => console.log(error.message));
