@@ -73,7 +73,7 @@ function EmailReplyBlock({ reply}) {
         </Typography>
         {reply.photos.length > 0 ? (
               reply.photos.map((photo) => (
-                <Box sx={{ maxWidth: '100%', overflow: 'auto', padding: '20px' }}>
+                <Box sx={{ maxWidth: '100%', overflow: 'auto', padding: '20px', resize:'both' }}>
                   <img src={`data:image/jpeg;base64,${intArrayToBase64String(photo.data.data)}`} style={{ maxWidth: '100%' }} />
                 </Box>
               ))

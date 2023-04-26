@@ -10,10 +10,20 @@ import hourOfDay from '../../utils/DateHOD';
 import parseDate from '../../utils/DateParser';
 import { UserContext } from '../../App';
 import { intArrayToBase64String } from '../../utils/DatatoBinary64';
+import  useEmail  from '../../hooks/useEmail';
 
 function EmailBlock({ email, selected }) {
-  const [starred, setStarred] = React.useState(false);
+  const [starred, setStarred] = React.useState(email.starred);
   const user = React.useContext(UserContext);
+  const { updateEmail, loading, statusCode  } = useEmail();
+
+  React.useEffect(() => {
+    async function updateStarred() {
+    await updateEmail(user.userInfo._id, email._id, starred, user.accessToken);
+    console.log(`statusCode: ${statusCode}`);
+    }
+    updateStarred();
+  }, [starred]);
 
   return (
     <Box

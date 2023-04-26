@@ -31,6 +31,38 @@ exports.getEmail = async (req, res) => {
     }
 };
 
+exports.updateEmail = async(req, res) => {
+    try {
+        const {userId, emailId, starred} = req.body;   
+        console.log(`Update email request: ${emailId} ${starred}`);
+        const email = await emaildb.findOne({_id: emailId}); 
+        if(email == null) {
+            res.status(404).send("Email doesn't exist");
+            return;
+        }
+        const inbox = await inboxdb.findOne({userId: userId, inboxName: 'starred'});
+        if(inbox == null) {
+            res.status(404).send("Invalid User ID");
+            return;
+        }
+        email.starred = starred;
+        if(starred) {
+            inbox.emails = [...inbox.emails, emailId];
+            console.log(`Email added to starred inbox ${inbox._id} : ${inbox.emails}`);
+        } else {
+            inbox.emails = inbox.emails.filter((id) => {return(id != emailId)});
+            console.log(`Email removed from starred inbox ${inbox._id} : ${inbox.emails}`);
+        }
+        await email.save();
+        await inbox.save();
+        console.log(`Email updated: ${email}`);
+        res.status(200).send({message:"Email updated successfully"});
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send(error.message);
+    }
+}
+
 
 exports.moveEmails = async(req, res) => {
     try {

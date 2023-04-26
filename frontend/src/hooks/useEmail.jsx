@@ -106,6 +106,33 @@ const useEmail = () => {
     setLoading(false);
   };
 
+  const updateEmail = async ( userId, emailId, starred, accessToken) => {
+    let tempStatusCode = null;
+    setLoading(true);
+    await fetch(`${process.env.REACT_APP_BACKEND_URL}/${process.env.REACT_APP_BACKEND_VERSION}/email`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', Authorization: `jwt ${accessToken.toString()}` },
+      body: JSON.stringify({
+        userId, emailId, starred,
+      }),
+    })
+      .then((res) => {
+        tempStatusCode = res.status;
+        setStatusCode(res.status);
+        if (!res.ok) {
+          throw new Error(statusCode);
+        }
+      })
+      .catch(() => {
+        if (tempStatusCode === 404) {
+          setErrorMessage("Error: Email doesn't exist");
+        } else {
+          setErrorMessage('Error: Email failed to update.');
+        }
+      });
+    setLoading(false);
+  };
+
   const replyEmail = async (
     userEmail,
     userFirstName,
@@ -152,6 +179,7 @@ const useEmail = () => {
     moveEmail,
     sendEmail,
     replyEmail,
+    updateEmail,
     email,
     loading,
     statusCode,

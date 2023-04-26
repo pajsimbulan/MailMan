@@ -33,6 +33,7 @@ app.post(`/${VERSION}/postDraft`,      auth.check, route.postDraft);
 
 
 app.put(`/${VERSION}/user`,   auth.check, auth.updateUserInfo); 
+app.put(`/${VERSION}/email`,   auth.check, route.updateEmail);
 app.put(`/${VERSION}/moveEmail`,   auth.check, route.moveEmails);
 app.put(`/${VERSION}/changePassword`, auth.changePassword);
 app.put(`/${VERSION}/draft`, auth.check, route.updateDraft);

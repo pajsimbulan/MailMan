@@ -23,7 +23,7 @@ import FileChip from './FileChip';
 function EmailContentWindow({ closeEmail, email, onClose }) {
   const user = React.useContext(UserContext);
   const [open, setOpen] = React.useState(true);
-  const [starred, setStarred] = React.useState(false);
+  const [starred, setStarred] = React.useState(email.starred);
   const [replying, setReplying] = React.useState(false);
   const [replyingValue, setReplyingValue] = React.useState('');
   const isLessThan800 = useMediaQuery('(max-width:800px)');
@@ -31,16 +31,18 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
   const {
     getEmail,
     moveEmail,
-    sendEmail,
-    replyEmail,
+    updateEmail,
     email: fetchedEmail,
     loading,
     statusCode,
     errorMessage,
   } = useEmail();
  
-  const handleClose = () => {
+  const handleClose = async () => {
     console.log('handleClose called');
+    if(email.starred !== starred) {
+      await updateEmail(user.userInfo._id, email._id, starred, user.accessToken);
+    }
     setOpen(false);
     closeEmail();
     // onClose(starred);
@@ -147,7 +149,7 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
         </Box>
       </Box>
     </Box>
-  ), [email]);
+  ), [email, starred]);
 
   const pcHeader = React.useMemo(() => (
     <Box sx={{
@@ -240,7 +242,7 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
         </IconButton>
       </Box>
     </Box>
-  ), [email]);
+  ), [email, starred]);
 
   return (
     <Box>
@@ -295,7 +297,7 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
             </Typography> }
             {fetchedEmail && fetchedEmail.photos.length > 0 ? (
               fetchedEmail.photos.map((photo) => (
-                <Box sx={{ maxWidth: '100%', overflow: 'auto', padding: '20px' }}>
+                <Box sx={{ maxWidth: '100%', overflow: 'auto', padding: '20px', resize:"both" }}>
                   <img src={`data:image/jpeg;base64,${intArrayToBase64String(photo.data.data)}`} style={{ maxWidth: '100%' }} />
                 </Box>
               ))
