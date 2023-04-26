@@ -46,7 +46,7 @@ exports.updateEmail = async(req, res) => {
             return;
         }
         email.starred = starred;
-        if(starred) {
+        if(starred && !inbox.emails.includes(emailId)) {
             inbox.emails = [...inbox.emails, emailId];
             console.log(`Email added to starred inbox ${inbox._id} : ${inbox.emails}`);
         } else {
@@ -381,6 +381,7 @@ exports.getInbox = async(req, res) => {
     try {   
         const {userId, inboxName} = req.params;
         const { page = 1, limit = 10 } = req.query;
+        console.log(`INBOX REQEUEST userId: ${userId}, inboxName: ${inboxName}, page: ${page}, limit: ${limit}`);
         const skip = (page - 1) * limit;
         let tempInbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase() });
         let count;
@@ -388,7 +389,6 @@ exports.getInbox = async(req, res) => {
         let inbox;
 
         if(inboxName.toLowerCase() === 'drafts') {
-            console.log('iti s drafts');
             tempInbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase() });
             count = tempInbox.drafts.length;
             /**inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase()}) 

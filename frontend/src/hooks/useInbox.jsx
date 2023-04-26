@@ -1,19 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-const useInbox = () => {
+const useInbox = (userId, inboxName, accessToken, currentPage = 1, currentLimit = 10) => {
   const [inbox, setInbox] = useState([]);
   const [loading, setLoading] = useState(false);
   const [paginationData, setPaginationData] = useState({});
   const [statusCode, setStatusCode] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(currentPage);
+  const [limit, setLimit] = useState(currentLimit);
 
-  const getInbox = async (userId, inboxName, accessToken, pageNumber = 1, limit = 10) => {
+  const getInbox = async () => {
     let tempStatusCode = null;
     setLoading(true);
 
-    await fetch(`${process.env.REACT_APP_BACKEND_URL}/${process.env.REACT_APP_BACKEND_VERSION}/user/${userId}/inbox/${inboxName}?page=${pageNumber}&limit=${limit}`, {
+    await fetch(`${process.env.REACT_APP_BACKEND_URL}/${process.env.REACT_APP_BACKEND_VERSION}/user/${userId}/inbox/${inboxName}?page=${page}&limit=${limit}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json', Authorization: `jwt ${accessToken.toString()}` },
     })
@@ -43,6 +43,10 @@ const useInbox = () => {
 
     setLoading(false);
   };
+
+  useEffect(() => {
+    getInbox();
+  }, [userId, inboxName, accessToken, page, limit]);
 
   return {
     getInbox,

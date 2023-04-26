@@ -4,31 +4,23 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import PropTypes from 'prop-types';
 
-function MailPagination({ range = 10, totalCount = 0 }) {
-  const [page, setPage] = React.useState(1);
-  const [refresh, setRefresh] = React.useState(false);
-  const rowsPerPage = range; // number of rows to display per page
-
-  const totalPages = Math.ceil(totalCount / rowsPerPage);
+function MailPagination({ range = 10, totalCount = 0, currentPage, changePage}) {
+  const totalPages = Math.ceil(totalCount / range);
 
   const handlePreviousClick = () => {
-    setPage((prevPage) => prevPage - 1);
+    changePage(currentPage - 1);
   };
 
   const handleNextClick = () => {
-    setPage((prevPage) => prevPage + 1);
+    changePage(currentPage + 1);
   };
 
   if (totalCount <= 0) {
     return null;
   }
-  React.useEffect(() => {
-    setRefresh(!refresh);
-  }, [range, totalCount]);
 
-  const startRow = (page - 1) * rowsPerPage + 1;
-  const endRow = Math.min(page * rowsPerPage, totalCount);
-
+  const startRow = (currentPage - 1) * range + 1;
+  const endRow = Math.min(currentPage * range, totalCount);
   const arrowStyling = { '@media (max-width: 800px)': { height: 20, width: 20 } };
 
   return (
@@ -44,12 +36,12 @@ function MailPagination({ range = 10, totalCount = 0 }) {
         '@media (max-width: 500px)': { fontSize: 10 },
       }}
       >
-        {`${startRow}-${endRow} of ${totalCount}`}
+        {totalCount?(`${startRow}-${endRow} of ${totalCount}`):('')}
       </Typography>
-      <IconButton onClick={handlePreviousClick} disabled={page === 1}>
+      <IconButton onClick={handlePreviousClick} disabled={currentPage === 1}>
         <ChevronLeftIcon sx={arrowStyling} />
       </IconButton>
-      <IconButton onClick={handleNextClick} disabled={page === totalPages}>
+      <IconButton onClick={handleNextClick} disabled={currentPage === totalPages}>
         <ChevronRightIcon sx={arrowStyling} />
       </IconButton>
     </Box>

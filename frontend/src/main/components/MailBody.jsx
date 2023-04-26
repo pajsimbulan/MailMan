@@ -56,13 +56,6 @@ function MailBody({ selectedInbox }) {
   const [selected, setSelected] = useState([]);
   console.log(`refresh: ${refresh}`);
   const {
-    getEmail,
-    email,
-    loading: loadingEmail,
-    statusCode: statusCodeEmail,
-    errorMessage: errorMessageEmail,
-  } = useEmail();
-  const {
     getInbox,
     inbox,
     page,
@@ -73,23 +66,17 @@ function MailBody({ selectedInbox }) {
     loading: loadingInbox,
     statusCode: statusCodeInbox,
     errorMessage: errorMessageInbox,
-  } = useInbox();
-  const {
-    updateDraft,
-    getDraft,
-    postDraft,
-    deleteDrafts,
-    draft,
-    loading: loadingDraft,
-    email: emailDraft,
-    statusCode: statusCodeDraft,
-    errorMessage: errorMessageDraft,
-  } = useDraft();
+  } = useInbox(user.userInfo._id, selectedInbox, user.accessToken);
 
   useEffect(() => {
     console.log('getting inbox');
-    getInbox(user.userInfo._id, selectedInbox, user.accessToken, page, 10);
-  }, [refresh, selectedInbox]);
+    getInbox();
+  }, [selectedInbox]);
+  
+  useEffect(() => {
+    console.log('getting inbox');
+    getInbox();
+  }, [refresh]);
 
   const renderEmails = useMemo(() => {
     if (!inbox || !inbox.emails) return null;
@@ -214,7 +201,7 @@ function MailBody({ selectedInbox }) {
             )
               : null}
           </Box>
-          {inbox && inbox.inboxName === selectedInbox ? <MailPagination range={paginationData.limit} totalCount={paginationData.totalCount} /> : null}
+          {inbox && inbox.inboxName === selectedInbox ? <MailPagination range={paginationData.limit} totalCount={paginationData.totalCount} currentPage={page} changePage={(pageNumber) => {setPage(pageNumber)}}/> : null}
           <EmailDateFilterToggleButton setFilter={(filter) => { setDateFilter(filter); }} />
         </ListItem>
         {renderEmails}
