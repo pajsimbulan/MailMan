@@ -9,6 +9,7 @@ import {
 import StarIcon from '@mui/icons-material/Star';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
+import MoveToInboxIcon from '@mui/icons-material/MoveToInbox';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { useNavigate } from 'react-router';
 import PropTypes from 'prop-types';
@@ -20,6 +21,8 @@ import EmailBlock from '../blocks/MailBodyEmailBlock';
 import EmailContentWindow from './EmailContents';
 import ComposeEmail from './ComposeEmail';
 import useInbox from '../../hooks/useInbox';
+import useEmail from '../../hooks/useEmail';
+import LoadingBackdrop from '../../components/LoadingBackdrop';
 
 const EmailPopOversStyle = { color: 'grey', height: 20, width: 20 };
 
@@ -55,6 +58,7 @@ function MailBody({ selectedInbox }) {
 
   const numCheckboxSelected = useMemo(() => { let count = 0; checkboxArray.forEach((checked) => { if (checked) count += 1; }); return count; }, [checkboxArray]);
 
+  
   const {
     getInbox,
     inbox,
@@ -66,6 +70,18 @@ function MailBody({ selectedInbox }) {
     errorMessage: errorMessageInbox,
   } = useInbox(user.userInfo._id, selectedInbox, user.accessToken);
 
+  const {
+    getEmail,
+    moveEmail,
+    sendEmail,
+    replyEmail,
+    updateEmail,
+    email,
+    loading: loadingEmail,
+    statusCode,
+    errorMessage,
+  } = useEmail();
+  
   useEffect(() => {
     console.log('getting inbox');
     getInbox();
@@ -80,6 +96,7 @@ function MailBody({ selectedInbox }) {
     if (!inbox) return;
     if (!inbox.emails) return;
     if (!inbox.emails) return;
+    
 
     const uniqueEmailIds = new Set();
     let emails;
@@ -150,6 +167,47 @@ function MailBody({ selectedInbox }) {
 
     return null;
   }, [inbox, inbox.inboxName, refresh, selectedInbox, dateFilter, checkboxArray]);
+  
+
+  //moveEmail = async (userId, fromInboxName, toInboxName, emailIdArray, accessToken)
+  const handleInbox = async () => {
+    console.log('moving emails to inbox');
+    if(!inbox) return;
+    if(!inbox.emails) return;
+    if(selectedInbox === 'inbox') return;
+    await moveEmail(user.userInfo._id, selectedInbox, 'inbox', checkboxArray.map((checked, index) => {
+     if(checked) {
+       return inbox.emails[index]._id;
+     }  
+   }), user.accessToken);
+   setRefresh(!refresh);
+ }
+
+  const handleDelete = async () => {
+   console.log('deleting emails');
+   if(!inbox) return;
+   if(!inbox.emails) return;
+   if(selectedInbox === 'trash') return;
+   await moveEmail(user.userInfo._id, selectedInbox, 'trash', checkboxArray.map((checked, index) => {
+    if(checked) {
+      return inbox.emails[index]._id;
+    } 
+  }), user.accessToken);
+  setRefresh(!refresh);
+}
+
+  const handleSpam = async () => {
+    console.log('marking emails as spam');
+    if(!inbox) return;
+    if(!inbox.emails) return;
+    if(selectedInbox === 'spam') return;
+    await moveEmail(user.userInfo._id, selectedInbox, 'spam', checkboxArray.map((checked, index) => {
+      if(checked) {
+        return inbox.emails[index]._id;
+      } 
+    }), user.accessToken);
+    setRefresh(!refresh);
+  }
 
   return (
     <Box sx={{
@@ -164,6 +222,7 @@ function MailBody({ selectedInbox }) {
       pb: 2,
     }}
     >
+      {loadingEmail || loadingInbox ? <LoadingBackdrop show={true} /> : null}
       {openEmail ? (
         <EmailContentWindow
           closeEmail={() => { setOpenEmail(false); setRefresh(!refresh); }}
@@ -207,9 +266,9 @@ function MailBody({ selectedInbox }) {
             <EmailPopOvers item={() => <RefreshIcon sx={EmailPopOversStyle} onClick={() => { setRefresh(!refresh); }} />} name="Refresh" />
             {numCheckboxSelected > 0 ? (
               <>
-                <EmailPopOvers item={() => <DeleteForeverIcon sx={EmailPopOversStyle} onClick={() => { setRefresh(!refresh); }} />} name="Delete" />
-                <EmailPopOvers item={() => <StarIcon sx={EmailPopOversStyle} onClick={() => { setRefresh(!refresh); }} />} name="Starred" />
-                <EmailPopOvers item={() => <ReportGmailerrorredIcon sx={EmailPopOversStyle} onClick={() => { setRefresh(!refresh); }} />} name="Spam" />
+                <EmailPopOvers item={() => <MoveToInboxIcon sx={EmailPopOversStyle} onClick={handleInbox} />} name="Inbox" />
+                <EmailPopOvers item={() => <DeleteForeverIcon sx={EmailPopOversStyle} onClick={handleDelete} />} name="Delete" />
+                <EmailPopOvers item={() => <ReportGmailerrorredIcon sx={EmailPopOversStyle} onClick={handleSpam} />} name="Spam" />
               </>
             )
               : null}
@@ -217,6 +276,12 @@ function MailBody({ selectedInbox }) {
           {inbox && inbox.inboxName === selectedInbox ? <MailPagination range={paginationData.limit} totalCount={paginationData.totalCount} currentPage={page} changePage={(pageNumber) => { setPage(pageNumber); }} /> : null}
           <EmailDateFilterToggleButton setFilter={(filter) => { setDateFilter(filter); }} />
         </ListItem>
+        {inbox && numCheckboxSelected > 0 ? 
+        <ListItem sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
+          <Typography sx={{ color: '#808080',fontSize: 16, bgcolor: '#dceaf7', borderRadius: 10, p: 3, m: 1, '@media (max-width: 900px)': { fontSize: 14.5, p:2.5 }, '@media (max-width: 400px)': { fontSize: 11, p:2}}}>
+            {`Currently selecting ${numCheckboxSelected} conversation${(numCheckboxSelected === 1?'':'s')}` }
+          </Typography>
+        </ListItem> : null}
         {renderEmails}
         {renderNoEmails}
       </List>
