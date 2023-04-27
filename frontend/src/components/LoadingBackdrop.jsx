@@ -1,8 +1,8 @@
 import * as React from 'react';
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
+import {Box, Backdrop, CircularProgress} from '@mui/material';
+import { Typography } from '@mui/material';
 
-function LoadingBackdrop({show}) {
+function LoadingBackdrop({show, message = ""}) {
 
   return (
     <div>
@@ -10,7 +10,14 @@ function LoadingBackdrop({show}) {
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={show}
       >
-        <CircularProgress color="inherit" />
+        <Box sx={{display:'flex', flexDirection:'column', gap:3, justifyContent:'center', alignItems:'center'}}>  
+            {message?
+            <Typography>
+                {message}
+            </Typography>
+            :null}
+            <CircularProgress color="inherit" />
+        </Box>
       </Backdrop>
     </div>
   );

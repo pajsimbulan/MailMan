@@ -376,43 +376,94 @@ exports.deleteDrafts = async(req, res) => {
     }
 }
 
+const getTimeframeFilter = (timeframe) => {
+    const now = new Date();
+  
+    let filter = {};
+  
+    switch (timeframe) {
+      case 'today':
+        filter = {
+          createdAt: {
+            $gte: new Date(now.getFullYear(), now.getMonth(), now.getDate()),
+          },
+        };
+        break;
+      case '3d':
+        filter = {
+          createdAt: {
+            $gte: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000),
+          },
+        };
+        break;
+      case '1w':
+        filter = {
+          createdAt: {
+            $gte: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000),
+          },
+        };
+        break;
+      case '1m':
+        filter = {
+          createdAt: {
+            $gte: new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000),
+          },
+        };
+        break;
+      case 'all':
+      default:
+        filter = {};
+    }
+  
+    return filter;
+  };
+  
 
 exports.getInbox = async(req, res) => {
     try {   
         const {userId, inboxName} = req.params;
-        const { page = 1, limit = 10 } = req.query;
+        const { page = 1, limit = 10, timeframe="all" } = req.query;
         console.log(`INBOX REQEUEST userId: ${userId}, inboxName: ${inboxName}, page: ${page}, limit: ${limit}`);
         const skip = (page - 1) * limit;
-        let tempInbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase() });
         let count;
         let totalPages;
         let inbox;
 
+        const timeframeFilter = getTimeframeFilter(timeframe);
+
         if(inboxName.toLowerCase() === 'drafts') {
-            tempInbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase() });
-            count = tempInbox.drafts.length;
-            /**inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase()}) 
-            .populate('drafts')   
-                .populate({path:'drafts', populate:[{path:'files'}, {path:'photos'}], options: { skip: skip, limit: limit , sort: { createdAt: -1 }}});   */
             inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase()}) 
             .populate({ 
                 path: 'drafts', 
+                match: timeframeFilter,
                 options: { skip: skip, limit: limit, sort: { createdAt: -1 } }
               });
         } else {
-            tempInbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase() });
-            count = tempInbox.emails.length;
-            /**inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase()})
-                .populate('emails')   
-                .populate({path:'emails', populate:[{path:'replies'}, {path:'files'}, {path:'photos'}], options: { skip: skip, limit: limit , sort: { createdAt: -1 }}});**/
             inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase()})
             .populate('emails')   
-            .populate({path:'emails', populate:[{path:'from'}, {path:'to'}], options: { skip: skip, limit: limit , sort: { createdAt: -1 }}});
+            .populate({
+                path:'emails',
+                match: timeframeFilter,
+                populate:[{path:'from'}, {path:'to'}], 
+                options: { skip: skip, limit: limit , sort: { createdAt: -1 }}
+            });
         }
         if (inbox == null) {
             res.status(404).send("Inbox doesn't exist");
             return;
         }
+
+         // Get the reference model based on the inboxName
+         const refModel = inboxName.toLowerCase() === 'drafts' ? 'DraftEmail' : 'Email';
+
+        // Calculate the total count based on the filter
+        count = await mongoose.model(refModel).countDocuments({
+        _id: {
+            $in: inboxName.toLowerCase() === 'drafts' ? inbox.drafts : inbox.emails,
+        },
+        ...timeframeFilter,
+        });
+
         totalPages = Math.ceil(count / limit);
 
         res.status(200).send({  

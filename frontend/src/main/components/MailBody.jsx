@@ -55,6 +55,7 @@ function MailBody({ selectedInbox }) {
   const [openedEmail, setOpenedEmail] = useState(undefined);
   const [dateFilter, setDateFilter] = useState('today');
   const [uniqueEmails, setUniqueEmails] = useState([]);
+  console.log(`dateFilter: [${dateFilter}]`);
 
   const numCheckboxSelected = useMemo(() => { let count = 0; checkboxArray.forEach((checked) => { if (checked) count += 1; }); return count; }, [checkboxArray]);
 
@@ -68,24 +69,17 @@ function MailBody({ selectedInbox }) {
     loading: loadingInbox,
     statusCode: statusCodeInbox,
     errorMessage: errorMessageInbox,
-  } = useInbox(user.userInfo._id, selectedInbox, user.accessToken);
+  } = useInbox(user.userInfo._id, selectedInbox, user.accessToken, dateFilter);
 
   const {
-    getEmail,
     moveEmail,
-    sendEmail,
-    replyEmail,
-    updateEmail,
-    email,
     loading: loadingEmail,
-    statusCode,
-    errorMessage,
   } = useEmail();
   
   useEffect(() => {
     console.log('getting inbox');
     getInbox();
-  }, [refresh]);
+  }, [refresh, dateFilter]);
 
   useEffect(() => {
     console.log('setting checkbox array');
@@ -96,7 +90,7 @@ function MailBody({ selectedInbox }) {
     if (!inbox) return;
     if (!inbox.emails) return;
     if (!inbox.emails) return;
-    
+    console.log(inbox);
 
     const uniqueEmailIds = new Set();
     let emails;
@@ -222,7 +216,8 @@ function MailBody({ selectedInbox }) {
       pb: 2,
     }}
     >
-      {loadingEmail || loadingInbox ? <LoadingBackdrop show={true} /> : null}
+      {loadingEmail  ? <LoadingBackdrop show={true} message={"Moving Emails"}/> : null}
+      {loadingInbox ? <LoadingBackdrop show={true} message={"Fetching Emails"}/> : null}
       {openEmail ? (
         <EmailContentWindow
           closeEmail={() => { setOpenEmail(false); setRefresh(!refresh); }}
@@ -278,7 +273,7 @@ function MailBody({ selectedInbox }) {
         </ListItem>
         {inbox && numCheckboxSelected > 0 ? 
         <ListItem sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
-          <Typography sx={{ color: '#808080',fontSize: 16, bgcolor: '#dceaf7', borderRadius: 10, p: 3, m: 1, '@media (max-width: 900px)': { fontSize: 14.5, p:2.5 }, '@media (max-width: 400px)': { fontSize: 11, p:2}}}>
+          <Typography sx={{ color: '#808080',fontSize: 16, p: 1.5, m: 1, '@media (max-width: 900px)': { fontSize: 14.5,  }, '@media (max-width: 400px)': { fontSize: 11, }}}>
             {`Currently selecting ${numCheckboxSelected} conversation${(numCheckboxSelected === 1?'':'s')}` }
           </Typography>
         </ListItem> : null}

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const useInbox = (userId, inboxName, accessToken, currentPage = 1, currentLimit = 10) => {
+const useInbox = (userId, inboxName, accessToken, timeframe, currentPage = 1, currentLimit = 10) => {
   const [inbox, setInbox] = useState([]);
   const [loading, setLoading] = useState(false);
   const [paginationData, setPaginationData] = useState({});
@@ -13,7 +13,7 @@ const useInbox = (userId, inboxName, accessToken, currentPage = 1, currentLimit 
     let tempStatusCode = null;
     setLoading(true);
 
-    await fetch(`${process.env.REACT_APP_BACKEND_URL}/${process.env.REACT_APP_BACKEND_VERSION}/user/${userId}/inbox/${inboxName}?page=${page}&limit=${limit}`, {
+    await fetch(`${process.env.REACT_APP_BACKEND_URL}/${process.env.REACT_APP_BACKEND_VERSION}/user/${userId}/inbox/${inboxName}?page=${page}&limit=${limit}&timeframe=${timeframe}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json', Authorization: `jwt ${accessToken.toString()}` },
     })
@@ -27,6 +27,7 @@ const useInbox = (userId, inboxName, accessToken, currentPage = 1, currentLimit 
       })
       .then((jsondata) => {
         setInbox(jsondata.inbox);
+        console.log(`jsondata.pagination: ${JSON.stringify(jsondata.pagination)}`);
         setPaginationData({
           ...jsondata.pagination,
           page: parseInt(jsondata.pagination.page, 10),
