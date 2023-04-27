@@ -22,7 +22,6 @@ function Mainpage() {
   const [inbox, setSelectedInbox] = React.useState('inbox');
   const isSmallScreen = useMediaQuery('(max-width:800px)');
 
-
   console.log(`main page render inbpx: ${inbox}`);
   return (
     <ThemeProvider theme={theme}>

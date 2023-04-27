@@ -4,7 +4,9 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import PropTypes from 'prop-types';
 
-function MailPagination({ range = 10, totalCount = 0, currentPage, changePage}) {
+function MailPagination({
+  range = 10, totalCount = 0, currentPage, changePage,
+}) {
   const totalPages = Math.ceil(totalCount / range);
 
   const handlePreviousClick = () => {
@@ -36,7 +38,7 @@ function MailPagination({ range = 10, totalCount = 0, currentPage, changePage}) 
         '@media (max-width: 500px)': { fontSize: 10 },
       }}
       >
-        {totalCount?(`${startRow}-${endRow} of ${totalCount}`):('')}
+        {totalCount ? (`${startRow}-${endRow} of ${totalCount}`) : ('')}
       </Typography>
       <IconButton onClick={handlePreviousClick} disabled={currentPage === 1}>
         <ChevronLeftIcon sx={arrowStyling} />

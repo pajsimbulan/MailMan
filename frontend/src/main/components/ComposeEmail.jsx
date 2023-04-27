@@ -4,7 +4,7 @@
 import * as React from 'react';
 import {
   Avatar, Divider, useMediaQuery,
-  Zoom, Box, Button, TextField, Dialog, IconButton, Typography, CircularProgress, Skeleton
+  Zoom, Box, Button, TextField, Dialog, IconButton, Typography, CircularProgress, Skeleton,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
@@ -272,7 +272,7 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail, draftId = '' }) {
                 fontSize: '12px',
                 '@media (max-width: 800px)': { fontSize: '10px' },
               }}
-              > 
+              >
                 {`<${user.userInfo.email}>`}
               </Typography>
             </Box>
@@ -334,20 +334,22 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail, draftId = '' }) {
               >
                 To:
               </Typography>
-              {draftId && loading?  <Skeleton animation="wave" /> : 
-              <TextField
-                name="to"
-                id="to"
-                fullWidth
-                value={toValue}
-                onChange={(event) => {
-                  setToValue(event.target.value);
-                }}
-                inputProps={{
-                  style: { fontSize: isLessThan800 ? '10px' : (isLessThan1000 ? '12px' : '14px') },
-                }}
-                sx={{ '& fieldset': { border: 'none' } }}
-              /> }
+              {draftId && loading ? <Skeleton animation="wave" />
+                : (
+                  <TextField
+                    name="to"
+                    id="to"
+                    fullWidth
+                    value={toValue}
+                    onChange={(event) => {
+                      setToValue(event.target.value);
+                    }}
+                    inputProps={{
+                      style: { fontSize: isLessThan800 ? '10px' : (isLessThan1000 ? '12px' : '14px') },
+                    }}
+                    sx={{ '& fieldset': { border: 'none' } }}
+                  />
+                ) }
             </Box>
             <Divider />
             <Box sx={{
@@ -366,40 +368,46 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail, draftId = '' }) {
               >
                 Subject:
               </Typography>
-              {draftId && loading?  <Skeleton animation="wave" /> : <TextField
-                inputProps={{
-                  style: { fontSize: isLessThan800 ? '10px' : (isLessThan1000 ? '12px' : '14px') },
-                }}
-                name="subject"
-                id="subject"
-                fullWidth
-                value={subjectValue}
-                onChange={(event) => {
-                  setSubjectValue(event.target.value);
-                }}
-                sx={{ '& fieldset': { border: 'none' } }}
-              />}
+              {draftId && loading ? <Skeleton animation="wave" /> : (
+                <TextField
+                  inputProps={{
+                    style: { fontSize: isLessThan800 ? '10px' : (isLessThan1000 ? '12px' : '14px') },
+                  }}
+                  name="subject"
+                  id="subject"
+                  fullWidth
+                  value={subjectValue}
+                  onChange={(event) => {
+                    setSubjectValue(event.target.value);
+                  }}
+                  sx={{ '& fieldset': { border: 'none' } }}
+                />
+              )}
             </Box>
             <Divider />
             <Box sx={{
               display: 'flex', flexGrow: 1, flexDirection: 'column', bgcolor: '#ECEFF1', borderRadius: 5, p: 2, overflow: 'auto',
             }}
-            > {draftId && loading? <CircularProgress sx={{ alignSelf: 'center' }} /> : 
-              <TextField
-                inputProps={{
-                  style: { fontSize: isLessThan800 ? '10px' : (isLessThan1000 ? '12px' : '14px') },
-                }}
-                name="contents"
-                id="contents"
-                value={contentsValue}
-                onChange={(event) => {
-                  setContentsValue(event.target.value);
-                }}
-                fullWidth
-                multiline
-                rows={12}
-                sx={{ '& fieldset': { border: 'none' } }}
-              /> }
+            >
+              {' '}
+              {draftId && loading ? <CircularProgress sx={{ alignSelf: 'center' }} />
+                : (
+                  <TextField
+                    inputProps={{
+                      style: { fontSize: isLessThan800 ? '10px' : (isLessThan1000 ? '12px' : '14px') },
+                    }}
+                    name="contents"
+                    id="contents"
+                    value={contentsValue}
+                    onChange={(event) => {
+                      setContentsValue(event.target.value);
+                    }}
+                    fullWidth
+                    multiline
+                    rows={12}
+                    sx={{ '& fieldset': { border: 'none' } }}
+                  />
+                ) }
               {binaryPhotos.length <= 0 ? null : (
                 binaryPhotos.map((photo, index) => (
                   <Box sx={{ maxWidth: '100%', overflow: 'auto', padding: '20px' }}>

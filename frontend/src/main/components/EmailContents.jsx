@@ -5,7 +5,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import {
-  Avatar, useMediaQuery, Zoom, Box, CircularProgress
+  Avatar, useMediaQuery, Zoom, Box, CircularProgress,
 } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
@@ -37,10 +37,10 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
     statusCode,
     errorMessage,
   } = useEmail();
- 
+
   const handleClose = async () => {
     console.log('handleClose called');
-    if(email.starred !== starred) {
+    if (email.starred !== starred) {
       await updateEmail(user.userInfo._id, email._id, starred, user.accessToken);
     }
     setOpen(false);
@@ -108,11 +108,11 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
         width: '100%', display: 'flex', px: 1, my: 1, flexDirection: 'row',
       }}
       >
-        <Avatar 
-        src={email.from && email.from.avatar?`data:image/jpeg;base64,${intArrayToBase64String(email.from.avatar.data)}`:null }
-        sx={{
-          height: 50, width: 50, mr: 1.5, my: 'auto', '@media (max-width: 700px)': { mx: 0.5 },
-        }}
+        <Avatar
+          src={email.from && email.from.avatar ? `data:image/jpeg;base64,${intArrayToBase64String(email.from.avatar.data)}` : null}
+          sx={{
+            height: 50, width: 50, mr: 1.5, my: 'auto', '@media (max-width: 700px)': { mx: 0.5 },
+          }}
         />
         <Box sx={{
           display: 'flex',
@@ -122,7 +122,7 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
         }}
         >
           <Typography sx={{ fontSize: '12px', fontWeight: 'bold' }}>
-          {email.from.firstName}
+            {email.from.firstName}
           </Typography>
           <Typography sx={{ fontSize: '10px' }}>
             {`<${email.from.email}>`}
@@ -160,15 +160,15 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
         width: '33.33%', display: 'flex', px: 1, flexDirection: 'row',
       }}
       >
-        <Avatar 
-        src={email.from && email.from.avatar?`data:image/jpeg;base64,${intArrayToBase64String(email.from.avatar.data)}`:null }
-        sx={{
-          mr: 2,
-          height: 60,
-          width: 60,
-          my: 'auto',
-          '@media (max-width: 1000px)': { height: 50, width: 50, mr: 1.5 },
-        }}
+        <Avatar
+          src={email.from && email.from.avatar ? `data:image/jpeg;base64,${intArrayToBase64String(email.from.avatar.data)}` : null}
+          sx={{
+            mr: 2,
+            height: 60,
+            width: 60,
+            my: 'auto',
+            '@media (max-width: 1000px)': { height: 50, width: 50, mr: 1.5 },
+          }}
         />
         <Box sx={{ display: 'flex', flexDirection: 'column', my: 'auto' }}>
           <Typography
@@ -285,19 +285,25 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
           }}
           >
             {
-              loading? <CircularProgress sx={{ alignSelf: 'center' }} /> :
-            
-            <Typography sx={{
-              '@media (max-width: 1000px)': { fontSize: '12px' },
-              '@media (max-width: 800px)': { fontSize: '10px' },
-            }}
-            >
-              {email.contents}
+              loading ? <CircularProgress sx={{ alignSelf: 'center' }} />
 
-            </Typography> }
+                : (
+                  <Typography sx={{
+                    '@media (max-width: 1000px)': { fontSize: '12px' },
+                    '@media (max-width: 800px)': { fontSize: '10px' },
+                  }}
+                  >
+                    {email.contents}
+
+                  </Typography>
+                )
+}
             {fetchedEmail && fetchedEmail.photos.length > 0 ? (
               fetchedEmail.photos.map((photo) => (
-                <Box sx={{ maxWidth: '100%', overflow: 'auto', padding: '20px', resize:"both" }}>
+                <Box sx={{
+                  maxWidth: '100%', overflow: 'auto', padding: '20px', resize: 'both',
+                }}
+                >
                   <img src={`data:image/jpeg;base64,${intArrayToBase64String(photo.data.data)}`} style={{ maxWidth: '100%' }} />
                 </Box>
               ))
@@ -311,9 +317,7 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
                 />
               ) : null}
           </Box>
-          {fetchedEmail && fetchedEmail.replies? fetchedEmail.replies.map((reply) => 
-          <EmailReplyBlock key={reply._id} reply={reply}/>) : null
-          }
+          {fetchedEmail && fetchedEmail.replies ? fetchedEmail.replies.map((reply) => <EmailReplyBlock key={reply._id} reply={reply} />) : null}
           {replying ? null
             : (
               <Box sx={{
@@ -335,13 +339,14 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
             ) }
           {/** END of Main Email */}
           {/** Reply Email */}
-          {replying && fetchedEmail &&  fetchedEmail._id? (
+          {replying && fetchedEmail && fetchedEmail._id ? (
             <EmailReplying
-              emailId={(fetchedEmail && fetchedEmail._id? fetchedEmail._id : null)}
-              submitReply={(value) => { 
+              emailId={(fetchedEmail && fetchedEmail._id ? fetchedEmail._id : null)}
+              submitReply={(value) => {
                 console.log(`submitReply called with ${value}`);
-                setReplying(false); 
-                setReplyingValue(value); }}
+                setReplying(false);
+                setReplyingValue(value);
+              }}
               exitReply={() => { setReplying(false); }}
             />
           )

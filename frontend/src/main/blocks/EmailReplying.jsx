@@ -7,11 +7,11 @@ import {
 import PropTypes from 'prop-types';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import ImageIcon from '@mui/icons-material/Image';
+import CircularProgress from '@mui/material/CircularProgress';
 import { UserContext } from '../../App';
 import { arrayBufferToBase64 } from '../../utils/DatatoBinary64';
 import FileChip from '../components/FileChip';
 import useEmail from '../../hooks/useEmail';
-import CircularProgress from '@mui/material/CircularProgress';
 
 const iconButtonStyling = { height: 25, width: 25, '@media (max-width: 800px)': { height: 20, width: 20 } };
 const MAX_FILE_SIZE = 13000000;
@@ -23,7 +23,7 @@ function EmailReplying({ emailId, submitReply, exitReply }) {
   const [value, setValue] = React.useState();
   const [binaryFiles, setBinaryFiles] = React.useState([]);
   const [binaryPhotos, setBinaryPhotos] = React.useState([]);
-  const { replyEmail, loading, statusCode, } = useEmail();
+  const { replyEmail, loading, statusCode } = useEmail();
 
   const downloadFile = (file) => {
     const dataUrl = `data:application/octet-stream;base64,${file.data}`;
@@ -48,10 +48,10 @@ function EmailReplying({ emailId, submitReply, exitReply }) {
      */
     console.log('value: ', value);
     await replyEmail(user.userInfo.email, user.userInfo.firstName, emailId, value, binaryFiles, binaryPhotos, user.accessToken);
-    console.log(`finish reply email`);
+    console.log('finish reply email');
     console.log('value after: ', value);
     submitReply(value);
-  }
+  };
 
   const handleFileChange = async (event) => {
     const { files } = event.target;
@@ -145,60 +145,62 @@ function EmailReplying({ emailId, submitReply, exitReply }) {
             <CloseIcon sx={iconButtonStyling} />
           </IconButton>
         </Box>
-        {loading ? <CircularProgress /> :        <TextField
-          multiline
-          onChange={(event) => { setValue(event.target.value); }}
-          inputProps={{
-            style: { fontSize: isLessThan800 ? '10px' : (isLessThan1000 ? '12px' : '14px') },
-          }}
-          autoFocus
-          sx={{ '& fieldset': { border: 'none' } }}
-        />}
+        {loading ? <CircularProgress /> : (
+          <TextField
+            multiline
+            onChange={(event) => { setValue(event.target.value); }}
+            inputProps={{
+              style: { fontSize: isLessThan800 ? '10px' : (isLessThan1000 ? '12px' : '14px') },
+            }}
+            autoFocus
+            sx={{ '& fieldset': { border: 'none' } }}
+          />
+        )}
         {binaryPhotos.length <= 0 ? null : (
-                binaryPhotos.map((photo, index) => (
-                  <Box sx={{ maxWidth: '100%', overflow: 'auto', padding: '20px' }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'end' }}>
-                      <IconButton
-                        sx={{
-                          height: 20, width: 20, '@media (max-width: 800px)': { height: 15, width: 15 }, position: 'relative', right: 0, bottom: 0,
-                        }}
-                        edge="start"
-                        color="inherit"
-                        onClick={() => {
-                          setBinaryPhotos((files) => {
-                            const toRemove = files[index].name;
-                            const newFiles = files.filter((files) => files.name !== toRemove);
-                            return newFiles;
-                          });
-                        }}
-                        aria-label="close"
-                      >
-                        <CloseIcon sx={{
-                          color: 'grey', height: 20, width: 20, '@media (max-width: 800px)': { height: 15, width: 15 },
-                        }}
-                        />
-                      </IconButton>
-                    </Box>
-                    <img src={`data:image/jpeg;base64,${photo.data}`} style={{ maxWidth: '100%' }} />
-                  </Box>
-                ))
-              )}
-              {binaryFiles.length > 0
-                ? (
-                  <FileChip
-                    files={binaryFiles.map((file) => ({ name: file.name, type: file.type }))}
-                    fileType={binaryFiles.map((file) => file.type)}
-                    fileNames={binaryFiles.map((file) => file.name)}
-                    onClick={(index) => { downloadFile(binaryFiles[index]); }}
-                    onDelete={(index) => {
-                      setBinaryFiles((files) => {
-                        const toRemove = files[index].name;
-                        const newFiles = files.filter((files) => files.name !== toRemove);
-                        return newFiles;
-                      });
-                    }}
+          binaryPhotos.map((photo, index) => (
+            <Box sx={{ maxWidth: '100%', overflow: 'auto', padding: '20px' }}>
+              <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+                <IconButton
+                  sx={{
+                    height: 20, width: 20, '@media (max-width: 800px)': { height: 15, width: 15 }, position: 'relative', right: 0, bottom: 0,
+                  }}
+                  edge="start"
+                  color="inherit"
+                  onClick={() => {
+                    setBinaryPhotos((files) => {
+                      const toRemove = files[index].name;
+                      const newFiles = files.filter((files) => files.name !== toRemove);
+                      return newFiles;
+                    });
+                  }}
+                  aria-label="close"
+                >
+                  <CloseIcon sx={{
+                    color: 'grey', height: 20, width: 20, '@media (max-width: 800px)': { height: 15, width: 15 },
+                  }}
                   />
-                ) : null}
+                </IconButton>
+              </Box>
+              <img src={`data:image/jpeg;base64,${photo.data}`} style={{ maxWidth: '100%' }} />
+            </Box>
+          ))
+        )}
+        {binaryFiles.length > 0
+          ? (
+            <FileChip
+              files={binaryFiles.map((file) => ({ name: file.name, type: file.type }))}
+              fileType={binaryFiles.map((file) => file.type)}
+              fileNames={binaryFiles.map((file) => file.name)}
+              onClick={(index) => { downloadFile(binaryFiles[index]); }}
+              onDelete={(index) => {
+                setBinaryFiles((files) => {
+                  const toRemove = files[index].name;
+                  const newFiles = files.filter((files) => files.name !== toRemove);
+                  return newFiles;
+                });
+              }}
+            />
+          ) : null}
       </Box>
       <Box sx={{
         display: 'flex', justifyContent: 'space-between', my: 1, mx: 5,
@@ -245,18 +247,18 @@ function EmailReplying({ emailId, submitReply, exitReply }) {
           </Button>
         </Box>
         <Box>
-        <Button
-          size={isLessThan800 ? 'small' : 'medium'}
-          type="submit"
-          variant="contained"
-          onClick={() => { onSubmit(); }}
-          sx={{
-            border: 'solid', borderRadius: 4, borderWidth: 0, textTransform: 'none',
-          }}
-        >
-          Send
-        </Button>
-          </Box>
+          <Button
+            size={isLessThan800 ? 'small' : 'medium'}
+            type="submit"
+            variant="contained"
+            onClick={() => { onSubmit(); }}
+            sx={{
+              border: 'solid', borderRadius: 4, borderWidth: 0, textTransform: 'none',
+            }}
+          >
+            Send
+          </Button>
+        </Box>
       </Box>
     </Box>
   );

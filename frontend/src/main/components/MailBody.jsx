@@ -19,9 +19,7 @@ import MailPagination from './MailPagination';
 import EmailBlock from '../blocks/MailBodyEmailBlock';
 import EmailContentWindow from './EmailContents';
 import ComposeEmail from './ComposeEmail';
-import useEmail from '../../hooks/useEmail';
 import useInbox from '../../hooks/useInbox';
-import useDraft from '../../hooks/useDraft';
 
 const EmailPopOversStyle = { color: 'grey', height: 20, width: 20 };
 
@@ -53,15 +51,15 @@ function MailBody({ selectedInbox }) {
   const [openDrafts, setOpenDrafts] = useState(false);
   const [openedEmail, setOpenedEmail] = useState(undefined);
   const [dateFilter, setDateFilter] = useState('today');
-  const [selected, setSelected] = useState([]);
-  console.log(`refresh: ${refresh}`);
+  const [uniqueEmails, setUniqueEmails] = useState([]);
+
+  const numCheckboxSelected = useMemo(() => { let count = 0; checkboxArray.forEach((checked) => { if (checked) count += 1; }); return count; }, [checkboxArray]);
+
   const {
     getInbox,
     inbox,
     page,
-    limit,
     setPage,
-    setLimit,
     paginationData = { totalCount: 0 },
     loading: loadingInbox,
     statusCode: statusCodeInbox,
@@ -71,21 +69,23 @@ function MailBody({ selectedInbox }) {
   useEffect(() => {
     console.log('getting inbox');
     getInbox();
-  }, [selectedInbox]);
-  
-  useEffect(() => {
-    console.log('getting inbox');
-    getInbox();
   }, [refresh]);
 
-  const renderEmails = useMemo(() => {
-    if (!inbox || !inbox.emails) return null;
-    console.log(inbox);
-    console.log(`paginationDatas: ${paginationData.page} ${paginationData.limit} ${paginationData.totalCount} ${paginationData.totalPages}`);
+  useEffect(() => {
+    console.log('setting checkbox array');
+    setCheckBoxArray(new Array(paginationData.totalCount).fill(false));
+  }, [inbox, inbox.inboxName, selectedInbox]);
+
+  useEffect(() => {
+    if (!inbox) return;
+    if (!inbox.emails) return;
+    if (!inbox.emails) return;
+
     const uniqueEmailIds = new Set();
-    let uniqueEmails;
+    let emails;
+
     if (inbox.inboxName === 'drafts') {
-      uniqueEmails = inbox.drafts.filter((draft) => {
+      emails = inbox.drafts.filter((draft) => {
         if (!uniqueEmailIds.has(draft._id)) {
           uniqueEmailIds.add(draft._id);
           return true;
@@ -93,7 +93,7 @@ function MailBody({ selectedInbox }) {
         return false;
       });
     } else {
-      uniqueEmails = inbox.emails.filter((email) => {
+      emails = inbox.emails.filter((email) => {
         if (!uniqueEmailIds.has(email._id)) {
           uniqueEmailIds.add(email._id);
           return true;
@@ -102,23 +102,37 @@ function MailBody({ selectedInbox }) {
       });
     }
 
-    return uniqueEmails.map((email) => (
+    setUniqueEmails(emails);
+    setCheckBoxArray(new Array(emails.length).fill(false));
+  }, [inbox, selectedInbox]);
+
+  const renderEmails = useMemo(() => {
+    if (!uniqueEmails) return null;
+
+    return uniqueEmails.map((email, index) => (
       <ListItem sx={{ width: '100%' }} key={email._id}>
         <EmailBlock
           email={email}
           selected={(email) => {
             setOpenedEmail(email);
-
             if (inbox.inboxName === 'drafts') {
               setOpenDrafts(true);
             } else {
               setOpenEmail(true);
             }
           }}
+          setCheck={(checkValue) => {
+            setCheckBoxArray((prevArray) => {
+              const tempArray = [...prevArray];
+              tempArray[index] = checkValue;
+              return tempArray;
+            });
+          }}
+          allChecked={checkboxArray[index]}
         />
       </ListItem>
     ));
-  }, [inbox, inbox.inboxName, refresh, selectedInbox]);
+  }, [uniqueEmails, refresh, selectedInbox, checkboxArray]);
 
   const renderNoEmails = useMemo(() => {
     if (inbox && inbox.inboxName === selectedInbox && paginationData.totalCount <= 0) {
@@ -135,7 +149,7 @@ function MailBody({ selectedInbox }) {
     }
 
     return null;
-  }, [inbox, inbox.inboxName, refresh, selectedInbox, dateFilter]);
+  }, [inbox, inbox.inboxName, refresh, selectedInbox, dateFilter, checkboxArray]);
 
   return (
     <Box sx={{
@@ -146,7 +160,7 @@ function MailBody({ selectedInbox }) {
       borderRadius: 10,
       alignItems: 'stretch',
       justifyContent: 'center',
-      overflow: 'scroll',
+
       pb: 2,
     }}
     >
@@ -185,14 +199,13 @@ function MailBody({ selectedInbox }) {
                 color: 'grey', transform: 'scale(0.8)', ml: 0.5, '@media (max-width: 800px)': { transform: 'scale(0.65)' },
               }}
               onChange={(event) => {
-                setCheckBoxArray(new Array(size.current).fill(event.target.checked));
-                setSelected(
-                  (selected) => { selected.push(1); console.log(selected); return selected; },
-                );
+                if (inbox && paginationData && paginationData.totalCount > 0) {
+                  setCheckBoxArray(new Array(paginationData.totalCount).fill(event.target.checked));
+                }
               }}
             />
             <EmailPopOvers item={() => <RefreshIcon sx={EmailPopOversStyle} onClick={() => { setRefresh(!refresh); }} />} name="Refresh" />
-            {selected.length > 0 ? (
+            {numCheckboxSelected > 0 ? (
               <>
                 <EmailPopOvers item={() => <DeleteForeverIcon sx={EmailPopOversStyle} onClick={() => { setRefresh(!refresh); }} />} name="Delete" />
                 <EmailPopOvers item={() => <StarIcon sx={EmailPopOversStyle} onClick={() => { setRefresh(!refresh); }} />} name="Starred" />
@@ -201,7 +214,7 @@ function MailBody({ selectedInbox }) {
             )
               : null}
           </Box>
-          {inbox && inbox.inboxName === selectedInbox ? <MailPagination range={paginationData.limit} totalCount={paginationData.totalCount} currentPage={page} changePage={(pageNumber) => {setPage(pageNumber)}}/> : null}
+          {inbox && inbox.inboxName === selectedInbox ? <MailPagination range={paginationData.limit} totalCount={paginationData.totalCount} currentPage={page} changePage={(pageNumber) => { setPage(pageNumber); }} /> : null}
           <EmailDateFilterToggleButton setFilter={(filter) => { setDateFilter(filter); }} />
         </ListItem>
         {renderEmails}

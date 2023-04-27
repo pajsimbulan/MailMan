@@ -106,7 +106,7 @@ const useEmail = () => {
     setLoading(false);
   };
 
-  const updateEmail = async ( userId, emailId, starred, accessToken) => {
+  const updateEmail = async (userId, emailId, starred, accessToken) => {
     let tempStatusCode = null;
     setLoading(true);
     await fetch(`${process.env.REACT_APP_BACKEND_URL}/${process.env.REACT_APP_BACKEND_VERSION}/email`, {

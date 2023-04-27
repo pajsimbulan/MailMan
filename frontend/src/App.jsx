@@ -27,7 +27,7 @@ export default function App() {
     avatar: undefined,
   };
 
-  if(accessToken === ''&& localStorage.getItem('mailman_accesstoken')) {
+  if (accessToken === '' && localStorage.getItem('mailman_accesstoken')) {
     accessToken = localStorage.getItem('mailman_accesstoken');
     userInfo = JSON.parse(localStorage.getItem('mailman_userinfo'));
   }

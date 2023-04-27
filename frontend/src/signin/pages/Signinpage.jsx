@@ -55,7 +55,7 @@ function Signinpage() {
         }
       }
       user.accessToken = accessToken;
-      if(user.userInfo.avatar) {
+      if (user.userInfo.avatar) {
         user.userInfo.avatar = intArrayToBase64String(user.userInfo.avatar.data);
       }
       localStorage.setItem('mailman_accesstoken', accessToken);

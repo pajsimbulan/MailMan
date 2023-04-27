@@ -10,17 +10,19 @@ import hourOfDay from '../../utils/DateHOD';
 import parseDate from '../../utils/DateParser';
 import { UserContext } from '../../App';
 import { intArrayToBase64String } from '../../utils/DatatoBinary64';
-import  useEmail  from '../../hooks/useEmail';
+import useEmail from '../../hooks/useEmail';
 
-function EmailBlock({ email, selected }) {
+function EmailBlock({
+  email, selected, setCheck, allChecked,
+}) {
   const [starred, setStarred] = React.useState(email.starred);
   const user = React.useContext(UserContext);
-  const { updateEmail, loading, statusCode  } = useEmail();
+  const { updateEmail, loading, statusCode } = useEmail();
 
   React.useEffect(() => {
     async function updateStarred() {
-    await updateEmail(user.userInfo._id, email._id, starred, user.accessToken);
-    console.log(`statusCode: ${statusCode}`);
+      await updateEmail(user.userInfo._id, email._id, starred, user.accessToken);
+      console.log(`statusCode: ${statusCode}`);
     }
     updateStarred();
   }, [starred]);
@@ -46,7 +48,8 @@ function EmailBlock({ email, selected }) {
     >
       <Checkbox
         onClick={(event) => { event.stopPropagation(); }}
-        onChange={(event) => { event.stopPropagation(); }}
+        onChange={(event) => { event.stopPropagation(); setCheck(event.target.checked); }}
+        checked={allChecked}
         sx={{
           my: 'auto',
           transform: 'scale(0.8)',
@@ -62,7 +65,7 @@ function EmailBlock({ email, selected }) {
       >
         {starred ? <StarIcon sx={{ height: 25, width: 25, '@media (max-width: 800px)': { height: 20, width: 20 } }} /> : <StarBorderIcon sx={{ height: 25, width: 25, '@media (max-width: 800px)': { height: 20, width: 20 } }} />}
       </IconButton>
-      <Avatar alt={email.from} src={email.from && email.from.avatar? `data:image/jpeg;base64,${intArrayToBase64String(email.from.avatar.data)}` : null } sx={{ my: 'auto', height: 30, width: 30 }} />
+      <Avatar alt={`${email.from.firstName}_avatar`} src={email.from && email.from.avatar ? `data:image/jpeg;base64,${intArrayToBase64String(email.from.avatar.data)}` : null} sx={{ my: 'auto', height: 30, width: 30 }} />
       <Box
         component="div"
         sx={{
