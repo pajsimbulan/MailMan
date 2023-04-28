@@ -4,7 +4,7 @@ import {
   useContext, useState, useEffect, useMemo,
 } from 'react';
 import {
-  List, Box, ListItem, Checkbox, Typography,
+  List, Box, ListItem, Checkbox, Typography, InputLabel, FormControl, NativeSelect
 } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -55,14 +55,15 @@ function MailBody({ selectedInbox, query }) {
   const [openedEmail, setOpenedEmail] = useState(undefined);
   const [dateFilter, setDateFilter] = useState('today');
   const [uniqueEmails, setUniqueEmails] = useState([]);
-
   const numCheckboxSelected = useMemo(() => { let count = 0; checkboxArray.forEach((checked) => { if (checked) count += 1; }); return count; }, [checkboxArray]);
 
   const {
     getInbox,
     inbox,
     page,
+    limit,
     setPage,
+    setLimit,
     paginationData = { totalCount: 0 },
     loading: loadingInbox,
     statusCode: statusCodeInbox,
@@ -290,6 +291,29 @@ function MailBody({ selectedInbox, query }) {
           ) : null}
         {renderEmails}
         {renderNoEmails}
+        <ListItem sx={{ display:'flex', flexDirection:'row', flexGrow:1, justifyContent:'end'}}>
+          <Box sx={{width:100}}>
+            <FormControl fullWidth>
+            <InputLabel variant="standard" htmlFor="uncontrolled-native">
+              Rows Per Page
+            </InputLabel>
+            <NativeSelect
+              defaultValue={limit ? limit : 10}
+              onChange={(event) => {setLimit(event.target.value)}}
+              inputProps={{
+                name: 'age',
+                id: 'uncontrolled-native',
+              }}
+            >
+              <option value={1}>1</option>
+              <option value={10}>10</option>
+              <option value={20}>20</option>
+              <option value={50}>50</option>
+              <option value={100}>100</option>
+            </NativeSelect>
+          </FormControl>
+          </Box>
+        </ListItem>
       </List>
     </Box>
   );

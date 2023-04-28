@@ -12,7 +12,6 @@ const useInbox = (userId, inboxName, accessToken, timeframe, search = '', curren
   const getInbox = async () => {
     let tempStatusCode = null;
     setLoading(true);
-
     await fetch(`${process.env.REACT_APP_BACKEND_URL}/${process.env.REACT_APP_BACKEND_VERSION}/user/${userId}/inbox/${inboxName}?page=${page}&limit=${limit}&timeframe=${timeframe}&search=${search}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json', Authorization: `jwt ${accessToken.toString()}` },
