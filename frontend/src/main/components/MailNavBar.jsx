@@ -13,6 +13,7 @@ import ReportRoundedIcon from '@mui/icons-material/ReportRounded';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 import ComposeEmail from './ComposeEmail';
 import SuccessActionAlert from '../../components/SuccessAlert';
 import ErrorActionAlert from '../../components/ErrorAlert';
@@ -35,6 +36,7 @@ const TypographyStyling = {
 const inboxes = ['inbox', 'sent', 'starred', 'drafts', 'all emails', 'trash', 'spam'];
 
 function MailNavBar({ currentInbox, selectedInbox, onSelect = undefined }) {
+  const navigate = useNavigate();
   const [selectedIndex, setSelectedIndex] = React.useState(inboxes.indexOf(currentInbox));
   const [composeEmail, setComposeEmail] = React.useState(false);
   const [openSuccess, setOpenSuccess] = React.useState(false);
@@ -113,12 +115,24 @@ function MailNavBar({ currentInbox, selectedInbox, onSelect = undefined }) {
         <Avatar
           src="postman.jpg"
           sx={{
-            width: 50, height: 50, background: 'transparent', my: 'auto', mx: 'auto', mb: 2,
+            width: 50, height: 50, background: 'transparent', my: 'auto', mx: 'auto', mb: 2, '&:hover': { cursor: 'pointer' },
           }}
+          onClick={() => { navigate('/main'); }}
         />
-        <Typography sx={{
-          fontWeight: 'bold', fontSize: '20px', color: '#2E3D54', letterSpacing: 8, my: 'auto', overflow: 'hidden', mx: 'auto', '@media (max-width: 1300px)': { fontSize: 14, letterSpacing: 4 }, '@media (max-width: 1000px)': { fontSize: 12, letterSpacing: 2 },
-        }}
+        <Typography
+          onClick={() => { navigate('/main'); }}
+          sx={{
+            fontWeight: 'bold',
+            fontSize: '20px',
+            color: '#2E3D54',
+            letterSpacing: 8,
+            my: 'auto',
+            overflow: 'hidden',
+            mx: 'auto',
+            '&:hover': { cursor: 'pointer' },
+            '@media (max-width: 1300px)': { fontSize: 14, letterSpacing: 4 },
+            '@media (max-width: 1000px)': { fontSize: 12, letterSpacing: 2 },
+          }}
         >
           MAILMAN
         </Typography>

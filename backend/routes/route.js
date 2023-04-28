@@ -34,7 +34,6 @@ exports.getEmail = async (req, res) => {
 exports.updateEmail = async(req, res) => {
     try {
         const {userId, emailId, starred} = req.body;   
-        console.log(`Update email request: ${emailId} ${starred}`);
         const email = await emaildb.findOne({_id: emailId}); 
         if(email == null) {
             res.status(404).send("Email doesn't exist");
@@ -128,7 +127,6 @@ exports.sendEmail = async(req, res) => {
         }
         await fromInbox.save();
         await userAllEmails.save();
-        console.log(`Email sent successfully: ${savedEmail}`);
         res.status(201).send({message:"Email sent successfully", email: savedEmail});
     } catch (error) {
         console.log(error.message);
@@ -184,7 +182,6 @@ exports.createDraft = async(req, res) => {
         if(files.length > 0) {
             var fileIds = [];
             files.forEach((file) => {
-                console.log(`filename: ${file.name} filedata: ${file.data}`);
                 let newFile = new filedb({name: file.name, data: file.data});
                 newFile.save();
                 fileIds.push(newFile._id);
@@ -207,7 +204,6 @@ exports.createDraft = async(req, res) => {
         const savedDraftEmail = await draftEmail.save();
         drafts.drafts.push(savedDraftEmail._id);
         await drafts.save();
-        console.log(`savedDraftEmail: ${savedDraftEmail}`);
         res.status(201).send(savedDraftEmail);
     } catch (error) {
         console.log(error.message);
@@ -283,7 +279,6 @@ exports.getDraft = async(req, res) => {
             res.status(404).send("Draft Email doesn't exist");
             return;
         }
-        console.log(`returning draftEmail: ${draftEmail}`);
         res.status(200).send(draftEmail);
     } catch (error) {
         console.log(error.message);
@@ -422,20 +417,33 @@ const getTimeframeFilter = (timeframe) => {
 exports.getInbox = async(req, res) => {
     try {   
         const {userId, inboxName} = req.params;
-        const { page = 1, limit = 10, timeframe="all" } = req.query;
-        console.log(`INBOX REQEUEST userId: ${userId}, inboxName: ${inboxName}, page: ${page}, limit: ${limit}`);
+        const { page = 1, limit = 10, timeframe="all",search="" } = req.query;
+        console.log(`INBOX REQEUEST userId: ${userId}, inboxName: ${inboxName}, page: ${page}, limit: ${limit} timeframe: ${timeframe} search: [${search}]`);
         const skip = (page - 1) * limit;
         let count;
         let totalPages;
         let inbox;
-
-        const timeframeFilter = getTimeframeFilter(timeframe);
+        let timeframeFilter = getTimeframeFilter(timeframe);
+        let searchFilter = {};
+        if (search.length > 0) {
+            timeframeFilter = getTimeframeFilter("all");
+            searchFilter = {
+              $or: [
+                { contents: { $regex: search, $options: "i" } },
+                { subject: { $regex: search, $options: "i" } },
+                { "from.firstName": { $regex: search, $options: "i" } },
+                { "from.lastName": { $regex: search, $options: "i" } },
+                { "to.firstName": { $regex: search, $options: "i" } },
+                { "to.lastName": { $regex: search, $options: "i" } },
+              ],
+            };
+          }
 
         if(inboxName.toLowerCase() === 'drafts') {
             inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase()}) 
             .populate({ 
                 path: 'drafts', 
-                match: timeframeFilter,
+                match: { ...timeframeFilter, ...searchFilter },
                 options: { skip: skip, limit: limit, sort: { createdAt: -1 } }
               });
         } else {
@@ -443,7 +451,7 @@ exports.getInbox = async(req, res) => {
             .populate('emails')   
             .populate({
                 path:'emails',
-                match: timeframeFilter,
+                match: { ...timeframeFilter, ...searchFilter },
                 populate:[{path:'from'}, {path:'to'}], 
                 options: { skip: skip, limit: limit , sort: { createdAt: -1 }}
             });
@@ -462,6 +470,7 @@ exports.getInbox = async(req, res) => {
             $in: inboxName.toLowerCase() === 'drafts' ? inbox.drafts : inbox.emails,
         },
         ...timeframeFilter,
+        ...searchFilter,
         });
 
         totalPages = Math.ceil(count / limit);

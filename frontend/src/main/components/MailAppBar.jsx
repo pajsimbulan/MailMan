@@ -1,32 +1,35 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
-import TextField from '@mui/material/TextField';
-import Menu from '@mui/material/Menu';
+import {
+  IconButton, Box, Toolbar, InputAdornment,
+  TextField, Menu, Typography, Avatar, useMediaQuery,
+} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from 'react-router';
-import { Avatar, useMediaQuery } from '@mui/material';
-import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 import { UserContext } from '../../App';
 import MailDrawerNavigation from './MailDrawerNavigation';
 
-function MailAppBar({ currentInbox, selectedInbox }) {
+function MailAppBar({ currentInbox, selectedInbox, setQuery }) {
   const { userInfo } = React.useContext(UserContext);
   const isSmallScreen = useMediaQuery('(max-width:800px)');
   const isLessThan500 = useMediaQuery('(max-width:500px)');
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [searchFieldFocused, setSearchFieldFocused] = React.useState(false);
+  const [searchText, setSearchText] = React.useState('');
+  const searchFieldRef = React.useRef(null);
   const isMenuOpen = Boolean(anchorEl);
-  console.log(`app bar render inbpx: ${currentInbox}`);
+
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleSearch = () => {
+    setQuery(searchText);
   };
 
   const menuId = 'primary-search-account-menu';
@@ -142,12 +145,31 @@ function MailAppBar({ currentInbox, selectedInbox }) {
               },
             }}
             InputProps={{
-              startAdornment:
+              endAdornment:
   <InputAdornment position="start">
     {' '}
-    <SearchIcon sx={{ color: '#002159' }} />
+    <IconButton
+      aria-label="search emails"
+      onClick={handleSearch}
+      edge="end"
+    >
+
+      <SearchIcon sx={{ color: '#002159' }} />
+    </IconButton>
     {' '}
   </InputAdornment>,
+            }}
+            ref={searchFieldRef}
+            value={searchText}
+            onChange={(event) => setSearchText(event.target.value)}
+            onFocus={() => setSearchFieldFocused(true)}
+            onBlur={() => setSearchFieldFocused(false)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' && searchFieldFocused) {
+                event.preventDefault();
+                searchFieldRef.current.querySelector('input').blur();
+                handleSearch();
+              }
             }}
           />
         </Box>

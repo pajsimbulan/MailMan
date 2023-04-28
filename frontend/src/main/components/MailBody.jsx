@@ -45,7 +45,7 @@ function emptyMailMessage(dateRange) {
   return 'Select a date range to view emails';
 }
 
-function MailBody({ selectedInbox }) {
+function MailBody({ selectedInbox, query, setQuery }) {
   const navigate = useNavigate();
   const user = useContext(UserContext);
   const [refresh, setRefresh] = useState(false);
@@ -55,11 +55,9 @@ function MailBody({ selectedInbox }) {
   const [openedEmail, setOpenedEmail] = useState(undefined);
   const [dateFilter, setDateFilter] = useState('today');
   const [uniqueEmails, setUniqueEmails] = useState([]);
-  console.log(`dateFilter: [${dateFilter}]`);
 
   const numCheckboxSelected = useMemo(() => { let count = 0; checkboxArray.forEach((checked) => { if (checked) count += 1; }); return count; }, [checkboxArray]);
 
-  
   const {
     getInbox,
     inbox,
@@ -69,17 +67,17 @@ function MailBody({ selectedInbox }) {
     loading: loadingInbox,
     statusCode: statusCodeInbox,
     errorMessage: errorMessageInbox,
-  } = useInbox(user.userInfo._id, selectedInbox, user.accessToken, dateFilter);
+  } = useInbox(user.userInfo._id, selectedInbox, user.accessToken, dateFilter, query);
 
   const {
     moveEmail,
     loading: loadingEmail,
   } = useEmail();
-  
+
   useEffect(() => {
     console.log('getting inbox');
     getInbox();
-  }, [refresh, dateFilter]);
+  }, [refresh, dateFilter, query]);
 
   useEffect(() => {
     console.log('setting checkbox array');
@@ -161,47 +159,46 @@ function MailBody({ selectedInbox }) {
 
     return null;
   }, [inbox, inbox.inboxName, refresh, selectedInbox, dateFilter, checkboxArray]);
-  
 
-  //moveEmail = async (userId, fromInboxName, toInboxName, emailIdArray, accessToken)
+  // moveEmail = async (userId, fromInboxName, toInboxName, emailIdArray, accessToken)
   const handleInbox = async () => {
     console.log('moving emails to inbox');
-    if(!inbox) return;
-    if(!inbox.emails) return;
-    if(selectedInbox === 'inbox') return;
+    if (!inbox) return;
+    if (!inbox.emails) return;
+    if (selectedInbox === 'inbox') return;
     await moveEmail(user.userInfo._id, selectedInbox, 'inbox', checkboxArray.map((checked, index) => {
-     if(checked) {
-       return inbox.emails[index]._id;
-     }  
-   }), user.accessToken);
-   setRefresh(!refresh);
- }
+      if (checked) {
+        return inbox.emails[index]._id;
+      }
+    }), user.accessToken);
+    setRefresh(!refresh);
+  };
 
   const handleDelete = async () => {
-   console.log('deleting emails');
-   if(!inbox) return;
-   if(!inbox.emails) return;
-   if(selectedInbox === 'trash') return;
-   await moveEmail(user.userInfo._id, selectedInbox, 'trash', checkboxArray.map((checked, index) => {
-    if(checked) {
-      return inbox.emails[index]._id;
-    } 
-  }), user.accessToken);
-  setRefresh(!refresh);
-}
+    console.log('deleting emails');
+    if (!inbox) return;
+    if (!inbox.emails) return;
+    if (selectedInbox === 'trash') return;
+    await moveEmail(user.userInfo._id, selectedInbox, 'trash', checkboxArray.map((checked, index) => {
+      if (checked) {
+        return inbox.emails[index]._id;
+      }
+    }), user.accessToken);
+    setRefresh(!refresh);
+  };
 
   const handleSpam = async () => {
     console.log('marking emails as spam');
-    if(!inbox) return;
-    if(!inbox.emails) return;
-    if(selectedInbox === 'spam') return;
+    if (!inbox) return;
+    if (!inbox.emails) return;
+    if (selectedInbox === 'spam') return;
     await moveEmail(user.userInfo._id, selectedInbox, 'spam', checkboxArray.map((checked, index) => {
-      if(checked) {
+      if (checked) {
         return inbox.emails[index]._id;
-      } 
+      }
     }), user.accessToken);
     setRefresh(!refresh);
-  }
+  };
 
   return (
     <Box sx={{
@@ -216,8 +213,8 @@ function MailBody({ selectedInbox }) {
       pb: 2,
     }}
     >
-      {loadingEmail  ? <LoadingBackdrop show={true} message={"Moving Emails"}/> : null}
-      {loadingInbox ? <LoadingBackdrop show={true} message={"Fetching Emails"}/> : null}
+      {loadingEmail ? <LoadingBackdrop show message="Moving Emails" /> : null}
+      {loadingInbox ? <LoadingBackdrop show message="Fetching Emails" /> : null}
       {openEmail ? (
         <EmailContentWindow
           closeEmail={() => { setOpenEmail(false); setRefresh(!refresh); }}
@@ -271,12 +268,20 @@ function MailBody({ selectedInbox }) {
           {inbox && inbox.inboxName === selectedInbox ? <MailPagination range={paginationData.limit} totalCount={paginationData.totalCount} currentPage={page} changePage={(pageNumber) => { setPage(pageNumber); }} /> : null}
           <EmailDateFilterToggleButton setFilter={(filter) => { setDateFilter(filter); }} />
         </ListItem>
-        {inbox && numCheckboxSelected > 0 ? 
-        <ListItem sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
-          <Typography sx={{ color: '#808080',fontSize: 16, p: 1.5, m: 1, '@media (max-width: 900px)': { fontSize: 14.5,  }, '@media (max-width: 400px)': { fontSize: 11, }}}>
-            {`Currently selecting ${numCheckboxSelected} conversation${(numCheckboxSelected === 1?'':'s')}` }
-          </Typography>
-        </ListItem> : null}
+        {inbox && numCheckboxSelected > 0
+          ? (
+            <ListItem sx={{
+              display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center',
+            }}
+            >
+              <Typography sx={{
+                color: '#808080', fontSize: 16, p: 1.5, m: 1, '@media (max-width: 900px)': { fontSize: 14.5 }, '@media (max-width: 400px)': { fontSize: 11 },
+              }}
+              >
+                {`Currently selecting ${numCheckboxSelected} conversation${(numCheckboxSelected === 1 ? '' : 's')}` }
+              </Typography>
+            </ListItem>
+          ) : null}
         {renderEmails}
         {renderNoEmails}
       </List>

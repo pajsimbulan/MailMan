@@ -18,13 +18,20 @@ function EmailBlock({
   const [starred, setStarred] = React.useState(email.starred);
   const user = React.useContext(UserContext);
   const { updateEmail, loading, statusCode } = useEmail();
+  const isInitialRender = React.useRef(true);
 
   React.useEffect(() => {
-    async function updateStarred() {
-      await updateEmail(user.userInfo._id, email._id, starred, user.accessToken);
-      console.log(`statusCode: ${statusCode}`);
+    if (isInitialRender.current) {
+    // Skip the effect on initial render
+      isInitialRender.current = false;
+    } else {
+      async function updateStarred() {
+        console.log(`updating this email ${email._id} to ${starred}`);
+        await updateEmail(user.userInfo._id, email._id, starred, user.accessToken);
+        console.log(`statusCode: ${statusCode}`);
+      }
+      updateStarred();
     }
-    updateStarred();
   }, [starred]);
 
   return (
@@ -65,7 +72,7 @@ function EmailBlock({
       >
         {starred ? <StarIcon sx={{ height: 25, width: 25, '@media (max-width: 800px)': { height: 20, width: 20 } }} /> : <StarBorderIcon sx={{ height: 25, width: 25, '@media (max-width: 800px)': { height: 20, width: 20 } }} />}
       </IconButton>
-      <Avatar alt={`$user_avatar`} src={email.from && email.from.avatar ? `data:image/jpeg;base64,${intArrayToBase64String(email.from.avatar.data)}` : null} sx={{ my: 'auto', height: 30, width: 30 }} />
+      <Avatar alt="$user_avatar" src={email.from && email.from.avatar ? `data:image/jpeg;base64,${intArrayToBase64String(email.from.avatar.data)}` : null} sx={{ my: 'auto', height: 30, width: 30 }} />
       <Box
         component="div"
         sx={{

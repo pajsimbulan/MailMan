@@ -20,6 +20,7 @@ const theme = createTheme({
 
 function Mainpage() {
   const [inbox, setSelectedInbox] = React.useState('inbox');
+  const [query, setQuery] = React.useState('');
   const isSmallScreen = useMediaQuery('(max-width:800px)');
 
   console.log(`main page render inbpx: ${inbox}`);
@@ -39,8 +40,9 @@ function Mainpage() {
             <MailAppBar
               currentInbox={inbox}
               selectedInbox={(selectedInbox) => { setSelectedInbox(selectedInbox); }}
+              setQuery={setQuery}
             />
-            <MailBody selectedInbox={inbox} />
+            <MailBody selectedInbox={inbox} query={query} setQuery={setQuery} />
           </Grid2>
         </Grid2>
       </Box>
