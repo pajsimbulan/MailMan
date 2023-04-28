@@ -9,6 +9,8 @@ function UhOh() {
   const navigate = useNavigate();
 
   setTimeout(() => {
+    localStorage.removeItem('mailman_accesstoken');
+    localStorage.removeItem('mailman_userinfo');
     navigate('/');
   }, 5500);
 

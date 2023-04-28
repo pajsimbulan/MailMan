@@ -45,7 +45,7 @@ function emptyMailMessage(dateRange) {
   return 'Select a date range to view emails';
 }
 
-function MailBody({ selectedInbox, query, setQuery }) {
+function MailBody({ selectedInbox, query }) {
   const navigate = useNavigate();
   const user = useContext(UserContext);
   const [refresh, setRefresh] = useState(false);
@@ -73,6 +73,12 @@ function MailBody({ selectedInbox, query, setQuery }) {
     moveEmail,
     loading: loadingEmail,
   } = useEmail();
+
+  useEffect(() => {
+    if(statusCodeInbox >= 400) {
+      navigate('/uhoh');
+    }
+  }, [statusCodeInbox]);
 
   useEffect(() => {
     console.log('getting inbox');

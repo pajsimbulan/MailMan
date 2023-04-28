@@ -52,7 +52,7 @@ function Profile() {
   }, [statusCode, errorMessage]);
 
   return (
-    <Box sx={{ width: '100%', height: '100vh', background: 'repeating-radial-gradient(#CCE3FA,#EDF6FF)' }}>
+    <Box sx={{ width: '100%', minHeight: '100vh', background: 'repeating-radial-gradient(#CCE3FA,#EDF6FF)'}}>
       {loading && <LoadingModal open={loading} />}
       <Box sx={{
         display: 'flex', flexDirection: 'row', alignItems: 'center', ml: 3, pt: 2,

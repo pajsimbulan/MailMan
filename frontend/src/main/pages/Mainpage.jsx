@@ -42,7 +42,7 @@ function Mainpage() {
               selectedInbox={(selectedInbox) => { setSelectedInbox(selectedInbox); }}
               setQuery={setQuery}
             />
-            <MailBody selectedInbox={inbox} query={query} setQuery={setQuery} />
+            <MailBody selectedInbox={inbox} query={query} />
           </Grid2>
         </Grid2>
       </Box>
