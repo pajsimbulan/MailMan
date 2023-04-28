@@ -63,6 +63,7 @@ exports.updateEmail = async(req, res) => {
 }
 
 
+
 exports.moveEmails = async(req, res) => {
     try {
         const {userId, fromInboxName, toInboxName, emailIdArray} = req.body;
@@ -89,11 +90,20 @@ exports.moveEmails = async(req, res) => {
     
 };
 
+function parseEmails(input) {
+    const emailPattern = /\b[a-zA-Z0-9._%+-]+@mailman\.com\b/g;
+    const emails = input.match(emailPattern) || [];
+    return emails;
+  }
+
 exports.sendEmail = async(req, res) => {
     try {
-        const {userId, from, fromFirstName, to, subject, contents, files= [], photos= []} = req.body;   
+        const {userId, from, fromFirstName, to, subject, contents, files= [], photos= []} = req.body; 
+        
         let fileIds = [];
         let photoIds = [];
+        let toEmails = parseEmails(to);
+        console.log(`send email request from ${from} to ${to} with subject ${subject} and contents ${contents}`);
         if(files.length > 0) {
             files.forEach( (file) => {
 
@@ -110,20 +120,29 @@ exports.sendEmail = async(req, res) => {
                 photoIds.push(newFile._id);
             });
         }
-        let userRecipient = await userdb.findOne({email: to});
-        let email = new emaildb({from: userId, to: (userRecipient === null? '': userRecipient._id), subject, contents, files: fileIds, photos: photoIds}); 
+        let userRecipients = [];
+        for(let i =0; i<toEmails.length; i++) {
+            let tempUser = await userdb.findOne({email: toEmails[i]});
+            if(tempUser !== null) {
+                userRecipients.push(tempUser);
+            }
+        }
+        let email = new emaildb({from: userId, to: ([userRecipients].length < 0? '': userRecipients.map(user => user._id)), subject, contents, files: fileIds, photos: photoIds}); 
         let savedEmail = await email.save();
         const fromInbox = await inboxdb.findOne({ userId: userId, inboxName: 'sent'});
         const userAllEmails = await inboxdb.findOne({ userId: userId, inboxName: 'all emails'});
         fromInbox.emails.push(savedEmail._id);
         userAllEmails.emails.push(savedEmail._id);
-        if(userRecipient !== null) {
-            const toInbox = await inboxdb.findOne({ userId: userRecipient._id,  inboxName: 'inbox'});
-            const userRecepientAllEmails = await inboxdb.findOne({ userId: userRecipient._id,  inboxName: 'all emails'});
-            toInbox.emails.push(savedEmail._id);
-            userRecepientAllEmails.emails.push(savedEmail._id);
-            await toInbox.save();
-            await userRecepientAllEmails.save();
+        if(userRecipients.length > 0) {
+            for(let i =0; i<userRecipients.length; i++) {
+                let toInbox = await inboxdb.findOne({ userId: userRecipients[i]._id,  inboxName: 'inbox'});
+                let userRecepientAllEmails = await inboxdb.findOne({ userId: userRecipients[i]._id,  inboxName: 'all emails'});
+                toInbox.emails.push(savedEmail._id);
+                userRecepientAllEmails.emails.push(savedEmail._id);
+                await toInbox.save();
+                await userRecepientAllEmails.save();
+            }
+
         }
         await fromInbox.save();
         await userAllEmails.save();
@@ -315,8 +334,15 @@ exports.postDraft = async(req, res) => {
         }
 
         //send email
-        let userRecipient = await userdb.findOne({email: to});
-        let email = new emaildb({from: userId, to: (userRecipient === null? '': userRecipient._id), subject, contents, files: fileIds, photos: photoIds}); 
+        let toEmails = parseEmails(to);
+        let userRecipients = [];
+        for(let i =0; i<toEmails.length; i++) {
+            let tempUser = await userdb.findOne({email: toEmails[i]});
+            if(tempUser !== null) {
+                userRecipients.push(tempUser);
+            }
+        }
+        let email = new emaildb({from: userId, to: ([userRecipients].length < 0? '': userRecipients.map(user => user._id)), subject, contents, files: fileIds, photos: photoIds}); 
         let savedEmail = await email.save();
         const fromInbox = await inboxdb.findOne({ userId: userId, inboxName: 'sent'});
         const userAllEmails = await inboxdb.findOne({ userId: userId, inboxName: 'all emails'});
@@ -324,13 +350,16 @@ exports.postDraft = async(req, res) => {
         userAllEmails.emails.push(savedEmail._id);
         await fromInbox.save();
         await userAllEmails.save();
-        if(userRecipient !== null) {
-            const toInbox = await inboxdb.findOne({ userId: userRecipient._id,  inboxName: 'inbox'});
-            const userRecepientAllEmails = await inboxdb.findOne({ userId: userRecipient._id,  inboxName: 'all emails'});
-            toInbox.emails.push(savedEmail._id);
-            userRecepientAllEmails.emails.push(savedEmail._id);
-            await toInbox.save();
-            await userRecepientAllEmails.save();
+        if(userRecipients.length > 0) {
+            for(let i =0; i<userRecipients.length; i++) {
+                let toInbox = await inboxdb.findOne({ userId: userRecipients[i]._id,  inboxName: 'inbox'});
+                let userRecepientAllEmails = await inboxdb.findOne({ userId: userRecipients[i]._id,  inboxName: 'all emails'});
+                toInbox.emails.push(savedEmail._id);
+                userRecepientAllEmails.emails.push(savedEmail._id);
+                await toInbox.save();
+                await userRecepientAllEmails.save();
+            }
+
         }
 
         //return email
@@ -433,8 +462,17 @@ exports.getInbox = async(req, res) => {
                 { subject: { $regex: search, $options: "i" } },
                 { "from.firstName": { $regex: search, $options: "i" } },
                 { "from.lastName": { $regex: search, $options: "i" } },
-                { "to.firstName": { $regex: search, $options: "i" } },
-                { "to.lastName": { $regex: search, $options: "i" } },
+                { "from.email": { $regex: search, $options: "i" } },
+                { to: {
+                      $elemMatch: {
+                        $or: [
+                          { firstName: { $regex: search, $options: "i" } },
+                          { lastName: { $regex: search, $options: "i" } },
+                          { email: { $regex: search, $options: "i" } },
+                        ],
+                      },
+                    },
+                },
               ],
             };
           }

@@ -8,7 +8,7 @@ const emailSchema = new mongoose.Schema(
         },
        
         to: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: [mongoose.Schema.Types.ObjectId],
             ref: 'User',
         },
         subject: {  

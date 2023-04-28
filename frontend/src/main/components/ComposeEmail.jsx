@@ -18,7 +18,6 @@ import { arrayBufferToBase64, intArrayToBase64String } from '../../utils/DatatoB
 import getFileType from '../../utils/FileType';
 import useDraft from '../../hooks/useDraft';
 import useEmail from '../../hooks/useEmail';
-import { emailRegex } from '../../utils/MailRegex';
 
 const MAX_FILE_SIZE = 13000000;
 
@@ -70,7 +69,7 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail, draftId = '' }) {
   }, [openComposeEmail, draftId]);
 
   const submitSend = async () => {
-    if (emailRegex.test(toValue) && subjectValue !== '' && contentsValue !== '') {
+    if (toValue !== '' && subjectValue !== '' && contentsValue !== '') {
       if (draftId !== '' && fetchedDraft !== null) {
         await postDraft(
           user.userInfo._id,
