@@ -78,6 +78,7 @@ const useEmail = () => {
   ) => {
     let tempStatusCode = null;
     setLoading(true);
+    console.log(`beginning of sendEmail: ${userId} ${from} ${fromFirstName} ${to} ${subject} ${contents} ${files} ${photos} ${accessToken}`);
     await fetch(`${process.env.REACT_APP_BACKEND_URL}/${process.env.REACT_APP_BACKEND_VERSION}/email`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `jwt ${accessToken.toString()}` },
@@ -97,6 +98,7 @@ const useEmail = () => {
         setEmail(jsondata.email);
       })
       .catch(() => {
+        console.log('error sending email');
         if (tempStatusCode === 500) {
           setErrorMessage('Error: Failed to send email');
         } else {

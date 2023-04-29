@@ -82,7 +82,6 @@ exports.moveEmails = async(req, res) => {
         toInbox.emails = [...toInbox.emails, ...emailIdArray];
         await toInbox.save();
         res.status(200).send("Email moved successfully");
-    
     } catch (error) {
         console.log(error.message);
         res.status(500).send(error.message);
@@ -451,7 +450,7 @@ exports.getInbox = async(req, res) => {
         const skip = (page - 1) * limit;
         let count;
         let totalPages;
-        let inbox;
+        let inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase() });
         let timeframeFilter = getTimeframeFilter(timeframe);
         let searchFilter = {};
         if (search.length > 0) {
@@ -477,6 +476,18 @@ exports.getInbox = async(req, res) => {
             };
           }
 
+          
+         const refModel = inboxName.toLowerCase() === 'drafts' ? 'DraftEmail' : 'Email';
+
+          count = await mongoose.model(refModel).countDocuments({
+            ...timeframeFilter,
+            ...searchFilter,
+            _id: { $in: inbox.emails } // Add the inbox ID to the filters
+          });
+
+        
+          
+
         if(inboxName.toLowerCase() === 'drafts') {
             inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase()}) 
             .populate({ 
@@ -499,19 +510,12 @@ exports.getInbox = async(req, res) => {
             return;
         }
 
-         // Get the reference model based on the inboxName
-         const refModel = inboxName.toLowerCase() === 'drafts' ? 'DraftEmail' : 'Email';
+         // Get the reference model based on the inboxNam
 
         // Calculate the total count based on the filter
-        count = await mongoose.model(refModel).countDocuments({
-        _id: {
-            $in: inboxName.toLowerCase() === 'drafts' ? inbox.drafts : inbox.emails,
-        },
-        ...timeframeFilter,
-        ...searchFilter,
-        });
 
         totalPages = Math.ceil(count / limit);
+        console.log(`totalPages: ${totalPages}`);
 
         res.status(200).send({  
             inbox,
