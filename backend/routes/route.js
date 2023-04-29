@@ -67,6 +67,7 @@ exports.updateEmail = async(req, res) => {
 exports.moveEmails = async(req, res) => {
     try {
         const {userId, fromInboxName, toInboxName, emailIdArray} = req.body;
+        console.log(`moveEmails request from ${fromInboxName} to ${toInboxName} with emailIdArray ${emailIdArray}`);
         let fromInbox = await inboxdb.findOne({ userId: userId, inboxName: fromInboxName.toLowerCase()});
         let toInbox = await inboxdb.findOne({ userId: userId,  inboxName: toInboxName.toLowerCase()});
         if ( (fromInbox == null) || (toInbox == null) ) {
@@ -74,10 +75,9 @@ exports.moveEmails = async(req, res) => {
             return;
         }
         //delete emails from fromInbox
-        const tempFromArray = fromInbox.emails.filter((email) => {return(!emailIdArray.includes(email._id.toString()));});
+        const tempFromArray = fromInbox.emails.filter((email) => {if(email != null) return(!emailIdArray.includes(email._id.toString()));});
         fromInbox.emails = [...tempFromArray];
         await fromInbox.save();
-        
         // add email to toInbox
         toInbox.emails = [...toInbox.emails, ...emailIdArray];
         await toInbox.save();

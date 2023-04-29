@@ -151,7 +151,7 @@ function MailBody({ selectedInbox, query }) {
   }, [uniqueEmails, refresh, selectedInbox, checkboxArray]);
 
   const renderNoEmails = useMemo(() => {
-    if (inbox && inbox.inboxName === selectedInbox && paginationData.totalCount <= 0) {
+    if (inbox && inbox.inboxName === selectedInbox && paginationData.totalCount <= 0 && query.length <= 0) {
       return (
         <Box sx={{
           p: 5, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
@@ -286,6 +286,20 @@ function MailBody({ selectedInbox, query }) {
               }}
               >
                 {`Currently selecting ${numCheckboxSelected} conversation${(numCheckboxSelected === 1 ? '' : 's')}` }
+              </Typography>
+            </ListItem>
+          ) : null}
+          {inbox && query.length > 0
+          ? (
+            <ListItem sx={{
+              display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center',
+            }}
+            >
+              <Typography sx={{
+                color: '#808080', fontSize: 16, p: 1.5, m: 1, '@media (max-width: 900px)': { fontSize: 14.5 }, '@media (max-width: 400px)': { fontSize: 11 },
+              }}
+              >
+                {"Search Results:" }
               </Typography>
             </ListItem>
           ) : null}

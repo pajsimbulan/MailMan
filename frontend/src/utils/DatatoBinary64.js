@@ -3,6 +3,8 @@ export function intArrayToBase64String(dataArray) {
   const uint8Array = new Uint8Array(dataArray);
   const textDecoder = new TextDecoder('ascii');
   return textDecoder.decode(uint8Array);
+
+  
 }
 
 // Converts a buffer to a base64 string

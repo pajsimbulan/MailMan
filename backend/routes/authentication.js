@@ -22,10 +22,8 @@ exports.register = async (req, res) => {
             password: hashedPassword,
             email,
         });
-        console.log(`New user created: ${newUser}`);
         let savedUser = await newUser.save();
         delete savedUser.password;
-        console.log(`User created: ${savedUser}`);
         //initialize inboxes
         savedUser.inboxes.forEach(async (inboxName) => {
           let newInbox = new inboxdb({
@@ -51,13 +49,13 @@ exports.login = async (req, res) => {
       res.status(404).send("Account doesn't exist");
       return;
     }
-    console.log(`User found: ${user}`);
     if(! (await bcrypt.compare(password, user.password))) {
       console.log(`Invalid password: ${password} ${user.password}`);
       res.status(400).send("Invalid Credential");
       return;
     }
-    
+    console.log(`type of avatar ${typeof user.avatar}`);
+    console.log(`avatar = ~${user.avatar}`);
     const accessToken = jwt.sign({email,password}, jwtSecretKey, {
       algorithm: 'HS256'
     });
