@@ -8,7 +8,7 @@ const jwtSecretKey = process.env.JWT_SECRET_KEY;
 exports.register = async (req, res) => {
     try {
         console.log(`Register request: ${req.body.email} ${req.body.password}`);
-        const {firstName, lastName, email, password} = req.body;
+        const {firstName, lastName, email, password, secretPhrase} = req.body;
         if( (await userdb.findOne({email: email}))  != null) {
           console.log(`Account already exist: ${email}`);
           res.status(403).send("Account already exist");
@@ -21,6 +21,7 @@ exports.register = async (req, res) => {
             lastName,
             password: hashedPassword,
             email,
+            secretPhrase,
         });
         let savedUser = await newUser.save();
         delete savedUser.password;
@@ -102,8 +103,8 @@ exports.authorize = (req,res) => {
 
 exports.changePassword = async (req, res) => {
   try {
-    console.log(`Change Password request: ${req.body.email} ${req.body.firstName} ${req.body.newPassword}`);
-      if( (req.body.email.length <= 0) || (req.body.firstName.length <= 0) ) {
+    console.log(`Change Password request: ${req.body.email} ${req.body.firstName} ${req.body.secretPhrase} ${req.body.newPassword}`);
+      if( (req.body.email.length <= 0) || (req.body.firstName.length <= 0) || (req.body.secretPhrase.length <= 0)) {
         res.status(400).send("Invalid Credential");
         return;
       }
@@ -116,6 +117,11 @@ exports.changePassword = async (req, res) => {
           res.status(400).send("Invalid Credential");
           return;
       }
+      if(tempUser.secretPhrase.toLowerCase() != req.body.secretPhrase.toLowerCase()) {
+        console.log(`Invalid secretPhrase: ${tempUser.secretPhrase} ${req.body.secretPhrase}`);
+        res.status(400).send("Invalid Credential");
+        return;
+    }
       const salt = await bcrypt.genSalt();
       const hashedPassword = await bcrypt.hash(req.body.newPassword,salt);
       tempUser.password = hashedPassword;

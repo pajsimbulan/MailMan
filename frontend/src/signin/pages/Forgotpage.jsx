@@ -48,7 +48,7 @@ function Signuppage() {
     if (data.get('password') !== data.get('confirmPassword')) {
       openError("Error: Passwords don't match");
     }
-    await submitForgotPassword(data.get('email'), data.get('password'), data.get('firstName'));
+    await submitForgotPassword(data.get('email'), data.get('password'), data.get('firstName'), data.get('secretPhrase'));
   };
 
   useEffect(() => {
@@ -128,6 +128,7 @@ function Signuppage() {
                 }}
                 />
                 <Typography sx={{
+                  mt: 2,
                   color: '#334155',
                   '@media (max-width: 800px)': { fontSize: '14px', mt: 1.5 },
                   '@media (max-width: 500px)': { fontSize: '12px', mt: 1 },
@@ -136,10 +137,29 @@ function Signuppage() {
                   First Name*
                 </Typography>
                 <TextField
-                  sx={{ width: 180 }}
+                  fullWidth
                   required
                   id="firstName"
                   name="firstName"
+                  type="text"
+                  inputProps={{
+                    style: { fontSize: getFontSize() },
+                  }}
+                />
+                <Typography sx={{
+                  mt: 2,
+                  color: '#334155',
+                  '@media (max-width: 800px)': { fontSize: '14px', mt: 1.5 },
+                  '@media (max-width: 500px)': { fontSize: '12px', mt: 1 },
+                }}
+                >
+                  Secret Phrase*
+                </Typography>
+                <TextField
+                  fullWidth
+                  required
+                  id="secretPhrase"
+                  name="secretPhrase"
                   type="text"
                   inputProps={{
                     style: { fontSize: getFontSize() },

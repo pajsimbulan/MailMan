@@ -46,7 +46,7 @@ function Signuppage() {
       openError('Error: Invalid Email Address.  Make sure the email consists of at least 1 alphabet and ends with *@mailman.com*');
       return;
     }
-    await submitSignUp(data.get('email'), data.get('password'), data.get('firstName'), data.get('lastName'));
+    await submitSignUp(data.get('email'), data.get('password'), data.get('firstName'), data.get('lastName'), data.get('secretPhrase'));
   };
 
   useEffect(() => {
@@ -173,6 +173,25 @@ function Signuppage() {
                     </Box>
                   </Box>
                 </Box>
+
+                      <Typography sx={{
+                        color: '#334155',
+                        '@media (max-width: 800px)': { fontSize: '14px' },
+                        '@media (max-width: 500px)': { fontSize: '12px' },
+                      }}
+                      >
+                        Secret Phrase
+                      </Typography>
+                      <TextField
+                        required
+                        fullWidth
+                        inputProps={{
+                          style: { fontSize: getFontSize() },
+                        }}
+                        id="secretPhrase"
+                        name="secretPhrase"
+                        type="text"
+                      />
                 <Typography sx={{
                   mt: 2,
                   color: '#334155',

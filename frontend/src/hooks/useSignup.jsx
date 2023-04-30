@@ -6,7 +6,7 @@ const useSignUp = () => {
   const [statusCode, setStatusCode] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const submitSignUp = async (email, password, firstName, lastName) => {
+  const submitSignUp = async (email, password, firstName, lastName, secretPhrase) => {
     let tempStatusCode = null;
     setLoading(true);
 
@@ -14,7 +14,7 @@ const useSignUp = () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        email, password, firstName, lastName,
+        email, password, firstName, lastName, secretPhrase
       }),
     })
       .then((res) => {

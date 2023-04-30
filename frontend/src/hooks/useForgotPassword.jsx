@@ -6,7 +6,7 @@ const useForgotPassword = () => {
   const [statusCode, setStatusCode] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const submitForgotPassword = async (email, newPassword, firstName) => {
+  const submitForgotPassword = async (email, newPassword, firstName, secretPhrase) => {
     setLoading(true);
     let tempStatusCode = null;
     console.log(`got here ${process.env.REACT_APP_BACKEND_URL}/${process.env.REACT_APP_BACKEND_VERSION}/changePassword`);
@@ -14,7 +14,7 @@ const useForgotPassword = () => {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        email, newPassword, firstName,
+        email, newPassword, firstName,secretPhrase
       }),
     }).then((res) => {
       tempStatusCode = res.status;
