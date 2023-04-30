@@ -478,12 +478,19 @@ exports.getInbox = async(req, res) => {
 
           
          const refModel = inboxName.toLowerCase() === 'drafts' ? 'DraftEmail' : 'Email';
-
+         if(inboxName.toLowerCase() === 'drafts') {
+            count = await mongoose.model(refModel).countDocuments({
+                ...timeframeFilter,
+                ...searchFilter,
+                _id: { $in: inbox.drafts } // Add the inbox ID to the filters
+            });
+         } else {
           count = await mongoose.model(refModel).countDocuments({
             ...timeframeFilter,
             ...searchFilter,
             _id: { $in: inbox.emails } // Add the inbox ID to the filters
           });
+        }
 
         
           
