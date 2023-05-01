@@ -10,10 +10,18 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 const DB_URL = process.env.DB_URL;
 const VERSION = process.env.VERSION;
+const CLIENT_DOMAIN = process.env.CLIENT_DOMAIN || 'https://mailman.paulsimbulan.com';
+
+const corsOptions = {
+    origin: ['http://localhost:3000', CLIENT_DOMAIN],
+    credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type,Authorization',
+};
 
 app.use(express.json({ limit: '1gb' }));
 app.use(express.urlencoded({limit:'1gb', extended: false}));
-app.use(cors());
+app.use(cors(corsOptions));
 
 
 
