@@ -19,6 +19,9 @@ const corsOptions = {
     allowedHeaders: 'Content-Type,Authorization',
 };
 
+console.log('CLIENT_DOMAIN:', CLIENT_DOMAIN);
+console.log('corsOptions:', corsOptions);
+
 app.use(express.json({ limit: '1gb' }));
 app.use(express.urlencoded({limit:'1gb', extended: false}));
 app.use(cors(corsOptions));
