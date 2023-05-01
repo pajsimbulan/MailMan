@@ -7,7 +7,7 @@ const route = require('./routes/route');
 const app = express();
 
 //SERVER CONSTANTS
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 4000;
 const DB_URL = process.env.DB_URL;
 const VERSION = process.env.VERSION;
 
@@ -42,7 +42,7 @@ app.put(`/${VERSION}/deleteDrafts`, auth.check, route.deleteDrafts);
 
 //SERVER and DB initialize connections
 mongoose.connect(DB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => app.listen(PORT, () => {
+    .then(() => app.listen(PORT || 4000, () => {
         console.log("Connection to Database is successful");
         
         console.log(`Server Running on port ${PORT}`);
