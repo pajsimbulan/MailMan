@@ -34,6 +34,8 @@ A lightweight email service that aims to make online communication easier and le
 ### Others 
 - JSON Web Token (Authentication)
 - Bcrypt (Password Security)
+- Hostinger (frontend Hosting)
+- Heroku (backend Hosting)
 <br/><br/><br/>
 
 # Environment Setup
@@ -138,7 +140,8 @@ npm run
 
 # Architecture
 
-<img src="./screenshots/pc/home.jpg" alt="Description of the screenshot" width="400px">
+<img src="./screenshots/architecture.svg" alt="Description of the screenshot" width="400px"> <br/>
+Available to view with this link (`registration required from Lucid.app to view`) :  https://lucid.app/lucidchart/0610b552-fdb4-42d4-935b-ee7d1c0229d0/edit?viewport_loc=785%2C-1257%2C1113%2C747%2C0_0&invitationId=inv_546559cf-ef8e-452b-acf8-be5e90c267d8
 <br /><br />
 
 # Screenshots
