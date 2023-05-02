@@ -3,7 +3,13 @@ A lightweight email service that aims to make online communication easier and le
 
 **This is currently a solo project that I worked on and currently will be working on as I gain more experience in the field.** <br />
 
-**Future plans include the integration of AI technology to help users craft emails in their unique writing style and a complete overhaul of the user interface for a more modern look and feel.**
+**Future plans include the integration of AI technology to help users craft emails in their unique writing style and a complete overhaul of the user interface for a more modern look and feel.** <br/>
+
+## Live Site
+ - https://mailman.paulsimbulan.com
+ 
+## Version
+ - 1.0 <br/>
 
 ## Key Features 
  - Lightweight email service with a chat app style
@@ -11,7 +17,7 @@ A lightweight email service that aims to make online communication easier and le
  - Account creation
  - Persistent user sessions for a seamless experience
  - JWT for authentication and Bcrypt for password security
- - Planned updates include AI integration and modern UI design
+ - Planned updates include AI integration and modern UI design (Version 2.0)
 
 ## Technology Stack <br/>
 ### Frontend

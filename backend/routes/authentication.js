@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const userdb = require('../schemas/user');
 const emaildb = require('../schemas/email');
+const replydb = require('../schemas/replyEmail');
 const inboxdb = require('../schemas/inbox');
 const bcrypt = require('bcryptjs');
 const jwtSecretKey = process.env.JWT_SECRET_KEY;
@@ -33,6 +34,30 @@ exports.register = async (req, res) => {
           });
           await newInbox.save();
         });
+
+        //initialize introductory email
+        const newReply = new replydb({
+          from: '6447ab4041b68fa39f3792cb',
+          contents: "Oh Btw, here's me replying to my own message! Here's a photo that might help. Again, Welcome to Mailman!",
+          files: ['64509caa711c4707d4bf7d7a'],
+          photos: ['64509caa711c4707d4bf7d7a'],
+        });
+        const savedReply = await newReply.save();
+        const newEmail = new emaildb({
+          from: '6447ab4041b68fa39f3792cb',
+          to:[savedUser._id],
+          subject: `Hello ${firstName}!`,
+          contents: "Welcome to Mailman! Take a look around. Everything is very intuitive. Inbox are to the left. The middle are for emails. And for accessing your Profile Info or Signing Out, click on the Avatar located at the top right corner of your screen! Good Luck!",
+          replies: [savedReply._id],
+        });
+        const savedEmail = await newEmail.save();
+        const inbox = await inboxdb.findOne({userId: savedUser._id, inboxName: 'inbox'});
+        inbox.emails.push(savedEmail._id);
+        await inbox.save();
+        const allInbox = await inboxdb.findOne({userId: savedUser._id, inboxName: 'all emails'});
+        allInbox.emails.push(savedEmail._id);
+        await allInbox.save();
+      
         res.status(201).json(savedUser); 
     } catch(error) {
         console.log('Error, account not created');
@@ -60,6 +85,7 @@ exports.login = async (req, res) => {
     const accessToken = jwt.sign({email,password}, jwtSecretKey, {
       algorithm: 'HS256'
     });
+
 
     delete user.password;
     res.status(200).json({user,
