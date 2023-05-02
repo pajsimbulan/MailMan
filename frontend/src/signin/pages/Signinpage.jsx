@@ -32,6 +32,12 @@ function Signinpage() {
     return '14px';
   }), [isLessThan500, isLessThan800]);
 
+  if (localStorage.getItem('mailman_accesstoken') && localStorage.getItem('mailman_userinfo')) {
+    user.accessToken = localStorage.getItem('mailman_accesstoken');
+    user.userInfo = JSON.parse(localStorage.getItem('mailman_userinfo'));
+    navigate('/greet');
+  }
+
   function openError(message) {
     setOpenErrorAlert(true);
     setAlertMessage(message);
