@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const userdb = require('../schemas/user');
 const emaildb = require('../schemas/email');
 const inboxdb = require('../schemas/inbox');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
 exports.register = async (req, res) => {

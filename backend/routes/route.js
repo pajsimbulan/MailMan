@@ -5,7 +5,7 @@ const inboxdb = require('../schemas/inbox');
 const replydb = require('../schemas/replyEmail');
 const draftdb  = require('../schemas/draft');
 const filedb = require('../schemas/file');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
