@@ -192,12 +192,8 @@ Available to view with this link (`registration required from Lucid.app to view`
 ### **More screenshots available on the ./screenshots directory or visit https://paulsimbulan.com**
 <br/><br/>
 # Video Demo (PC Version Only)
-<video width="600px" controls>
-  <source src="./demovideo/mailman_demo.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
 
-### if video doesn't load or show above, try this link https://youtu.be/pvIHewhP_T8
+### https://youtu.be/pvIHewhP_T8
 <br/><br/>
 
 # Contributing
