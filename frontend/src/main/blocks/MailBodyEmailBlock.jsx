@@ -26,9 +26,9 @@ function EmailBlock({
       isInitialRender.current = false;
     } else {
       async function updateStarred() {
-        console.log(`updating this email ${email._id} to ${starred}`);
+        //console.log(`updating this email ${email._id} to ${starred}`);
         await updateEmail(user.userInfo._id, email._id, starred, user.accessToken);
-        console.log(`statusCode: ${statusCode}`);
+        //console.log(`statusCode: ${statusCode}`);
       }
       updateStarred();
     }
@@ -68,7 +68,7 @@ function EmailBlock({
         sx={{
           height: 25, width: 25, my: 'auto', mr: 0.5, '@media (max-width: 800px)': { height: 20, width: 20 },
         }}
-        onClick={(event) => { event.stopPropagation(); setStarred(!starred); console.log('star'); }}
+        onClick={(event) => { event.stopPropagation(); setStarred(!starred); }}
       >
         {starred ? <StarIcon sx={{ height: 25, width: 25, '@media (max-width: 800px)': { height: 20, width: 20 } }} /> : <StarBorderIcon sx={{ height: 25, width: 25, '@media (max-width: 800px)': { height: 20, width: 20 } }} />}
       </IconButton>

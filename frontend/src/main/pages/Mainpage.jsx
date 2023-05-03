@@ -23,7 +23,7 @@ function Mainpage() {
   const [query, setQuery] = React.useState('');
   const isSmallScreen = useMediaQuery('(max-width:800px)');
 
-  console.log(`main page render inbpx: ${inbox}`);
+  //console.log(`main page render inbpx: ${inbox}`);
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ width: '100%', minHeight: '100vh', background: 'repeating-radial-gradient(#EBF5FF,#FCFDFE)' }}>

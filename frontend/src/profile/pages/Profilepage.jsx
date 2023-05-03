@@ -41,12 +41,12 @@ function Profile() {
 
   useEffect(() => {
     if (hasMounted.current) {
-      console.log(`statusCode: ${statusCode}`);
+      //console.log(`statusCode: ${statusCode}`);
       if (statusCode < 400) {
         localStorage.setItem('mailman_userinfo', JSON.stringify(userInfo));
         navigate('/main');
       }
-      console.log(errorMessage);
+      //console.log(errorMessage);
     } else {
       hasMounted.current = true;
     }

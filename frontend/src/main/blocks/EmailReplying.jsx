@@ -46,10 +46,10 @@ function EmailReplying({ emailId, submitReply, exitReply }) {
     photos,
     accessToken,
      */
-    console.log('value: ', value);
+    //console.log('value: ', value);
     await replyEmail(user.userInfo.email, user.userInfo.firstName, emailId, value, binaryFiles, binaryPhotos, user.accessToken);
-    console.log('finish reply email');
-    console.log('value after: ', value);
+    //console.log('finish reply email');
+    //console.log('value after: ', value);
     submitReply(value);
   };
 

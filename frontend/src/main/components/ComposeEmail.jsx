@@ -69,7 +69,7 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail, draftId = '' }) {
   }, [openComposeEmail, draftId]);
 
   const submitSend = async () => {
-    console.log(`submitSend: ${toValue} ${subjectValue} ${contentsValue} ${binaryFiles} ${binaryPhotos}`);
+    //console.log(`submitSend: ${toValue} ${subjectValue} ${contentsValue} ${binaryFiles} ${binaryPhotos}`);
     if (toValue !== '' && subjectValue !== '' && (contentsValue !== '' || binaryFiles.length !== 0 || binaryPhotos.length !== 0) ) {
       if (draftId !== '' && fetchedDraft !== null) {
         await postDraft(
@@ -85,7 +85,7 @@ function ComposeEmail({ openComposeEmail, closeComposeEmail, draftId = '' }) {
           user.accessToken,
         );
       } else {
-        console.log(`submitSend22: ${toValue} ${subjectValue} ${contentsValue} ${binaryFiles} ${binaryPhotos}`);
+        //console.log(`submitSend22: ${toValue} ${subjectValue} ${contentsValue} ${binaryFiles} ${binaryPhotos}`);
         await sendEmail(
           user.userInfo._id,
           user.userInfo.email,

@@ -27,7 +27,7 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
   const [replying, setReplying] = React.useState(false);
   const [replyingValue, setReplyingValue] = React.useState('');
   const isLessThan800 = useMediaQuery('(max-width:800px)');
-  console.log(`replyng ${replying}`);
+  //console.log(`replyng ${replying}`);
   const {
     getEmail,
     moveEmail,
@@ -39,7 +39,7 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
   } = useEmail();
 
   const handleClose = async () => {
-    console.log('handleClose called');
+    //console.log('handleClose called');
     if (email.starred !== starred) {
       await updateEmail(user.userInfo._id, email._id, starred, user.accessToken);
     }
@@ -49,7 +49,7 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
   };
 
   const downloadFile = (name, data) => {
-    console.log(`downloadFile called with name: ${name} and data: ${intArrayToBase64String(data)}`);
+    //console.log(`downloadFile called with name: ${name} and data: ${intArrayToBase64String(data)}`);
     const base64String = intArrayToBase64String(data.data);
     const dataUrl = `data:application/octet-stream;base64,${base64String}`;
     const link = document.createElement('a');
@@ -78,7 +78,7 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
           edge="start"
           color="inherit"
           onClick={() => {
-            console.log('Close button clicked');
+            
             handleClose();
           }}
           aria-label="close"
@@ -140,7 +140,7 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
             sx={{
               height: 20, width: 20, my: 'auto', ml: 0.5,
             }}
-            onClick={(event) => { event.stopPropagation(); setStarred(!starred); console.log('star'); }}
+            onClick={(event) => { event.stopPropagation(); setStarred(!starred);  }}
           >
             {starred
               ? <StarIcon sx={{ height: 20, width: 20 }} />
@@ -223,7 +223,7 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
           sx={{
             height: 40, width: 40, my: 'auto', mx: 1,
           }}
-          onClick={(event) => { event.stopPropagation(); setStarred(!starred); console.log('star'); }}
+          onClick={(event) => { event.stopPropagation(); setStarred(!starred);  }}
         >
           {starred ? <StarIcon sx={{ height: 25, width: 25 }} />
             : <StarBorderIcon sx={{ height: 25, width: 25 }} />}
@@ -232,7 +232,7 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
           edge="start"
           color="inherit"
           onClick={() => {
-            console.log('Close button clicked');
+            //console.log('Close button clicked');
             handleClose();
           }}
           aria-label="close"
@@ -264,7 +264,7 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
         }}
         open={open}
         onClose={() => {
-          console.log('Modal closed');
+          //console.log('Modal closed');
           handleClose();
         }}
       >
@@ -343,7 +343,7 @@ function EmailContentWindow({ closeEmail, email, onClose }) {
             <EmailReplying
               emailId={(fetchedEmail && fetchedEmail._id ? fetchedEmail._id : null)}
               submitReply={(value) => {
-                console.log(`submitReply called with ${value}`);
+                //console.log(`submitReply called with ${value}`);
                 setReplying(false);
                 setReplyingValue(value);
               }}

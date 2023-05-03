@@ -9,7 +9,7 @@ const useDraft = () => {
 
   const createDraft = async (userId, to = '', subject = '', contents = '', files = [], photos = [], accessToken) => {
     setLoading(true);
-    console.log('createDraft');
+    //console.log('createDraft');
     await fetch(`${process.env.REACT_APP_BACKEND_URL}/${process.env.REACT_APP_BACKEND_VERSION}/draft`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `jwt ${accessToken.toString()}` },
@@ -18,7 +18,7 @@ const useDraft = () => {
       }),
     })
       .then((res) => {
-        console.log(res.status);
+        //console.log(res.status);
         setStatusCode(res.status);
         if (!res.ok) {
           throw new Error(statusCode);

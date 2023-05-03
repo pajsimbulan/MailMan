@@ -13,7 +13,7 @@ function EmailReplyBlock({ reply }) {
   const user = React.useContext(UserContext);
 
   const downloadFile = (name, data) => {
-    console.log(`downloadFile called with name: ${name} and data: ${intArrayToBase64String(data)}`);
+    //console.log(`downloadFile called with name: ${name} and data: ${intArrayToBase64String(data)}`);
     const base64String = intArrayToBase64String(data.data);
     const dataUrl = `data:application/octet-stream;base64,${base64String}`;
     const link = document.createElement('a');

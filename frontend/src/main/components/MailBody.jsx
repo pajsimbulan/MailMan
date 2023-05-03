@@ -82,12 +82,12 @@ function MailBody({ selectedInbox, query }) {
   }, [statusCodeInbox]);
 
   useEffect(() => {
-    console.log('getting inbox');
+    //console.log('getting inbox');
     getInbox();
   }, [refresh, dateFilter, query]);
 
   useEffect(() => {
-    console.log('setting checkbox array');
+    //console.log('setting checkbox array');
     setCheckBoxArray(new Array(paginationData.totalCount).fill(false));
   }, [inbox, inbox.inboxName, selectedInbox]);
 
@@ -95,7 +95,7 @@ function MailBody({ selectedInbox, query }) {
     if (!inbox) return;
     if (!inbox.emails) return;
     if (!inbox.emails) return;
-    console.log(inbox);
+    //console.log(inbox);
 
     const uniqueEmailIds = new Set();
     let emails;
@@ -169,7 +169,7 @@ function MailBody({ selectedInbox, query }) {
 
   // moveEmail = async (userId, fromInboxName, toInboxName, emailIdArray, accessToken)
   const handleInbox = async () => {
-    console.log('moving emails to inbox');
+    //console.log('moving emails to inbox');
     if (!inbox) return;
     if (!inbox.emails) return;
     if (selectedInbox === 'inbox') return;
@@ -182,7 +182,7 @@ function MailBody({ selectedInbox, query }) {
   };
 
   const handleDelete = async () => {
-    console.log('deleting emails');
+    //console.log('deleting emails');
     if (!inbox) return;
     if (!inbox.emails) return;
     if (selectedInbox === 'trash') return;
@@ -195,7 +195,7 @@ function MailBody({ selectedInbox, query }) {
   };
 
   const handleSpam = async () => {
-    console.log('marking emails as spam');
+    //console.log('marking emails as spam');
     if (!inbox) return;
     if (!inbox.emails) return;
     if (selectedInbox === 'spam') return;

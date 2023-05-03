@@ -26,7 +26,7 @@ const useInbox = (userId, inboxName, accessToken, timeframe, search = '', curren
       })
       .then((jsondata) => {
         setInbox(jsondata.inbox);
-        console.log(`jsondata.pagination: ${JSON.stringify(jsondata.pagination)}`);
+        //console.log(`jsondata.pagination: ${JSON.stringify(jsondata.pagination)}`);
         setPaginationData({
           ...jsondata.pagination,
           page: parseInt(jsondata.pagination.page, 10),
