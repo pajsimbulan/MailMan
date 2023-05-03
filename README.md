@@ -50,20 +50,20 @@ Available to view with this link (`registration required from Lucid.app to view`
 
 <figure style="display: flex; flex-direction: column; align-items: center;">
 
-  <img src="./screenshots/pc/signin.png" alt="Description of the screenshot" width="200px">
+  <img src="./screenshots/pc/signin.png" alt="Description of the screenshot" width="400px">
  
 </figure>
 <figure style="display: flex; flex-direction: column; align-items: center;">
 
-  <img src="./screenshots/pc/home.jpg" alt="Description of the screenshot" width="200px">
+  <img src="./screenshots/pc/home.jpg" alt="Description of the screenshot" width="400px">
   
 </figure><figure style="display: flex; flex-direction: column; align-items: center;">
 
-  <img src="./screenshots/pc/compose_with_images_files.jpg" alt="Description of the screenshot" width="200px">
+  <img src="./screenshots/pc/compose_with_images_files.jpg" alt="Description of the screenshot" width="400px">
   
 </figure><figure style="display: flex; flex-direction: column; align-items: center;">
 
-  <img src="./screenshots/pc/email_content.jpg" alt="Description of the screenshot" width="200px">
+  <img src="./screenshots/pc/email_content.jpg" alt="Description of the screenshot" width="400px">
 </figure>
 </div>
 
