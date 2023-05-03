@@ -8,7 +8,6 @@ const replyEmailSchema = new mongoose.Schema(
         },
         contents: {
             type: String,
-            required: true,
         },
         createdAt: {
             type: Date,

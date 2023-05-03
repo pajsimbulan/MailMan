@@ -26,6 +26,8 @@ exports.register = async (req, res) => {
         });
         let savedUser = await newUser.save();
         delete savedUser.password;
+        delete savedUser.secretPhrase;
+        delete savedUser.createdAt;
         //initialize inboxes
         savedUser.inboxes.forEach(async (inboxName) => {
           let newInbox = new inboxdb({
@@ -39,8 +41,8 @@ exports.register = async (req, res) => {
         const newReply = new replydb({
           from: '6447ab4041b68fa39f3792cb',
           contents: "Oh Btw, here's me replying to my own message! Here's a photo that might help. Again, Welcome to Mailman!",
-          files: ['64509caa711c4707d4bf7d7a'],
-          photos: ['64509caa711c4707d4bf7d7a'],
+          files: ['64509caa711c4707d4bf7d7a','6451fc8f1e14e9a2fa731649'],
+          photos: ['64509caa711c4707d4bf7d7a','6451fc8f1e14e9a2fa731649'],
         });
         const savedReply = await newReply.save();
         const newEmail = new emaildb({
@@ -88,6 +90,8 @@ exports.login = async (req, res) => {
 
 
     delete user.password;
+    delete user.secretPhrase;
+    delete user.createdAt;
     res.status(200).json({user,
       accessToken: accessToken,});
   } catch(error) {
@@ -153,7 +157,9 @@ exports.changePassword = async (req, res) => {
       tempUser.password = hashedPassword;
       tempUser.updatedAt = Date.now();
       const newUser = await tempUser.save();
-      delete newUser.password
+      delete newUser.password;
+      delete newUser.secretPhrase;
+      delete newUser.createdAt;
       res.status(200).json(newUser);
     } catch(error) {
       res.status(500).send(error.message);
@@ -182,6 +188,10 @@ exports.updateUserInfo = async (req, res) => {
       tempUser.birthDate = birthDate;
       tempUser.updatedAt = Date.now();
       const newUser = await tempUser.save();
+
+      delete newUser.password;
+      delete newUser.secretPhrase;
+      delete newUser.createdAt;
       res.status(200).json(newUser);
     } catch(error) {
       res.status(500).send(error.message);
