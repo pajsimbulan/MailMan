@@ -40,7 +40,7 @@ A lightweight email service that aims to make online communication easier and le
 
 # Architecture
 
-<img src="./screenshots/architecture_png.png" alt="Description of the screenshot" width="400px"> <br/>
+<img src="./screenshots/architecture_png.png" alt="Description of the screenshot" width="800px"> <br/>
 Available to view with this link (`registration required from Lucid.app to view`) :  https://lucid.app/lucidchart/0610b552-fdb4-42d4-935b-ee7d1c0229d0/edit?viewport_loc=785%2C-1257%2C1113%2C747%2C0_0&invitationId=inv_546559cf-ef8e-452b-acf8-be5e90c267d8
 <br /><br />
 

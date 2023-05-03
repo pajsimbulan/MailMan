@@ -81,9 +81,22 @@ function MailBody({ selectedInbox, query }) {
     }
   }, [statusCodeInbox]);
 
+
+  
+
+
   useEffect(() => {
     //console.log('getting inbox');
     getInbox();
+    // Set up a timer to fetch emails every 5 minutes
+    const timer = setInterval(() => {
+      getInbox();
+    }, 300000);
+
+    // Clean up the timer when the component is unmounted or the dependencies change
+    return () => {
+      clearInterval(timer);
+    };
   }, [refresh, dateFilter, query]);
 
   useEffect(() => {

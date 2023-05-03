@@ -247,12 +247,14 @@ function Signinpage() {
             }}
             >
               <Link
+                type="button"
                 sx={{
+                  "&:hover": { cursor: 'pointer' },
                   color: '#334155',
                   '@media (max-width: 800px)': { fontSize: '14px' },
                   '@media (max-width: 500px)': { fontSize: '12px' },
                 }}
-                href="/forgot"
+                onClick={() => {navigate('/forgot');}}
               >
                 Forgot Password?
               </Link>
