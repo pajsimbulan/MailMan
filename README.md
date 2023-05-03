@@ -38,6 +38,65 @@ A lightweight email service that aims to make online communication easier and le
 - Heroku (backend Hosting)
 <br/><br/><br/>
 
+# Architecture
+
+<img src="./screenshots/architecture_png.png" alt="Description of the screenshot" width="400px"> <br/>
+Available to view with this link (`registration required from Lucid.app to view`) :  https://lucid.app/lucidchart/0610b552-fdb4-42d4-935b-ee7d1c0229d0/edit?viewport_loc=785%2C-1257%2C1113%2C747%2C0_0&invitationId=inv_546559cf-ef8e-452b-acf8-be5e90c267d8
+<br /><br />
+
+# Screenshots
+## PC
+<div style="display: flex; flex-direction: row; flex-wrap: wrap;">
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+
+  <img src="./screenshots/pc/signin.png" alt="Description of the screenshot" width="200px">
+ 
+</figure>
+<figure style="display: flex; flex-direction: column; align-items: center;">
+
+  <img src="./screenshots/pc/home.jpg" alt="Description of the screenshot" width="200px">
+  
+</figure><figure style="display: flex; flex-direction: column; align-items: center;">
+
+  <img src="./screenshots/pc/compose_with_images_files.jpg" alt="Description of the screenshot" width="200px">
+  
+</figure><figure style="display: flex; flex-direction: column; align-items: center;">
+
+  <img src="./screenshots/pc/email_content.jpg" alt="Description of the screenshot" width="200px">
+</figure>
+</div>
+
+## Mobile
+<div style="display: flex; flex-direction: row; flex-wrap: wrap;">
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+
+  <img src="./screenshots/mobile/signin.jpg" alt="Description of the screenshot" width="200px">
+ 
+</figure>
+<figure style="display: flex; flex-direction: column; align-items: center;">
+
+  <img src="./screenshots/mobile/home.jpg" alt="Description of the screenshot" width="200px">
+  
+</figure><figure style="display: flex; flex-direction: column; align-items: center;">
+
+  <img src="./screenshots/mobile/compose_email.jpg" alt="Description of the screenshot" width="200px">
+  
+</figure><figure style="display: flex; flex-direction: column; align-items: center;">
+
+  <img src="./screenshots/mobile/email_contents_1.jpg" alt="Description of the screenshot" width="200px">
+</figure>
+</div>
+
+### **More screenshots available on the ./screenshots directory or visit https://paulsimbulan.com**
+<br/><br/>
+# Video Demo (PC Version Only)
+
+### https://youtu.be/pvIHewhP_T8
+<br/><br/>
+
+
 # Environment Setup
  - Install Node:
  - https://nodejs.org/en/download/
@@ -136,65 +195,6 @@ npm run
  - `npm run lint` to lint code (frontend only)
  - `npm run lint --fix` to fix simple linting errors (frontend only)
 <br /><br />
-
-
-# Architecture
-
-<img src="./screenshots/architecture_png.png" alt="Description of the screenshot" width="400px"> <br/>
-Available to view with this link (`registration required from Lucid.app to view`) :  https://lucid.app/lucidchart/0610b552-fdb4-42d4-935b-ee7d1c0229d0/edit?viewport_loc=785%2C-1257%2C1113%2C747%2C0_0&invitationId=inv_546559cf-ef8e-452b-acf8-be5e90c267d8
-<br /><br />
-
-# Screenshots
-## PC
-<div style="display: flex; flex-direction: row; flex-wrap: wrap;">
-
-<figure style="display: flex; flex-direction: column; align-items: center;">
-
-  <img src="./screenshots/pc/signin.png" alt="Description of the screenshot" width="200px">
- 
-</figure>
-<figure style="display: flex; flex-direction: column; align-items: center;">
-
-  <img src="./screenshots/pc/home.jpg" alt="Description of the screenshot" width="200px">
-  
-</figure><figure style="display: flex; flex-direction: column; align-items: center;">
-
-  <img src="./screenshots/pc/compose_with_images_files.jpg" alt="Description of the screenshot" width="200px">
-  
-</figure><figure style="display: flex; flex-direction: column; align-items: center;">
-
-  <img src="./screenshots/pc/email_content.jpg" alt="Description of the screenshot" width="200px">
-</figure>
-</div>
-
-## Mobile
-<div style="display: flex; flex-direction: row; flex-wrap: wrap;">
-
-<figure style="display: flex; flex-direction: column; align-items: center;">
-
-  <img src="./screenshots/mobile/signin.jpg" alt="Description of the screenshot" width="200px">
- 
-</figure>
-<figure style="display: flex; flex-direction: column; align-items: center;">
-
-  <img src="./screenshots/mobile/home.jpg" alt="Description of the screenshot" width="200px">
-  
-</figure><figure style="display: flex; flex-direction: column; align-items: center;">
-
-  <img src="./screenshots/mobile/compose_email.jpg" alt="Description of the screenshot" width="200px">
-  
-</figure><figure style="display: flex; flex-direction: column; align-items: center;">
-
-  <img src="./screenshots/mobile/email_contents_1.jpg" alt="Description of the screenshot" width="200px">
-</figure>
-</div>
-
-### **More screenshots available on the ./screenshots directory or visit https://paulsimbulan.com**
-<br/><br/>
-# Video Demo (PC Version Only)
-
-### https://youtu.be/pvIHewhP_T8
-<br/><br/>
 
 # Contributing
 As this is a solo project, contributions are not currently being accepted. However, suggestions for improvements and new features are always welcome.<br/><br/>
