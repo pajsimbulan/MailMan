@@ -451,6 +451,10 @@ exports.getInbox = async(req, res) => {
         let count;
         let totalPages;
         let inbox = await inboxdb.findOne({ userId: userId, inboxName: inboxName.toLowerCase() });
+        if(inbox == null) {
+            res.status(404).send("Inbox doesn't exist");
+            return;
+        }
         let timeframeFilter = getTimeframeFilter(timeframe);
         let searchFilter = {};
         if (search.length > 0) {
