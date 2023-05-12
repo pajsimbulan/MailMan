@@ -32,6 +32,7 @@ A lightweight email service that aims to make online communication easier and le
 - MongoDB (NoSQL database)
 
 ### Others 
+- Jest (Backend Testing)
 - JSON Web Token (Authentication)
 - Bcrypt (Password Security)
 - Hostinger (frontend Hosting)
@@ -194,6 +195,7 @@ npm run
  - `npm start` to begin the development server for frontend and backend
  - `npm run lint` to lint code (frontend only)
  - `npm run lint --fix` to fix simple linting errors (frontend only)
+ - `npm test` runs jest tests
 <br /><br />
 
 # Contributing
