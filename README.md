@@ -185,7 +185,7 @@ VERSION=v0
 #SECRET KEY FOR THE JWT
 JWT_SECRET_KEY= lumpia
 ```
-7. Start the development server by having to terminals.  One for backend and one for frontend.  For each, run:
+7. Start the development server locally by having two seperate terminals.  One for backend and one for frontend.  For each, run:
 
 ```
 npm run
