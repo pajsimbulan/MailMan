@@ -188,7 +188,7 @@ JWT_SECRET_KEY= lumpia
 7. Start the development server locally by having two seperate terminals.  One for backend and one for frontend.  For each, run:
 
 ```
-npm run
+npm start
 ``` 
 
 ## Commands
